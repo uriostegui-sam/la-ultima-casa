@@ -17,3 +17,16 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+// routes/api.php
+
+Route::get('/test-language', function () {
+    return response()->json([
+        'message' => __('messages.welcome'),
+        'title' => translate([
+            'en' => 'Hello',
+            'es' => 'Hola'
+        ]),
+        'current_locale' => app()->getLocale()
+    ]);
+});
