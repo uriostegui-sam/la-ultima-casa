@@ -33,18 +33,20 @@ Route::get('/test-language', function () {
     ]);
 });
 
-// Authentication routes 
+// Authentication routes
 Route::prefix('auth')->group(function () {
     // Email/Password
-    Route::post('/register', [AuthController::class, 'register']);
-    Route::post('/login', [AuthController::class, 'login']);
+    Route::post('/register', [AuthController::class, 'register'])->middleware('throttle:5,1'); // 5 req/min
+    Route::post('/login', [AuthController::class, 'login'])->middleware('throttle:5,1'); // 5 req/min
 
     // Google OAuth
-    Route::get('/google', [AuthController::class, 'googleAuth']);
+    Route::get('/google', [AuthController::class, 'googleAuth'])->middleware('throttle:20,1');
     Route::get('/google/callback', [AuthController::class, 'googleCallback']);
-    Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
 
-    Route::get('/user', function () {
-        return response()->json(auth()->user());
-    })->middleware('auth:sanctum');
+    Route::middleware(['auth:sanctum', 'throttle:api'])->group(function () {
+        Route::post('/logout', [AuthController::class, 'logout']);
+        Route::get('/user', function () {
+            return response()->json(auth()->user());
+        });
+    });
 });
