@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\SkillController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -49,4 +50,17 @@ Route::prefix('auth')->group(function () {
             return response()->json(auth()->user());
         });
     });
+});
+
+// Public routes
+Route::get('/skills', [SkillController::class, 'index']);
+Route::get('/skills/{skill}', [SkillController::class, 'show']);
+
+// Admin-only routes
+Route::middleware(['auth:sanctum', 'admin'])->group(function () {
+    Route::get('/skills/create', [SkillController::class, 'create']);
+    Route::post('/skills', [SkillController::class, 'store']);
+    Route::get('/skills/{skill}/edit', [SkillController::class, 'edit']);
+    Route::put('/skills/{skill}', [SkillController::class, 'update']);
+    Route::delete('/skills/{skill}', [SkillController::class, 'destroy']);
 });
