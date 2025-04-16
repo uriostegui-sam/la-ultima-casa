@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -14,12 +15,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
 
-// routes/api.php
 
+
+// test route for language translation
 Route::get('/test-language', function () {
     return response()->json([
         'message' => __('messages.welcome'),
@@ -29,4 +31,20 @@ Route::get('/test-language', function () {
         ]),
         'current_locale' => app()->getLocale()
     ]);
+});
+
+// Authentication routes 
+Route::prefix('auth')->group(function () {
+    // Email/Password
+    Route::post('/register', [AuthController::class, 'register']);
+    Route::post('/login', [AuthController::class, 'login']);
+
+    // Google OAuth
+    Route::get('/google', [AuthController::class, 'googleAuth']);
+    Route::get('/google/callback', [AuthController::class, 'googleCallback']);
+    Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
+
+    Route::get('/user', function () {
+        return response()->json(auth()->user());
+    })->middleware('auth:sanctum');
 });
