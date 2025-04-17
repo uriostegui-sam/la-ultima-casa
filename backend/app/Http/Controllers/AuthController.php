@@ -65,25 +65,41 @@ class AuthController extends Controller
     {
         try {
             $googleUser = Socialite::driver('google')->stateless()->user();
-
-            $user = User::firstOrCreate(
+    
+            // Split full name into first/last names
+            $nameParts = explode(' ', $googleUser->name, 2);
+            $firstName = $nameParts[0] ?? '';
+            $lastName = $nameParts[1] ?? '';
+    
+            $user = User::updateOrCreate(
                 ['email' => $googleUser->getEmail()],
                 [
-                    'name' => $googleUser->getName(),
-                    'password' => bcrypt(Str::random(16)),
+                    'first_name' => $firstName,
+                    'last_name' => $lastName,
                     'google_id' => $googleUser->getId(),
                     'avatar' => $googleUser->getAvatar(),
+                    'role' => 'artist',
                 ]
             );
-
+    
             $token = $user->createToken('api-token')->plainTextToken;
-
+    
             return response()->json([
-                'user' => $user,
-                'token' => $token,
+                'user' => [
+                    'id' => $user->id,
+                    'first_name' => $user->first_name,
+                    'last_name' => $user->last_name,
+                    'email' => $user->email,
+                    'role' => $user->role
+                ],
+                'token' => $token
             ]);
+    
         } catch (\Exception $e) {
-            return response()->json(['error' => 'Invalid credentials'], 401);
+            return response()->json([
+                'error' => 'Google authentication failed',
+                'details' => config('app.debug') ? $e->getMessage() : null
+            ], 401);
         }
     }
 

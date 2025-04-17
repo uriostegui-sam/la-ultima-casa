@@ -15,6 +15,7 @@ return new class extends Migration
             $table->string('first_name')->after('id');
             $table->string('last_name')->after('first_name');
             $table->enum('role', ['artist', 'admin'])->default('artist')->after('name');
+            $table->string('google_id')->nullable()->after('role');
             $table->dropColumn('name');
         });
     }
@@ -25,7 +26,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            //
+            Schema::dropIfExists('users');
         });
     }
 };
