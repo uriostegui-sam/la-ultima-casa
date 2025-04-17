@@ -88,30 +88,11 @@ class ArtistController extends Controller
      */
     public function update(UpdateArtistRequest $request, Artist $artist)
     {
-        $data = $request->validated();
-
-        // Handle image update
-        if ($request->hasFile('profile_image')) {
-            // Delete old image if exists
-            if ($artist->profile_image) {
-                Storage::disk('public')->delete($artist->profile_image);
-            }
-            
-            $data['profile_image'] = $request->file('profile_image')->store(
-                'artists/profile-images',
-                'public'
-            );
-        }
-
-        $artist->update($data);
-
-        if (isset($data['skills'])) {
-            $artist->skills()->sync($data['skills']);
-        }
+        $artist = $this->artistService->updateArtist($artist, $request->validated());
 
         return response()->json([
-            'artist' => $artist->fresh()->load('skills'),
-            'profile_image' => $artist->profile_image
+            'artist' => $artist,
+            'profile_image_url' => $artist->profile_image_url
         ]);
     }
 
