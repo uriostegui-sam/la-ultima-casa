@@ -2,7 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\LoginRequest;
+use App\Http\Requests\RegisterRequest;
 use App\Models\User;
+use App\Services\AuthService;
+use App\Services\UserService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
@@ -11,40 +15,33 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
-    public function register(Request $request)
-    {
-        $request->validate([
-            'name' => 'required|string',
-            'email' => 'required|email|unique:users',
-            'password' => 'required|string|min:8'
-        ]);
+    public function __construct(
+        protected UserService $userService,
+        protected AuthService $authService
+    ) {}
 
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password)
-        ]);
+    public function register(RegisterRequest $request)
+    {
+        $user = $this->authService->registerUser($request->validated());
+        $token = $this->authService->createAuthToken($user);
 
         return response()->json([
             'user' => $user,
-            'token' => $user->createToken('api-token')->plainTextToken
+            'token' => $token->plainTextToken
         ], 201);
     }
 
-    public function login(Request $request)
+    public function login(LoginRequest $request)
     {
-        $request->validate([
-            'email' => 'required|email',
-            'password' => 'required|string'
-        ]);
-
-        if (!Auth::attempt($request->only('email', 'password'))) {
+        if (!$request->authenticate()) {
             return response()->json(['message' => 'Invalid credentials'], 401);
         }
 
+        $token = $this->authService->createAuthToken($request->user());
+
         return response()->json([
-            'user' => auth()->user(),
-            'token' => auth()->user()->createToken('api-token')->plainTextToken
+            'user' => $request->user(),
+            'token' => $token->plainTextToken
         ]);
     }
 
@@ -66,33 +63,12 @@ class AuthController extends Controller
         try {
             $googleUser = Socialite::driver('google')->stateless()->user();
     
-            // Split full name into first/last names
-            $nameParts = explode(' ', $googleUser->name, 2);
-            $firstName = $nameParts[0] ?? '';
-            $lastName = $nameParts[1] ?? '';
-    
-            $user = User::updateOrCreate(
-                ['email' => $googleUser->getEmail()],
-                [
-                    'first_name' => $firstName,
-                    'last_name' => $lastName,
-                    'google_id' => $googleUser->getId(),
-                    'avatar' => $googleUser->getAvatar(),
-                    'role' => 'artist',
-                ]
-            );
-    
-            $token = $user->createToken('api-token')->plainTextToken;
-    
+            $user = $this->userService->findOrCreateFromGoogle($googleUser);
+            $token = $this->authService->createAuthToken($user);
+
             return response()->json([
-                'user' => [
-                    'id' => $user->id,
-                    'first_name' => $user->first_name,
-                    'last_name' => $user->last_name,
-                    'email' => $user->email,
-                    'role' => $user->role
-                ],
-                'token' => $token
+                'user' => $user,
+                'token' => $token->plainTextToken
             ]);
     
         } catch (\Exception $e) {
@@ -106,10 +82,7 @@ class AuthController extends Controller
     // Logout
     public function logout()
     {
-        if (auth()->check()) {
-            auth()->user()->tokens()->delete();
-            return response()->json(['message' => 'Logged out']);
-        }
+        $this->authService->logoutUser(auth()->user());
 
         return response()->json(['message' => 'Not authenticated'], 401);
     }
