@@ -11,7 +11,8 @@ class UpdateArtistControllerRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return $this->user()->can('update', $this->artist);
+        return $this->user()->isAdmin() || 
+               $this->user()->id === $this->artist->user_id;
     }
 
     /**

@@ -7,11 +7,16 @@ use App\Http\Requests\UpdateArtistRequest;
 use App\Models\Artist;
 use Illuminate\Support\Str;
 use App\Models\User;
+use App\Services\ArtistService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
 class ArtistController extends Controller
 {
+    public function __construct(
+        protected ArtistService $artistService
+    ) {}
+
     /**
      * Display a listing of the resource.
      */
@@ -21,7 +26,7 @@ class ArtistController extends Controller
             return [
                 'id' => $artist->id,
                 'name' => $artist->user->getFullNameAttribute(),
-                'profile_image_url' => $artist->profile_image_url,
+                'profile_image' => $artist->profile_image,
                 'minibio' => translate($artist->bio),
                 'bio' => translate($artist->bio),
                 'skills' => $artist->skills->map(fn($skill) => translate($skill->name)),
@@ -48,33 +53,11 @@ class ArtistController extends Controller
      */
     public function store(StoreArtistRequest $request)
     {
-        $data = $request->validated();
-    
-        // Check if user isn't already an artist
-        if (Artist::where('user_id', $data['user_id'])->exists()) {
-            return response()->json([
-                'message' => 'This user is already an artist'
-            ], 422);
-        }
+        $artist = $this->artistService->createArtist($request->validated());
 
-        // Handle profile image upload
-        if ($request->hasFile('profile_image')) {
-            $data['profile_image'] = $request->file('profile_image')->store(
-                'artists/profile-images',
-                'public'
-            );
-        }
-    
-        $artist = Artist::create($data);
-    
-        // Sync skills if provided
-        if (isset($data['skills'])) {
-            $artist->skills()->sync($data['skills']);
-        }
-    
         return response()->json([
-            'artist' => $artist->load('skills'),
-            'profile_image_url' => $artist->profile_image_url
+            'artist' => $artist,
+            'profile_image' => $artist->profile_image
         ], 201);
     }
 
@@ -128,7 +111,7 @@ class ArtistController extends Controller
 
         return response()->json([
             'artist' => $artist->fresh()->load('skills'),
-            'profile_image_url' => $artist->profile_image_url
+            'profile_image' => $artist->profile_image
         ]);
     }
 
