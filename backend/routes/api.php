@@ -18,8 +18,9 @@ use Illuminate\Support\Facades\Route;
 */
 
 // Public routes (no auth needed)
-Route::middleware(['throttle:api'])->group(function () {
+Route::middleware('api')->group(function () {
     Route::apiResource('artists', ArtistController::class)->only(['index', 'show']);
+    Route::apiResource('skills', SkillController::class)->only(['index', 'show']);
 });
 
 // Authentication routes
@@ -47,6 +48,6 @@ Route::middleware(['auth:sanctum', 'throttle:api'])->group(function () {
 
 // Admin-only routes
 Route::middleware(['auth:sanctum', 'admin', 'throttle:api'])->group(function () {
-    Route::apiResource('artists', ArtistController::class);
+    Route::apiResource('artists', ArtistController::class)->except(['index', 'show']);
     Route::apiResource('skills', SkillController::class);
 });
