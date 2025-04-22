@@ -115,7 +115,7 @@ class ArtistTest extends TestCase
 
         $response->assertOk()
             ->assertJsonFragment([
-                'minibio' => ['en' => 'Updated bio', 'es' => 'Bio actualizado']
+                'minibio' => ['en' => 'Updated Ullam et in animi incidunt est. Accusamus dolore natus ut accusantium.\n\nQuia eum sapiente non fugit id laboriosam earum.', 'es' => 'Español Actualizado Ullam et in animi incidunt est. Accusamus dolore natus ut accusantium.\n\nQuia eum sapiente non fugit id laboriosam earum.'],
             ]);
 
         Storage::disk('public')->assertExists($response->json('artist.profile_image_url'));

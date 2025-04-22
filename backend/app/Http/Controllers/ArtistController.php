@@ -25,6 +25,7 @@ class ArtistController extends Controller
         return Artist::with('skills')->get()->map(function ($artist) {
             return [
                 'id' => $artist->id,
+                'user_id' => $artist->user_id,
                 'name' => $artist->user->getFullNameAttribute(),
                 'profile_image' => $artist->profile_image,
                 'minibio' => translate($artist->bio),

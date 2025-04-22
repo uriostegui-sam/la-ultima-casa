@@ -24,6 +24,7 @@ class UpdateArtistRequest extends FormRequest
     {
         return [
             'profile_image' => 'sometimes|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'user_id' => 'sometimes|exists:users,id',
             'minibio.en' => 'sometimes|string|min:20|max:160',
             'minibio.es' => 'sometimes|string|min:20|max:160',
             'bio.en' => 'sometimes|string|min:100',

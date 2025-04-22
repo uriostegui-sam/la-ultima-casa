@@ -10,7 +10,7 @@ class Artist extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id', 'profile_image', 'minibio,', 'bio', 'social_links'];
+    protected $fillable = ['user_id', 'profile_image', 'minibio', 'bio', 'social_links'];
 
     protected $casts = [
         'profile_image' => 'string',
