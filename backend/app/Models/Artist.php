@@ -19,6 +19,7 @@ class Artist extends Model
         'social_links' => 'array'
     ];
 
+    //WIP WORK IN PROGRESS METHOD NOT USED
     public function getProfileImageUrlAttribute()
     {
         return $this->profile_image 
@@ -32,5 +33,9 @@ class Artist extends Model
 
     public function skills() {
         return $this->belongsToMany(Skill::class);
+    }
+
+    public function artworks() {
+        return $this->hasMany(Artwork::class);
     }
 }

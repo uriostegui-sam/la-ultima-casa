@@ -18,6 +18,7 @@ return new class extends Migration
             $table->json('minibio')->nullable();
             $table->json('bio')->nullable();
             $table->json('social_links')->nullable();
+            $table->string('artworks')->nullable();
             $table->timestamps();
         });
     }
