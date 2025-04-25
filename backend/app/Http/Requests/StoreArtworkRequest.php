@@ -11,8 +11,8 @@ class StoreArtworkRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
-    }
+        return $this->user() && $this->user()->isArtist();
+        }
 
     /**
      * Get the validation rules that apply to the request.
@@ -24,10 +24,12 @@ class StoreArtworkRequest extends FormRequest
         return [
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'images' => 'required|array|min:1|max:10',
+            'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
             'dimensions.width' => 'nullable|numeric',
             'dimensions.height' => 'nullable|numeric',
             'dimensions.depth' => 'nullable|numeric',
+            'creation_date' => 'required|string|max:255',
         ];
     }
 }

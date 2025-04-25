@@ -68,7 +68,7 @@ class ArtistController extends Controller
     public function show(Artist $artist)
     {
         return $artist->load([
-            'specialties',
+            'skills',
             'artworks' => function($query) {
                 $query->latest()->limit(5);
             },

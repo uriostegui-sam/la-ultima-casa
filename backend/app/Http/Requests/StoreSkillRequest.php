@@ -11,9 +11,7 @@ class StoreSkillRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        //WIP WORK IN PROGRESS        
-        //return auth()->user()->isAdmin();
-        return false;
+        return $this->user() && $this->user()->isAdmin();
     }
 
     /**

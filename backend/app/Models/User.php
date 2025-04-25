@@ -47,9 +47,14 @@ class User extends Authenticatable
     ];
 
     public function isAdmin(): bool
-{
-    return $this->role === 'admin';
-}
+    {
+        return $this->role === 'admin';
+    }
+
+    public function isArtist(): bool
+    {
+        return $this->role === 'artist' || $this->artist()->exists();
+    }
 
     public function getFullNameAttribute()
     {

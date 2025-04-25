@@ -80,23 +80,22 @@ class ArtistTest extends TestCase
     }
 
     /** @test */
-    // WIP WORK IN PROGRESS
-    // public function it_shows_specific_artist_with_artworks()
-    // {
-    //     $artist = Artist::factory()
-    //         ->hasArtworks(3)
-    //         ->create();
+    public function it_shows_specific_artist_with_artworks()
+    {
+        $artist = Artist::factory()
+            ->hasArtworks(3)
+            ->create();
 
-    //     $response = $this->getJson("/api/artists/{$artist->id}");
+        $response = $this->getJson("/api/artists/{$artist->id}");
 
-    //     $response->assertOk()
-    //         ->assertJsonStructure([
-    //             'id',
-    //             'artworks',
-    //             'user'
-    //         ])
-    //         ->assertJsonCount(3, 'artworks');
-    // }
+        $response->assertOk()
+            ->assertJsonStructure([
+                'id',
+                'artworks',
+                'user'
+            ])
+            ->assertJsonCount(3, 'artworks');
+    }
 
     /** @test */
     public function it_updates_artist_profile_and_skills()
@@ -123,38 +122,36 @@ class ArtistTest extends TestCase
     }
 
     /** @test */
-    // WIP WORK IN PROGRESS
-    // public function it_deletes_artist_without_artworks()
-    // {
-    //     $admin = User::factory()->admin()->create();
-    //     $artist = Artist::factory()->create([
-    //         'profile_image' => 'artists/profile-images/test.jpg'
-    //     ]);
-    //     Storage::disk('public')->put('artists/profile-images/test.jpg', 'test');
+    public function it_deletes_artist_without_artworks()
+    {
+        $admin = User::factory()->admin()->create();
+        $artist = Artist::factory()->create([
+            'profile_image' => 'artists/profile-images/test.jpg'
+        ]);
+        Storage::disk('public')->put('artists/profile-images/test.jpg', 'test');
 
-    //     $response = $this->actingAs($admin)
-    //         ->deleteJson("/api/artists/{$artist->id}");
+        $response = $this->actingAs($admin)
+            ->deleteJson("/api/artists/{$artist->id}");
 
-    //     $response->assertNoContent();
-    //     Storage::disk('public')->assertMissing('artists/profile-images/test.jpg');
-    //     $this->assertDatabaseMissing('artists', ['id' => $artist->id]);
-    // }
+        $response->assertNoContent();
+        Storage::disk('public')->assertMissing('artists/profile-images/test.jpg');
+        $this->assertDatabaseMissing('artists', ['id' => $artist->id]);
+    }
 
     /** @test */
-    // WIP WORK IN PROGRESS
-    // public function it_prevents_deleting_artist_with_artworks()
-    // {
-    //     $admin = User::factory()->admin()->create();
-    //     $artist = Artist::factory()
-    //         ->hasArtworks(1)
-    //         ->create();
+    public function it_prevents_deleting_artist_with_artworks()
+    {
+        $admin = User::factory()->admin()->create();
+        $artist = Artist::factory()
+            ->hasArtworks(1)
+            ->create();
 
-    //     $response = $this->actingAs($admin)
-    //         ->deleteJson("/api/artists/{$artist->id}");
+        $response = $this->actingAs($admin)
+            ->deleteJson("/api/artists/{$artist->id}");
 
-    //     $response->assertStatus(422)
-    //         ->assertJson(['message' => 'Cannot delete artist with existing artworks']);
-    // }
+        $response->assertStatus(422)
+            ->assertJson(['message' => 'Cannot delete artist with existing artworks']);
+    }
 
     /** @test */
     public function non_admin_cannot_create_artists()
@@ -163,7 +160,6 @@ class ArtistTest extends TestCase
         $response = $this->actingAs($user)
             ->postJson('/api/artists', [
                 'user_id' => $user->id,
-                // ... other required fields
             ]);
 
         $response->assertForbidden();

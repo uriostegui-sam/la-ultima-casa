@@ -13,9 +13,12 @@ class Artwork extends Model
         'artist_id',
         'title',
         'description',
-        'image_path',
         'dimensions',
         'creation_date',
+    ];
+    
+    protected $casts = [
+        'dimensions' => 'array',
     ];
 
     public function artist()

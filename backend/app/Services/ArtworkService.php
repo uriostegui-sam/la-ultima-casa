@@ -3,7 +3,9 @@
 namespace App\Services;
 
 use App\Models\Artwork;
+use App\Models\ArtworkImage;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 
 class ArtworkService
 {
@@ -19,8 +21,28 @@ class ArtworkService
         ]);
     }
 
+    public function storeImages(Artwork $artwork, array $images): void
+    {
+        foreach ($images as $index => $image) {
+            $path = $this->storeImage($image);
+            
+            ArtworkImage::create([
+                'artwork_id' => $artwork->id,
+                'path' => $path,
+                'is_primary' => $index === 0, // First image is primary
+                'order' => $index
+            ]);
+        }
+    }
+
     protected function storeImage(UploadedFile $image): string
     {
-        return $image->store('artworks', 'public');
+        return $image->store('artworks/images', 'public');
+    }
+
+    public function deleteImage(ArtworkImage $image): void
+    {
+        Storage::disk('public')->delete($image->path);
+        $image->delete();
     }
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreArtworkRequest;
 use App\Http\Requests\UpdateArtworkRequest;
 use App\Models\Artwork;
+use App\Models\ArtworkImage;
 use App\Services\ArtworkService;
 
 class ArtworkController extends Controller
@@ -27,12 +28,18 @@ class ArtworkController extends Controller
      */
     public function store(StoreArtworkRequest $request)
     {
-        $artwork = $this->artworkService->createArtwork(
-            $request->validated(),
-            $request->file('image')
-        );
-
-        return response()->json($artwork, 201);
+        $this->authorize('create', Artwork::class);
+    
+        $artwork = Artwork::create($request->except('images'));
+        
+        if ($request->hasFile('images')) {
+            $this->artworkService->storeImages(
+                $artwork, 
+                $request->file('images')
+            );
+        }
+    
+        return response()->json($artwork->load('images', 'artist.user'), 201);
     }
 
     /**
@@ -57,5 +64,12 @@ class ArtworkController extends Controller
     public function destroy(Artwork $artwork)
     {
         $this->authorize('delete', $artwork);
+    }
+
+    public function destroyImage(Artwork $artwork, ArtworkImage $image)
+    {
+        $this->authorize('update', $artwork);
+        $this->artworkService->deleteImage($image);
+        return response()->noContent();
     }
 }

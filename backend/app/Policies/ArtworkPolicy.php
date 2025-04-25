@@ -29,7 +29,7 @@ class ArtworkPolicy
      */
     public function create(User $user): bool
     {
-        return $user->isArtist();
+        return $user->isArtist() || $user->isAdmin();
     }
 
     /**

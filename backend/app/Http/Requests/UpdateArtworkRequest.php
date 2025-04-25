@@ -11,7 +11,7 @@ class UpdateArtworkRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return $this->user() && $this->user()->isArtist();
     }
 
     /**
@@ -24,10 +24,12 @@ class UpdateArtworkRequest extends FormRequest
         return [
             'title' => 'sometimes|string|max:255',
             'description' => 'nullable|string',
-            'image' => 'sometimes|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'images' => 'sometimes|array|min:1|max:10',
+            'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
             'dimensions.width' => 'nullable|numeric',
             'dimensions.height' => 'nullable|numeric',
             'dimensions.depth' => 'nullable|numeric',
+            'creation_date' => 'sometimes|string|max:255',
         ];
     }
 }

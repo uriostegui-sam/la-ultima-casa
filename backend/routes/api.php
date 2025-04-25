@@ -47,6 +47,8 @@ Route::middleware(['auth:sanctum', 'throttle:api'])->group(function () {
     Route::put('/artists/{artist}', [ArtistController::class, 'update'])
         ->middleware('can:update,artist');
     Route::apiResource('skills', SkillController::class)->except(['index', 'show']);
+    Route::delete('/artworks/{artwork}/images/{image}', [ArtworkController::class, 'destroyImage']);
+    Route::apiResource('artworks', ArtworkController::class)->except(['index', 'show']);;
 });
 
 // Admin-only routes
