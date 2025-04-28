@@ -23,7 +23,8 @@ class StoreArtworkRequest extends FormRequest
     {
         return [
             'title' => 'required|string|max:255',
-            'description' => 'nullable|string',
+            'description.en' => 'nullable|string',
+            'description.es' => 'nullable|string',
             'images' => 'required|array|min:1|max:10',
             'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
             'dimensions.width' => 'nullable|numeric',

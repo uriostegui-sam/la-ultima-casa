@@ -28,7 +28,7 @@ class ArtworkTest extends TestCase
             ->postJson('/api/artworks', [
                 'artist_id' => $artist->id,
                 'title' => 'Test Artwork',
-                'description' => 'Test description',
+                'description' => ['en' => 'English Ullam et in animi incidunt est. Accusamus dolore natus ut accusantium.\n\nQuia eum sapiente non fugit id laboriosam earum.', 'es' => 'Español Ullam et in animi incidunt est. Accusamus dolore natus ut accusantium.\n\nQuia eum sapiente non fugit id laboriosam earum.'],
                 'images' => [
                     UploadedFile::fake()->image('artwork1.jpg'),
                     UploadedFile::fake()->image('artwork2.jpg')

@@ -20,7 +20,10 @@ class ArtworkFactory extends Factory
         return [
             'artist_id' => Artist::factory(),
             'title' => fake()->words(3, true),
-            'description' => fake()->paragraph(),
+            'description' => [
+                'en' => $this->faker->paragraph(1),
+                'es' => $this->faker->paragraph(1)
+            ],
             'dimensions' => [
                     'width' => fake()->numberBetween(10, 200),
                     'height' => fake()->numberBetween(10, 200),

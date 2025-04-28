@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('artist_id')->constrained()->cascadeOnDelete();
             $table->string('title');
-            $table->text('description')->nullable();
+            $table->json('description')->nullable();
             $table->json('dimensions')->nullable(); // {width, height, depth}
             $table->date('creation_date')->nullable();
             $table->timestamps();
