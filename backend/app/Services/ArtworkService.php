@@ -42,7 +42,9 @@ class ArtworkService
 
     public function deleteImage(ArtworkImage $image): void
     {
-        Storage::disk('public')->delete($image->path);
+        if (Storage::disk('public')->exists($image->path)) {
+            Storage::disk('public')->delete($image->path);
+        }
         $image->delete();
     }
 }

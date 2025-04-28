@@ -5,7 +5,9 @@ namespace App\Providers;
 // use Illuminate\Support\Facades\Gate;
 
 use App\Models\Artist;
+use App\Models\Artwork;
 use App\Policies\ArtistPolicy;
+use App\Policies\ArtworkPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
 class AuthServiceProvider extends ServiceProvider
@@ -17,6 +19,7 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies = [
         Artist::class => ArtistPolicy::class,
+        Artwork::class => ArtworkPolicy::class,
     ];
 
     /**

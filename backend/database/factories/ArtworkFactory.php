@@ -21,9 +21,11 @@ class ArtworkFactory extends Factory
             'artist_id' => Artist::factory(),
             'title' => fake()->words(3, true),
             'description' => fake()->paragraph(),
-            'dimensions' => fake()->numberBetween(10, 200) . 'x' .
-                        fake()->numberBetween(10, 200) . 'x' .
-                        fake()->numberBetween(1, 50) . ' cm',
+            'dimensions' => [
+                    'width' => fake()->numberBetween(10, 200),
+                    'height' => fake()->numberBetween(10, 200),
+                    'depth' => fake()->numberBetween(1, 50),
+                ],
             'creation_date' => fake()->date(),
         ];
     }
