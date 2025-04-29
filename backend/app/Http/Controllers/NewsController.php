@@ -20,6 +20,8 @@ class NewsController extends Controller
 
     public function store(StoreNewsRequest $request)
     {
+        $this->authorize('create', News::class);
+
         $news = $this->newsService->createNews(
             $request->validated(),
             $request->file('image')
@@ -41,6 +43,8 @@ class NewsController extends Controller
 
     public function update(UpdateNewsRequest $request, News $news)
     {
+        $this->authorize('update', $news);
+
         $news = $this->newsService->updateNews(
             $news,
             $request->validated(),
@@ -52,6 +56,8 @@ class NewsController extends Controller
 
     public function destroy(News $news)
     {
+        $this->authorize('delete', $news);
+
         $this->newsService->deleteNews($news);
         return response()->noContent();
     }
