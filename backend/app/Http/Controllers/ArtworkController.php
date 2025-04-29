@@ -64,10 +64,22 @@ class ArtworkController extends Controller
 
         // Handle new images if provided
         if ($request->hasFile('images')) {
-            $this->artworkService->storeImages(
-                $artwork,
-                $request->file('images')
-            );
+            $lastImageNumber = $artwork->images->max('order') + 1;
+        
+            foreach ($request->file('images') as $index => $image) {
+                $path = $this->storeImage(
+                    $image, 
+                    $artwork, 
+                    $lastImageNumber + $index
+                );
+                
+                ArtworkImage::create([
+                    'artwork_id' => $artwork->id,
+                    'path' => $path,
+                    'is_primary' => false,
+                    'order' => $lastImageNumber + $index
+                ]);
+            }
         }
 
         return response()->json($artwork->load('images', 'artist.user'), 200);    }

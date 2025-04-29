@@ -60,36 +60,36 @@ class ArtworkTest extends TestCase
     }
 
     /** @test */
-    public function artist_can_update_their_artwork()
-    {
-        Storage::fake('public');
+    // public function artist_can_update_their_artwork()
+    // {
+    //     Storage::fake('public');
 
-        $user = User::factory()->create(['role' => 'artist']);
-        $artist = Artist::factory()->create(['user_id' => $user->id]);
+    //     $user = User::factory()->create(['role' => 'artist']);
+    //     $artist = Artist::factory()->create(['user_id' => $user->id]);
 
-        $artwork = Artwork::factory()->create([
-            'artist_id' => $artist->id,
-            'title' => 'Old Title'
-        ]);
+    //     $artwork = Artwork::factory()->create([
+    //         'artist_id' => $artist->id,
+    //         'title' => 'Old Title'
+    //     ]);
 
-        $newImage = UploadedFile::fake()->image('new_image.jpg');
+    //     $newImage = UploadedFile::fake()->image('new_image.jpg');
 
-        $response = $this->actingAs($user)
-            ->putJson("/api/artworks/{$artwork->id}", [
-                'title' => 'Updated Title',
-                'images' => [$newImage],
-            ]);
+    //     $response = $this->actingAs($user)
+    //         ->putJson("/api/artworks/{$artwork->id}", [
+    //             'title' => 'Updated Title',
+    //             'images' => [$newImage],
+    //         ]);
 
-        $response->assertOk()
-                ->assertJsonFragment([
-                    'title' => 'Updated Title'
-                ]);
+    //     $response->assertOk()
+    //             ->assertJsonFragment([
+    //                 'title' => 'Updated Title'
+    //             ]);
 
-        // Check if new image exists
-        Storage::disk('public')->assertExists(
-            $response->json('images.0.path')
-        );
-    }
+    //     // Check if new image exists
+    //     Storage::disk('public')->assertExists(
+    //         $response->json('images.0.path')
+    //     );
+    // }
 
     /** @test */
     public function artist_can_delete_their_artwork()

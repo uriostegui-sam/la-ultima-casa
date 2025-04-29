@@ -6,6 +6,7 @@ use App\Models\Artwork;
 use App\Models\ArtworkImage;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class ArtworkService
 {
@@ -24,20 +25,28 @@ class ArtworkService
     public function storeImages(Artwork $artwork, array $images): void
     {
         foreach ($images as $index => $image) {
-            $path = $this->storeImage($image);
+            $path = $this->storeImage($image, $artwork, $index + 1);
             
             ArtworkImage::create([
                 'artwork_id' => $artwork->id,
                 'path' => $path,
-                'is_primary' => $index === 0, // First image is primary
+                'is_primary' => $index === 0,
                 'order' => $index
             ]);
         }
     }
 
-    protected function storeImage(UploadedFile $image): string
+    protected function storeImage(UploadedFile $image, Artwork $artwork, int $index): string
     {
-        return $image->store('artworks/images', 'public');
+        $slug = Str::slug($artwork->title);
+        $extension = $image->getClientOriginalExtension();
+        $filename = "{$slug}-{$index}.{$extension}";
+        
+        return $image->storeAs(
+            'artworks/images', 
+            $filename, 
+            'public'
+        );
     }
 
     public function deleteImage(ArtworkImage $image): void
