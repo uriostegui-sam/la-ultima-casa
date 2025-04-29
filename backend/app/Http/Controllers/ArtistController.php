@@ -42,14 +42,6 @@ class ArtistController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      */
     public function store(StoreArtistRequest $request)
@@ -67,21 +59,9 @@ class ArtistController extends Controller
      */
     public function show(Artist $artist)
     {
-        return $artist->load([
-            'skills',
-            'artworks' => function($query) {
-                $query->latest()->limit(5);
-            },
-            'user'
-        ]);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Artist $artist)
-    {
-        //
+        return response()->json(
+            $this->artistService->getDetailedArtist($artist)
+        );
     }
 
     /**

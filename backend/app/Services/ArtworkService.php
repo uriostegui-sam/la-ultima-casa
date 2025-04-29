@@ -56,4 +56,37 @@ class ArtworkService
         }
         $image->delete();
     }
+
+    public function getPaginatedArtworks()
+    {
+        $query = Artwork::with(['artist.user', 'images']);
+
+        if (request()->has('artist_id')) {
+            $query->where('artist_id', request('artist_id'));
+        }
+
+        if (request()->has('year')) {
+            $query->whereYear('creation_date', request('year'));
+        }
+
+        return $query
+            ->latest()
+            ->paginate(10)
+            ->through(fn ($artwork) => [
+                'id' => $artwork->id,
+                'title' => $artwork->title,
+                'description' => translate($artwork->description),
+                'dimensions' => $artwork->dimensions,
+                'creation_date' => $artwork->creation_date,
+                'artist' => [
+                    'id' => $artwork->artist->id,
+                    'name' => $artwork->artist->user->getFullNameAttribute(),
+                ],
+                'images' => $artwork->images->map(fn ($img) => [
+                    'path' => $img->path,
+                    'is_primary' => $img->is_primary,
+                    'order' => $img->order
+                ])
+            ]);
+    }
 }

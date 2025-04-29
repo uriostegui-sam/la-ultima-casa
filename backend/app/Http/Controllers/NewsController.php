@@ -30,7 +30,13 @@ class NewsController extends Controller
 
     public function show(News $news)
     {
-        return $news;
+        return response()->json([
+            'id' => $news->id,
+            'title' => translate($news->title),
+            'content' => translate($news->content),
+            'image_url' => $news->image_url,
+            'published_at' => $news->published_at,
+        ]);
     }
 
     public function update(UpdateNewsRequest $request, News $news)

@@ -20,7 +20,7 @@ class ArtworkController extends Controller
      */
     public function index()
     {
-        return Artwork::with('artist.user')->latest()->paginate(10);
+        return $this->artworkService->getPaginatedArtworks();
     }
 
     /**
@@ -47,9 +47,18 @@ class ArtworkController extends Controller
      */
     public function show(Artwork $artwork)
     {
-        return response()->json(
-            $artwork->load('artist.user')
-        );
+        return response()->json([
+            'id' => $artwork->id,
+            'title' => $artwork->title,
+            'description' => translate($artwork->description),
+            'dimensions' => $artwork->dimensions,
+            'creation_date' => $artwork->creation_date,
+            'artist' => [
+                'id' => $artwork->artist->id,
+                'name' => $artwork->artist->user->getFullNameAttribute(),
+            ],
+            'images' => $artwork->images,
+        ]);
     }
 
     /**

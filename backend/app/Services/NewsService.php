@@ -64,8 +64,26 @@ class NewsService
     /**
      * Get paginated news items
      */
-    public function getPaginatedNews(int $perPage = 10)
+    public function getPaginatedNews()
     {
-        return News::latest()->paginate($perPage);
+        $query = News::query();
+
+        if (request()->has('published_from')) {
+            $query->whereDate('published_at', '>=', request('published_from'));
+        }
+
+        if (request()->has('published_to')) {
+            $query->whereDate('published_at', '<=', request('published_to'));
+        }
+
+        return $query->latest()->paginate(10)->through(function ($news) {
+            return [
+                'id' => $news->id,
+                'title' => translate($news->title),
+                'content' => translate($news->content),
+                'image_url' => $news->image_url,
+                'published_at' => $news->published_at,
+            ];
+        });
     }
 }

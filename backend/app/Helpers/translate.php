@@ -1,7 +1,7 @@
 <?php
 
 if (!function_exists('translate')) {
-    function translate(?array $translatableField, string $lang = null): string
+    function translate(?array $translatableField, ?string $lang = null): string
     {
         $lang = $lang ?? app()->getLocale();
 
