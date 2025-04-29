@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Artist;
+use App\Models\Artwork;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -15,6 +16,11 @@ class ArtistSeeder extends Seeder
     {
         Artist::factory()
             ->count(10)
+            ->has(
+                Artwork::factory()
+                    ->count(3)
+                    ->withImages()
+            )
             ->withSkills()
             ->create();
     }
