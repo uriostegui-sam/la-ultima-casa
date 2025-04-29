@@ -16,6 +16,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
+        $this->app->register(\L5Swagger\L5SwaggerServiceProvider::class);
+        
         $this->app->singleton(ArtistService::class, function ($app) {
             return new ArtistService();
         });
@@ -27,7 +29,11 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(AuthService::class, function ($app) {
             return new AuthService();
         });
-
+        
+        $this->app->singleton(NewsService::class, function ($app) {
+            return new NewsService();
+        });
+        
         $this->app->singleton(UserService::class, function ($app) {
             return new UserService();
         });
