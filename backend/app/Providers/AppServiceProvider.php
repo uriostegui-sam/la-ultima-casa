@@ -6,6 +6,7 @@ use App\Services\ArtistService;
 use App\Services\ArtworkService;
 use App\Services\AuthService;
 use App\Services\NewsService;
+use App\Services\SkillService;
 use App\Services\UserService;
 use Illuminate\Support\ServiceProvider;
 
@@ -36,6 +37,10 @@ class AppServiceProvider extends ServiceProvider
         
         $this->app->singleton(UserService::class, function ($app) {
             return new UserService();
+        });
+
+        $this->app->singleton(SkillService::class, function ($app) {
+            return new SkillService();
         });
     }
 
