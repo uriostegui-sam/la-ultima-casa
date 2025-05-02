@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreArtworkRequest;
 use App\Http\Requests\UpdateArtworkRequest;
+use App\Http\Resources\ArtworkResource;
 use App\Models\Artwork;
 use App\Models\ArtworkImage;
 use App\Services\ArtworkService;
@@ -136,7 +137,8 @@ class ArtworkController extends Controller
      */
     public function index()
     {
-        return $this->artworkService->getPaginatedArtworks();
+        $artwork = $this->artworkService->getPaginatedArtworks();
+        return ArtworkResource::collection($artwork);
     }
 
     /**
@@ -181,7 +183,7 @@ class ArtworkController extends Controller
             );
         }
     
-        return response()->json($artwork->load('images', 'artist.user'), 201);
+        return new ArtworkResource($artwork->load('images', 'artist.user'));
     }
 
     /**
@@ -211,63 +213,11 @@ class ArtworkController extends Controller
      */
     public function show(Artwork $artwork)
     {
-        return response()->json([
-            'id' => $artwork->id,
-            'title' => $artwork->title,
-            'description' => translate($artwork->description),
-            'dimensions' => $artwork->dimensions,
-            'creation_date' => $artwork->creation_date,
-            'artist' => [
-                'id' => $artwork->artist->id,
-                'name' => $artwork->artist->user->getFullNameAttribute(),
-            ],
-            'images' => $artwork->images,
-        ]);
+        return new ArtworkResource($artwork);
     }
 
     /**
-     * @OA\Put(
-     *     path="/api/artworks/{id}",
-     *     tags={"Artworks"},
-     *     summary="Update an artwork",
-     *     description="Update artwork information",
-     *     security={{"bearerAuth": {}}},
-     *     @OA\Parameter(
-     *         name="id",
-     *         in="path",
-     *         required=true,
-     *         description="Artwork ID",
-     *         @OA\Schema(type="integer")
-     *     ),
-     *     @OA\RequestBody(
-     *         required=true,
-     *         @OA\MediaType(
-     *             mediaType="multipart/form-data",
-     *             @OA\Schema(ref="#/components/schemas/ArtworkCreate")
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="Artwork updated successfully",
-     *         @OA\JsonContent(ref="#/components/schemas/Artwork")
-     *     ),
-     *     @OA\Response(
-     *         response=401,
-     *         description="Unauthorized"
-     *     ),
-     *     @OA\Response(
-     *         response=403,
-     *         description="Forbidden"
-     *     ),
-     *     @OA\Response(
-     *         response=404,
-     *         description="Artwork not found"
-     *     ),
-     *     @OA\Response(
-     *         response=422,
-     *         description="Validation error"
-     *     )
-     * )
+     * Update the specified resource in storage.
      */
     public function update(UpdateArtworkRequest $request, Artwork $artwork)
     {
@@ -281,7 +231,7 @@ class ArtworkController extends Controller
             $lastImageNumber = $artwork->images->max('order') + 1;
         
             foreach ($request->file('images') as $index => $image) {
-                $path = $this->storeImage(
+                $path = $this->artworkService->storeImage(
                     $image, 
                     $artwork, 
                     $lastImageNumber + $index
@@ -296,41 +246,11 @@ class ArtworkController extends Controller
             }
         }
 
-        return response()->json($artwork->load('images', 'artist.user'), 200);
+        return new ArtworkResource($artwork->load('images', 'artist.user'));
     }
-
     /**
-    * @OA\Delete(
-    *     path="/api/artworks/{id}",
-    *     tags={"Artworks"},
-    *     summary="Delete an artwork",
-    *     description="Delete a specific artwork",
-    *     security={{"bearerAuth": {}}},
-    *     @OA\Parameter(
-    *         name="id",
-    *         in="path",
-    *         required=true,
-    *         description="Artwork ID",
-    *         @OA\Schema(type="integer")
-    *     ),
-    *     @OA\Response(
-    *         response=204,
-    *         description="Artwork deleted successfully"
-    *     ),
-    *     @OA\Response(
-    *         response=401,
-    *         description="Unauthorized"
-    *     ),
-    *     @OA\Response(
-    *         response=403,
-    *         description="Forbidden"
-    *     ),
-    *     @OA\Response(
-    *         response=404,
-    *         description="Artwork not found"
-    *     )
-    * )
-    */
+     * Remove the specified resource from storage.
+     */
     public function destroy(Artwork $artwork)
     {
         $this->authorize('delete', $artwork);

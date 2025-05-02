@@ -30,20 +30,23 @@ class ArtistTest extends TestCase
         $response = $this->getJson('/api/artists');
 
         $response->assertOk()
-            ->assertJsonStructure([[
-                'id',
-                'name',
-                'profile_image',
-                'minibio',
-                'bio',
-                'skills',
-                'social_links' => [
-                    'website',
-                    'instagram',
-                    'twitter',
-                    'flickr'
-                ]
-            ]])
+        ->assertJsonStructure([
+                'data' => [[
+                    'id',
+                    'user_id',
+                    'name',
+                    'profile_image',
+                    'minibio',
+                    'bio',
+                    'skills',
+                    'social_links' => [
+                        'website',
+                        'instagram',
+                        'twitter',
+                        'flickr'
+                    ]
+                ]]
+            ])
             ->assertJsonFragment([
                 'id' => $artist->id,
                 'name' => $artist->user->getFullNameAttribute()
@@ -68,15 +71,25 @@ class ArtistTest extends TestCase
 
         $response->assertCreated()
             ->assertJsonStructure([
-                'artist' => [
+                'data' => [
                     'id',
+                    'user_id',
+                    'name',
                     'profile_image',
-                    'skills'
+                    'minibio',
+                    'bio',
+                    'skills',
+                    'social_links',
+                    'profile_image_url'
                 ]
             ]);
 
-        Storage::disk('public')->assertExists($response->json('artist.profile_image'));
-        $this->assertCount(3, $response->json('artist.skills'));
+        $artistId = $response->json('data.id');
+        $artist = Artist::find($artistId);
+        Storage::disk('public')->assertExists($artist->profile_image);
+            
+
+        $this->assertCount(3, $artist->skills);
     }
 
     /** @test */
@@ -90,35 +103,46 @@ class ArtistTest extends TestCase
 
         $response->assertOk()
             ->assertJsonStructure([
-                'id',
-                'artworks',
-                'user'
+                'data' => [
+                    'id',
+                    'artworks',
+                    'user' => ['id', 'name']
+                ]
             ])
-            ->assertJsonCount(3, 'artworks');
+            ->assertJsonCount(3, 'data.artworks');
     }
 
     /** @test */
     public function it_updates_artist_profile_and_skills()
     {
         $admin = User::factory()->admin()->create();
-        $artist = Artist::factory()->create();
+        $artist = Artist::factory()
+            ->for(User::factory()) // ensure user is attached
+            ->create();
+
         $newSkills = Skill::factory()->count(2)->create();
         $newImage = UploadedFile::fake()->image('new-image.jpg');
 
         $response = $this->actingAs($admin)
             ->putJson("/api/artists/{$artist->id}", [
                 'profile_image' => $newImage,
-                'minibio' => ['en' => 'Updated Ullam et in animi incidunt est. Accusamus dolore natus ut accusantium.\n\nQuia eum sapiente non fugit id laboriosam earum.', 'es' => 'Español Actualizado Ullam et in animi incidunt est. Accusamus dolore natus ut accusantium.\n\nQuia eum sapiente non fugit id laboriosam earum.'],
+                'minibio' => [
+                    'en' => 'Updated Ullam et in animi incidunt est. Accusamus dolore natus ut accusantium.\n\nQuia eum sapiente non fugit id laboriosam earum.',
+                    'es' => 'Español Actualizado Ullam et in animi incidunt est. Accusamus dolore natus ut accusantium.\n\nQuia eum sapiente non fugit id laboriosam earum.'
+                ],
                 'skills' => $newSkills->pluck('id')->toArray()
             ]);
 
         $response->assertOk()
-            ->assertJsonFragment([
-                'minibio' => ['en' => 'Updated Ullam et in animi incidunt est. Accusamus dolore natus ut accusantium.\n\nQuia eum sapiente non fugit id laboriosam earum.', 'es' => 'Español Actualizado Ullam et in animi incidunt est. Accusamus dolore natus ut accusantium.\n\nQuia eum sapiente non fugit id laboriosam earum.'],
-            ]);
+            ->assertJsonPath('data.minibio', 'Español Actualizado Ullam et in animi incidunt est. Accusamus dolore natus ut accusantium.\n\nQuia eum sapiente non fugit id laboriosam earum.');
 
-        Storage::disk('public')->assertExists($response->json('artist.profile_image_url'));
-        $this->assertCount(2, $response->json('artist.skills'));
+
+        Storage::disk('public')->assertExists(
+            str_replace('/storage/', '', $response->json('data.profile_image_url'))
+        );
+
+
+        $this->assertCount(2, $response->json('data.skills'));
     }
 
     /** @test */

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreNewsRequest;
 use App\Http\Requests\UpdateNewsRequest;
+use App\Http\Resources\NewsResource;
 use App\Models\News;
 use App\Services\NewsService;
 
@@ -113,7 +114,8 @@ class NewsController extends Controller
      */
     public function index()
     {
-        return $this->newsService->getPaginatedNews();
+        $news = $this->newsService->getPaginatedNews();
+        return NewsResource::collection($news);
     }
 
     public function store(StoreNewsRequest $request)
@@ -125,7 +127,7 @@ class NewsController extends Controller
             $request->file('image')
         );
 
-        return response()->json($news, 201);
+        return new NewsResource($news);
     }
 
     /**
@@ -155,13 +157,7 @@ class NewsController extends Controller
      */
     public function show(News $news)
     {
-        return response()->json([
-            'id' => $news->id,
-            'title' => translate($news->title),
-            'content' => translate($news->content),
-            'image_url' => $news->image_url,
-            'published_at' => $news->published_at,
-        ]);
+        return new NewsResource($news);
     }
 
     /**
@@ -218,7 +214,7 @@ class NewsController extends Controller
             $request->file('image')
         );
 
-        return response()->json($news);
+        return new NewsResource($news);
     }
 
     /**
