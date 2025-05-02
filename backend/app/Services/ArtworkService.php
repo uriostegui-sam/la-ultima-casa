@@ -36,7 +36,7 @@ class ArtworkService
         }
     }
 
-    protected function storeImage(UploadedFile $image, Artwork $artwork, int $index): string
+    public function storeImage(UploadedFile $image, Artwork $artwork, int $index): string
     {
         $slug = Str::slug($artwork->title);
         $extension = $image->getClientOriginalExtension();
@@ -69,24 +69,6 @@ class ArtworkService
             $query->whereYear('creation_date', request('year'));
         }
 
-        return $query
-            ->latest()
-            ->paginate(10)
-            ->through(fn ($artwork) => [
-                'id' => $artwork->id,
-                'title' => $artwork->title,
-                'description' => translate($artwork->description),
-                'dimensions' => $artwork->dimensions,
-                'creation_date' => $artwork->creation_date,
-                'artist' => [
-                    'id' => $artwork->artist->id,
-                    'name' => $artwork->artist->user->getFullNameAttribute(),
-                ],
-                'images' => $artwork->images->map(fn ($img) => [
-                    'path' => $img->path,
-                    'is_primary' => $img->is_primary,
-                    'order' => $img->order
-                ])
-            ]);
+        return $query->latest()->paginate(10); 
     }
 }
