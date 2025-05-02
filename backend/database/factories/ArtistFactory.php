@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Artist;
+use App\Models\Artwork;
 use App\Models\Skill;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -46,5 +47,15 @@ class ArtistFactory extends Factory
                 $skillIds ?? Skill::inRandomOrder()->limit(3)->pluck('id')
             );
         });
+    }
+
+    public function withArtworks(int $count = 3): static
+    {
+        return $this->has(
+            Artwork::factory()
+                ->count($count)
+                ->withImages(),
+            'artworks'
+        );
     }
 }

@@ -6,6 +6,7 @@ use App\Models\Artwork;
 use App\Models\ArtworkImage;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class ArtworkService
 {
@@ -24,20 +25,28 @@ class ArtworkService
     public function storeImages(Artwork $artwork, array $images): void
     {
         foreach ($images as $index => $image) {
-            $path = $this->storeImage($image);
+            $path = $this->storeImage($image, $artwork, $index + 1);
             
             ArtworkImage::create([
                 'artwork_id' => $artwork->id,
                 'path' => $path,
-                'is_primary' => $index === 0, // First image is primary
+                'is_primary' => $index === 0,
                 'order' => $index
             ]);
         }
     }
 
-    protected function storeImage(UploadedFile $image): string
+    protected function storeImage(UploadedFile $image, Artwork $artwork, int $index): string
     {
-        return $image->store('artworks/images', 'public');
+        $slug = Str::slug($artwork->title);
+        $extension = $image->getClientOriginalExtension();
+        $filename = "{$slug}-{$index}.{$extension}";
+        
+        return $image->storeAs(
+            'artworks/images', 
+            $filename, 
+            'public'
+        );
     }
 
     public function deleteImage(ArtworkImage $image): void
@@ -46,5 +55,38 @@ class ArtworkService
             Storage::disk('public')->delete($image->path);
         }
         $image->delete();
+    }
+
+    public function getPaginatedArtworks()
+    {
+        $query = Artwork::with(['artist.user', 'images']);
+
+        if (request()->has('artist_id')) {
+            $query->where('artist_id', request('artist_id'));
+        }
+
+        if (request()->has('year')) {
+            $query->whereYear('creation_date', request('year'));
+        }
+
+        return $query
+            ->latest()
+            ->paginate(10)
+            ->through(fn ($artwork) => [
+                'id' => $artwork->id,
+                'title' => $artwork->title,
+                'description' => translate($artwork->description),
+                'dimensions' => $artwork->dimensions,
+                'creation_date' => $artwork->creation_date,
+                'artist' => [
+                    'id' => $artwork->artist->id,
+                    'name' => $artwork->artist->user->getFullNameAttribute(),
+                ],
+                'images' => $artwork->images->map(fn ($img) => [
+                    'path' => $img->path,
+                    'is_primary' => $img->is_primary,
+                    'order' => $img->order
+                ])
+            ]);
     }
 }

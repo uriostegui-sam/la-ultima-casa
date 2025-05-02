@@ -59,4 +59,40 @@ class ArtistService
     {
         return $image->store('artists/profile-images', 'public');
     }
+
+    public function getDetailedArtist(Artist $artist): array
+    {
+        $artist->load([
+            'user',
+            'skills',
+            'artworks.images' => function($query) {
+                $query->orderBy('order');
+            }
+        ]);
+
+        return [
+            'id' => $artist->id,
+            'user' => [
+                        'id' => $artist->user->id,
+                        'name' => $artist->user->getFullNameAttribute(),
+                        'email' => $artist->user->email
+                    ],
+            'bio' => translate($artist->bio),
+            'profile_image_url' => $artist->profile_image_url,
+            'skills' => $artist->skills->map(fn ($skill) => translate($skill->name)),
+            'artworks' => $artist->artworks ? $artist->artworks->take(5)->map(function ($artwork) {
+                return [
+                    'id' => $artwork->id,
+                    'title' => $artwork->title,
+                    'description' => translate($artwork->description),
+                    'creation_date' => $artwork->creation_date,
+                    'images' => $artwork->images->map(fn ($img) => [
+                        'path' => $img->path,
+                        'is_primary' => $img->is_primary,
+                        'order' => $img->order
+                    ])
+                ];
+            }) : []
+        ];
+    }
 }

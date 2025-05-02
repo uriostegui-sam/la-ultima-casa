@@ -2,26 +2,19 @@
 
 namespace Database\Seeders;
 
-use App\Models\Artist;
-use App\Models\Artwork;
+use App\Models\News;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class ArtistSeeder extends Seeder
+class NewsSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        Artist::factory()
+        News::factory()
             ->count(10)
-            ->has(
-                Artwork::factory()
-                    ->count(3)
-                    ->withImages()
-            )
-            ->withSkills()
             ->create();
     }
 }

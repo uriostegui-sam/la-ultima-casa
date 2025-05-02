@@ -19,6 +19,7 @@ class Artwork extends Model
     
     protected $casts = [
         'dimensions' => 'array',
+        'description' => 'array',
     ];
 
     public function artist()

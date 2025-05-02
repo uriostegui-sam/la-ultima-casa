@@ -3,6 +3,7 @@
 use App\Http\Controllers\ArtistController;
 use App\Http\Controllers\ArtworkController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\NewsController;
 use App\Http\Controllers\SkillController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -23,6 +24,7 @@ Route::middleware('api')->group(function () {
     Route::apiResource('artists', ArtistController::class)->only(['index', 'show']);
     Route::apiResource('skills', SkillController::class)->only(['index', 'show']);
     Route::apiResource('artworks', ArtworkController::class)->only(['index', 'show']);
+    Route::apiResource('news', NewsController::class)->only(['index', 'show']);
 });
 
 // Authentication routes
@@ -49,10 +51,11 @@ Route::middleware(['auth:sanctum', 'throttle:api'])->group(function () {
     Route::apiResource('skills', SkillController::class)->except(['index', 'show']);
     Route::delete('/artworks/{artwork}/images/{image}', [ArtworkController::class, 'destroyImage'])
         ->middleware('can:update,artwork');
-    Route::apiResource('artworks', ArtworkController::class)->except(['index', 'show']);;
+    Route::apiResource('artworks', ArtworkController::class)->except(['index', 'show']);
 });
 
 // Admin-only routes
 Route::middleware(['auth:sanctum', 'admin', 'throttle:api'])->group(function () {
     Route::apiResource('artists', ArtistController::class)->except(['index', 'show']);
+    Route::apiResource('news', NewsController::class)->except(['index', 'show']);
 });
