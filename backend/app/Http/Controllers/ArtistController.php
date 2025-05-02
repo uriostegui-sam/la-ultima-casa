@@ -125,6 +125,8 @@ class ArtistController extends Controller
      */
     public function store(StoreArtistRequest $request)
     {
+        $this->authorize('create', Artist::class);
+
         $artist = $this->artistService->createArtist($request->validated());
         return new ArtistResource($artist);
     }
@@ -187,6 +189,8 @@ class ArtistController extends Controller
      */
     public function update(UpdateArtistRequest $request, Artist $artist)
     {
+        $this->authorize('update', $artist);
+
         $artist = $this->artistService->updateArtist($artist, $request->validated());
         return new ArtistResource($artist);
     }
@@ -217,7 +221,9 @@ class ArtistController extends Controller
      */
     public function destroy(Artist $artist)
     {
-        // Prevent deletion if has related artists
+        $this->authorize('delete', $artist); 
+        
+        // Prevent deletion if has related artworks
         if ($artist->artworks()->exists()) {
             return response()->json([
                 'message' => 'Cannot delete artist with existing artworks'
