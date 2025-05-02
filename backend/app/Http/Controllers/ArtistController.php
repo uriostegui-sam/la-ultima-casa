@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreArtistRequest;
 use App\Http\Requests\UpdateArtistRequest;
+use App\Http\Resources\ArtistCollection;
+use App\Http\Resources\ArtistResource;
 use App\Models\Artist;
 use Illuminate\Support\Str;
 use App\Models\User;
@@ -93,25 +95,11 @@ class ArtistController extends Controller
      *     )
      * )
      */
-    public function index(Request $request)
+    public function index()
     {
-        return Artist::with('skills')->get()->map(function ($artist) {
-            return [
-                'id' => $artist->id,
-                'user_id' => $artist->user_id,
-                'name' => $artist->user->getFullNameAttribute(),
-                'profile_image' => $artist->profile_image,
-                'minibio' => translate($artist->bio),
-                'bio' => translate($artist->bio),
-                'skills' => $artist->skills->map(fn($skill) => translate($skill->name)),
-                'social_links' => [
-                    'website' => $artist->social_links['website'] ?? null,
-                    'instagram' => $artist->social_links['instagram'] ?? null,
-                    'twitter' => $artist->social_links['twitter'] ?? null,
-                    'flickr' => $artist->social_links['flickr'] ?? null,
-                ],
-            ];
-        });
+        return new ArtistCollection(
+            Artist::with(['user', 'skills'])->get()
+        );
     }
 
     /**
@@ -138,11 +126,7 @@ class ArtistController extends Controller
     public function store(StoreArtistRequest $request)
     {
         $artist = $this->artistService->createArtist($request->validated());
-
-        return response()->json([
-            'artist' => $artist,
-            'profile_image' => $artist->profile_image
-        ], 201);
+        return new ArtistResource($artist);
     }
 
     /**
@@ -168,8 +152,8 @@ class ArtistController extends Controller
      */
     public function show(Artist $artist)
     {
-        return response()->json(
-            $this->artistService->getDetailedArtist($artist)
+        return new ArtistResource(
+            $artist->load(['user', 'skills', 'artworks'])
         );
     }
 
@@ -204,11 +188,7 @@ class ArtistController extends Controller
     public function update(UpdateArtistRequest $request, Artist $artist)
     {
         $artist = $this->artistService->updateArtist($artist, $request->validated());
-
-        return response()->json([
-            'artist' => $artist,
-            'profile_image_url' => $artist->profile_image_url
-        ]);
+        return new ArtistResource($artist);
     }
 
     /**
