@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreSkillRequest;
 use App\Http\Requests\UpdateSkillRequest;
+use App\Http\Resources\SkillResource;
 use App\Models\Skill;
+use App\Services\SkillService;
 use Illuminate\Http\Request;
 
 /**
@@ -37,6 +39,10 @@ use Illuminate\Http\Request;
  */
 class SkillController extends Controller
 {
+    public function __construct(
+        protected SkillService $skillService
+    ) {}
+
     /**
      * @OA\Get(
      *     path="/api/skills",
@@ -49,19 +55,7 @@ class SkillController extends Controller
      */
     public function index()
     {
-        return Skill::all()->map(function ($skill) {
-            return [
-                'id' => $skill->id,
-                'name' => $skill->name[app()->getLocale()] ?? $skill->name['es']
-            ];
-        });
-    }
-
-    public function create()
-    {
-        return response()->json([
-            'default_fields' => ['name' => ['es' => '', 'en' => '']]
-        ]);
+        return SkillResource::collection($this->skillService->getAllSkills());
     }
 
     /**
@@ -95,8 +89,10 @@ class SkillController extends Controller
      */
     public function store(StoreSkillRequest $request)
     {
-        $skill = Skill::create($request->validated());
-        return response()->json($skill, 201);
+        $this->authorize('create', Skill::class);
+
+        $skill = $this->skillService->createSkill($request->validated());
+        return new SkillResource($skill, 201);
     }
 
     /**
@@ -126,21 +122,7 @@ class SkillController extends Controller
      */
     public function show(Skill $skill)
     {
-        return response()->json([
-            'id' => $skill->id,
-            'name' => $skill->name,
-        ]);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Skill $skill)
-    {
-        return response()->json([
-            'skill' => $skill,
-            'available_languages' => ['es', 'en']
-        ]);
+        return new SkillResource($skill);
     }
 
     /**
@@ -189,8 +171,10 @@ class SkillController extends Controller
      */
     public function update(UpdateSkillRequest $request, Skill $skill)
     {
-        $skill->update($request->validated());
-        return response()->json($skill);
+        $this->authorize('update', $skill);
+
+        $skill = $this->skillService->updateSkill($skill, $request->validated());
+        return new SkillResource($skill);
     }
 
     /**
@@ -227,7 +211,9 @@ class SkillController extends Controller
     */
     public function destroy(Skill $skill)
     {
-        $skill->delete();
+        $this->authorize('delete', $skill);
+        
+        $this->skillService->deleteSkill($skill);
         return response()->noContent();
     }
 }
