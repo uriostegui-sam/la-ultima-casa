@@ -27,6 +27,7 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             ArtworkSeeder::class,
             NewsSeeder::class,
+            WorkshopSeeder::class,
         ]);
     }
 }

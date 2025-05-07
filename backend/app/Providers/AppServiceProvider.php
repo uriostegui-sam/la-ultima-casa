@@ -8,6 +8,7 @@ use App\Services\AuthService;
 use App\Services\NewsService;
 use App\Services\SkillService;
 use App\Services\UserService;
+use App\Services\WorkshopService;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -41,6 +42,10 @@ class AppServiceProvider extends ServiceProvider
 
         $this->app->singleton(SkillService::class, function ($app) {
             return new SkillService();
+        });
+
+        $this->app->singleton(WorkshopService::class, function ($app) {
+            return new WorkshopService();
         });
     }
 
