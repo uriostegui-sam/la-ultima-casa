@@ -8,10 +8,12 @@ use App\Models\Artist;
 use App\Models\Artwork;
 use App\Models\News;
 use App\Models\Skill;
+use App\Models\Workshop;
 use App\Policies\ArtistPolicy;
 use App\Policies\ArtworkPolicy;
 use App\Policies\NewsPolicy;
 use App\Policies\SkillPolicy;
+use App\Policies\WorkshopPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
 class AuthServiceProvider extends ServiceProvider
@@ -26,6 +28,7 @@ class AuthServiceProvider extends ServiceProvider
         Artwork::class => ArtworkPolicy::class,
         News::class => NewsPolicy::class,
         Skill::class => SkillPolicy::class,
+        Workshop::class => WorkshopPolicy::class,
     ];
 
     /**

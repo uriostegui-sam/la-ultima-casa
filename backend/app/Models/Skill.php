@@ -15,4 +15,9 @@ class Skill extends Model
     public function artists() {
         return $this->belongsToMany(Artist::class);
     }
+
+    public function workshops()
+    {
+        return $this->belongsToMany(Workshop::class, 'workshop_skill');
+    }
 }
