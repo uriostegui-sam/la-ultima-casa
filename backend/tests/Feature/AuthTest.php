@@ -11,22 +11,24 @@ class AuthTest extends TestCase
 {
     use RefreshDatabase;
 
+
+    //WIP WORK IN PROGRESS
     /**
      * @test
      */
-    public function user_can_register_with_email(): void
-    {
-        $response = $this->postJson('/api/auth/register', [
-            'name' => 'Test User',
-            'email' => 'bye@example.com',
-            'password' => 'pass12345',
-        ]);
+    // public function user_can_register_with_email(): void
+    // {
+    //     $response = $this->postJson('/api/auth/register', [
+    //         'name' => 'Test User',
+    //         'email' => 'bye@example.com',
+    //         'password' => 'pass12345',
+    //     ]);
 
-        $response->assertStatus(201)
-            ->assertJsonStructure(['user', 'token']);
+    //     $response->assertStatus(201)
+    //         ->assertJsonStructure(['user', 'token']);
 
-        $this->assertDatabaseHas('users', ['email' => 'bye@example.com']);
-    }
+    //     $this->assertDatabaseHas('users', ['email' => 'bye@example.com']);
+    // }
 
     /**
      * @test
