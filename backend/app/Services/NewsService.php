@@ -76,14 +76,6 @@ class NewsService
             $query->whereDate('published_at', '<=', request('published_to'));
         }
 
-        return $query->latest()->paginate(10)->through(function ($news) {
-            return [
-                'id' => $news->id,
-                'title' => translate($news->title),
-                'content' => translate($news->content),
-                'image_url' => $news->image_url,
-                'published_at' => $news->published_at,
-            ];
-        });
+        return $query->latest()->paginate(10);
     }
 }
