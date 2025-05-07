@@ -31,7 +31,7 @@ axiosInstance.interceptors.request.use(
 
 // Response interceptor
 axiosInstance.interceptors.response.use(
-  (response: AxiosResponse) => response.data,
+  (response: AxiosResponse) => response,
   (error) => {
     if (error.response?.status === 401) {
       const authStore = useAuthStore()
