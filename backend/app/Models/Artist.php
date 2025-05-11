@@ -38,4 +38,9 @@ class Artist extends Model
     public function artworks() {
         return $this->hasMany(Artwork::class);
     }
+    
+    public function workshops()
+    {
+        return $this->hasMany(Workshop::class);
+    }
 }
