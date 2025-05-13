@@ -17,9 +17,12 @@
     "test:coverage": "vitest run --coverage"
   },
   "dependencies": {
+    "@headlessui/vue": "^1.7.23",
+    "@heroicons/vue": "^2.2.0",
     "@tailwindcss/vite": "^4.1.6",
     "axios": "^1.9.0",
     "pinia": "^3.0.1",
+    "tailwindcss": "^4.1.6",
     "vue": "^3.5.13"
   },
   "devDependencies": {
