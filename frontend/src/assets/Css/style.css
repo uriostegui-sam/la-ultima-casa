@@ -1,0 +1,28 @@
+@import url('https://fonts.googleapis.com/css2?family=Aoboshi+One&family=Nanum+Pen+Script&display=swap');
+@import "tailwindcss";
+
+@theme {
+    --font-logo: 'Aoboshi One', sans-serif;
+    --font-logo-sub: 'Nanum Pen Script', sans-serif;
+}
+
+@font-face {
+    font-family: 'NATS-Regular';
+    src: url('../Fonts/NATS-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+  }
+  
+:root {
+   --color-black: #080E14;
+   --color-grey: #6F7C81;
+   --color-light-brown: #A8A39F;
+   --color-cream: #EADDD0;
+   --color-white: #FEFEFE;
+   --color-light-orange: #FEB45D;
+   --color-salmon: #FB6E63;
+   --color-teal: #70A8B4;
+   --color-creamy: #F9F5F0;
+
+   background-color: var(--color-creamy);
+}
