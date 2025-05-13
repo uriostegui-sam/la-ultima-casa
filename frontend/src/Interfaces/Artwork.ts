@@ -18,3 +18,28 @@ export interface Artwork {
     description?: Record<string, string>;
   }
 }
+
+export interface ArtworkCreatePayload {
+  artist_id: number;
+  title: string;
+  description?: Record<string, string>;
+  dimensions?: {
+    width?: number;
+    height?: number;
+    depth?: number;
+  }
+  creation_date?: string;
+  images: File[];
+}
+
+export interface ArtworkUpdatePayload {
+  title?: string;
+  description?: Record<string, string>;
+  dimensions?: {
+    width?: number;
+    height?: number;
+    depth?: number;
+  }
+  creation_date?: string;
+  new_images?: File[];
+}

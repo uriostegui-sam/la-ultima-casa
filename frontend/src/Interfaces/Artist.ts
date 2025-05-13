@@ -11,6 +11,11 @@ export interface SocialLinks {
 export interface Artist {
   id: number;
   user_id: number;
+  user: {
+    id: number;
+    name: string;
+    email: string;
+  };
   name: string;
   profile_image?: string;
   profile_image_url?: string;
@@ -19,16 +24,28 @@ export interface Artist {
   skills: Skill[];
   social_links: SocialLinks;
   artworks?: Artwork[];
+  translations?: {
+    minibio: Record<string, string>;
+    bio: Record<string, string>;
+  }
 }
 
 export interface ArtistCreatePayload {
-  name: string;
   user_id: number;
   profile_image?: File;
-  minibio: string;
-  bio: string;
+  minibio: Record<string, string>;
+  bio: Record<string, string>;
   skills?: number[];
   social_links: SocialLinks;
 }
 
-export interface ArtistUpdatePayload extends Partial<ArtistCreatePayload> {}
+export interface ArtistUpdatePayload {
+  id: number
+  name?: string
+  user_id?: number
+  minibio?: Record<string, string>
+  bio?: Record<string, string>
+  skills?: number[]
+  social_links?: SocialLinks
+  profile_image?: File
+}
