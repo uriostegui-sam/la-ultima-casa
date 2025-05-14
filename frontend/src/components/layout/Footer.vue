@@ -64,14 +64,13 @@ const contactKeys = [
             width="220"
             height="170"
             style="border: 0"
-            allowfullscreen=""
             loading="lazy"
             referrerpolicy="no-referrer-when-downgrade"
           ></iframe>
         </div>
       </div>
       <div class="px-2 py-6 text-center">
-        <span class=""><a href="https://flowbite.com/">SamyyUV ©</a> - 2025 </span>
+        <span class=""><a href="#">SamyyUV ©</a> - 2025 </span>
       </div>
     </div>
   </footer>
