@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import LanguageToggle from '../LanguageToggle.vue'
+import Logo from '../Logo.vue'
 import { useI18n } from 'vue-i18n'
 const { t } = useI18n()
 
@@ -19,24 +20,19 @@ const contactKeys = [
   <footer class="bg-(--color-salmon)">
     <div class="mx-auto w-full max-w-screen-xl text-white px-6 lg:px-8">
       <div class="grid grid-cols-1 gap-8 px-4 py-6 lg:py-8 md:grid-cols-3">
-        <div class="flex flex-col items-center justify-between">
-          <a href="#">
-            <span class="sr-only">La Última Casa</span>
-            <img
-              class="h-45 w-auto"
-              src="@/assets/images/logo_UC.svg"
-              alt="logo de la última casa"
-            />
-          </a>
-          <div class="flex w-32 justify-around">
-            <a href="https://www.facebook.com/estudiolaultimacasa/" target="_blank" rel="noopener">
-              <div class="facebook"></div>
-            </a>
-            <a href="https://www.instagram.com/estudiolaultimacasa/" target="_blank" rel="noopener">
-              <div class="insta"></div>
-            </a>
+        <div class="flex lg:flex-col items-center justify-between gap-4">
+          <Logo />
+          <div>
+            <div class="flex justify-around mb-4">
+              <a href="https://www.facebook.com/estudiolaultimacasa/" target="_blank" rel="noopener">
+                <div class="facebook"></div>
+              </a>
+              <a href="https://www.instagram.com/estudiolaultimacasa/" target="_blank" rel="noopener">
+                <div class="insta"></div>
+              </a>
+            </div>
+            <LanguageToggle />
           </div>
-          <LanguageToggle />
         </div>
         <div>
           <h2 class="mb-2 uppercase font-bold">{{ $t('aboutUs') }}</h2>
@@ -98,7 +94,7 @@ const contactKeys = [
 
 .insta:hover,
 .facebook:hover {
-  background-color: var(--color-teal);
+  background-color: var(--color-cream);
 }
 
 .insta {

@@ -3,6 +3,7 @@ import { ref } from 'vue'
 import { Dialog, DialogPanel, PopoverGroup } from '@headlessui/vue'
 import { Bars3Icon, XMarkIcon } from '@heroicons/vue/24/outline'
 import LanguageToggle from '../LanguageToggle.vue'
+import Logo from '../Logo.vue'
 import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n()
@@ -23,10 +24,7 @@ const mobileMenuOpen = ref(false)
     <nav class="mx-auto max-w-7xl p-6 lg:px-8" aria-label="Global">
       <div class="flex items-center justify-between">
         <div class="flex lg:flex-1">
-          <a href="#" class="-m-1.5 p-1.5">
-            <span class="sr-only">La Última Casa</span>
-            <img class="h-20 w-auto" src="@/assets/images/logo_UC.svg" alt="" />
-          </a>
+          <Logo :header="true" />
         </div>
         <div class="flex lg:hidden">
           <button
@@ -61,10 +59,7 @@ const mobileMenuOpen = ref(false)
         class="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10"
       >
         <div class="flex items-center justify-between">
-          <a href="#" class="-m-1.5 p-1.5">
-            <span class="sr-only">LA ÚLTIMA CASA</span>
-            <img class="h-20 w-auto" src="@/assets/images/logo_UC.svg" alt="" />
-          </a>
+          <Logo :header="true" />
           <button
             type="button"
             class="-m-2.5 rounded-md p-2.5 text-gray-700"
