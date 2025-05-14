@@ -9,7 +9,7 @@ export enum Languages {
   English = 'en-GB',
 }
 
-export type AvailableLanguagesInterface = `${Languages}`;
+export type AvailableLanguagesInterface = Languages;
 
 const userLang = navigator.language;
 
@@ -34,7 +34,7 @@ const i18n = createI18n({
   },
 });
 
-export function switchLanguage(newLocale: AvailableLanguagesInterface) {
+export function switchLanguage(newLocale: Languages) {
   locale.value = newLocale;
   i18n.global.locale.value = newLocale;
   setToStorage('locale', newLocale);
