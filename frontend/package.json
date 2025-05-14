@@ -21,6 +21,8 @@
     "@heroicons/vue": "^2.2.0",
     "@tailwindcss/vite": "^4.1.6",
     "axios": "^1.9.0",
+    "embla-carousel-autoplay": "^8.6.0",
+    "embla-carousel-vue": "^8.6.0",
     "pinia": "^3.0.1",
     "tailwindcss": "^4.1.6",
     "vue": "^3.5.13",
