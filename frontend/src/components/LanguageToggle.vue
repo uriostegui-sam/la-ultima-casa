@@ -2,16 +2,9 @@
 import { locale, switchLanguage } from '@/Services/Translation/index.ts'
 const current = locale
 
-const props = defineProps({
-  current: {
-    type: String,
-    default: 'es-ES',
-  },
-  header: {
-    type: Boolean,
-    default: false,
-  },
-})
+defineProps<{
+  header?: boolean
+}>()
 </script>
 
 <template>
@@ -23,8 +16,7 @@ const props = defineProps({
     >
       ESP
     </button>
-    <span v-if="header" class="text-(--color-salmon)">|</span>
-    <span v-else class="text-white">|</span>
+    <span :class="header ? 'text-(--color-salmon)' : 'text-white'">|</span>
     <button
       class="hover:underline"
       :class="{ 'font-bold': current === 'en-GB' }"
