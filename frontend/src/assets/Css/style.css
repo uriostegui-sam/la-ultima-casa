@@ -1,28 +1,34 @@
-@import url('https://fonts.googleapis.com/css2?family=Aoboshi+One&family=Nanum+Pen+Script&display=swap');
-@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Aoboshi+One&family=Nanum+Pen+Script&family=Outfit:wght@100..900&family=Playwrite+US+Trad:wght@100..400&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+@import 'tailwindcss';
 
 @theme {
-    --font-logo: 'Aoboshi One', sans-serif;
-    --font-logo-sub: 'Nanum Pen Script', sans-serif;
+  --font-logo: 'Aoboshi One', sans-serif;
+  --font-logo-sub: 'Nanum Pen Script', sans-serif;
+  --font-title: 'Outfit', sans-serif;
+  --font-title-alt: 'Playwrite US Trad', sans-serif;
+  --font-body: 'Montserrat', sans-serif;
 }
 
 @font-face {
-    font-family: 'NATS-Regular';
-    src: url('../Fonts/NATS-Regular.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
-  }
-  
-:root {
-   --color-black: #080E14;
-   --color-grey: #6F7C81;
-   --color-light-brown: #A8A39F;
-   --color-cream: #EADDD0;
-   --color-white: #FEFEFE;
-   --color-light-orange: #FEB45D;
-   --color-salmon: #FB6E63;
-   --color-teal: #70A8B4;
-   --color-creamy: #F9F5F0;
+  font-family: 'NATS-Regular';
+  src: url('../Fonts/NATS-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
 
-   background-color: var(--color-creamy);
+:root {
+  --color-black: #080e14;
+  --color-grey: #6f7c81;
+  --color-light-brown: #a8a39f;
+  --color-cream: #eaddd0;
+  --color-white: #fefefe;
+  --color-light-orange: #feb45d;
+  --color-salmon: #fb6e63;
+  --color-light-salmon: #fb6d6348;
+  --color-teal: #70a8b4;
+  --color-creamy: #f9f5f0;
+
+  background-color: var(--color-creamy);
+
+  font-family: var(--font-body);
 }
