@@ -19,7 +19,7 @@ const contactKeys = [
 <template>
   <footer class="bg-(--color-salmon)">
     <div class="mx-auto w-full max-w-screen-xl text-white px-6 lg:px-8">
-      <div class="grid grid-cols-1 gap-8 px-4 py-6 lg:py-8 md:grid-cols-3">
+      <div class="grid grid-cols-1 gap-8 py-6 md:grid-cols-3">
         <div class="flex lg:flex-col items-center justify-between gap-4">
           <Logo />
           <div>
