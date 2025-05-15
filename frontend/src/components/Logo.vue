@@ -1,19 +1,20 @@
 <script setup lang="ts">
+import Logo_UC from '@/assets/Images/logo_UC.svg'
 defineProps<{
   header?: boolean
-}>();
-
+  hero?: boolean
+}>()
 </script>
 
 <template>
-  <a href="#"
-  :class="header ? '-m-1.5 p-1.5' : ''">
+  <a href="#" :class="header ? '-m-1.5 p-1.5' : ''">
     <span class="sr-only">La Última Casa</span>
-    <img
-      :class="header ? 'h-20' : 'h-45'"
-      class="w-auto"
-      src="@/assets/Images/logo_UC.svg"
-      alt="Logo de La Última Casa"
+    <Logo_UC
+      :class="[
+        header ? 'h-20' : 'h-45',
+        hero ? 'opacity-50' : '',
+        'w-full',
+      ]"
     />
   </a>
 </template>

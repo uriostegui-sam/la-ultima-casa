@@ -12,12 +12,9 @@ const props = defineProps<{
     class="text-white font-bold py-2 px-4 rounded"
     :style="{ backgroundColor: `var(${color})` }"
   >
-    {{props.title}}
+    <slot>{{props.title}}</slot>
   </button>
 </template>
 
 <style scoped>
-button {
-  background-color: var(--color-teal) !important;
-}
 </style>
