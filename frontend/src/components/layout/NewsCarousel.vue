@@ -74,12 +74,13 @@ onMounted(() => {
 </script>
 
 <template>
-  <section class="embla my-8">
-    <div class="flex justify-between items-center py-3 px-5">
+  <section class="max-w-7xl embla my-8 mx-auto ps-5">
+    <div class="flex justify-between items-center py-3 xl:px-0 pe-5">
         <h1 class="text-(--color-teal)">{{ $t('latestNews') }}</h1>
         <ActionButton
           :title="$t('seeAll')"
           :color="'--color-teal'"
+          :href="'/news'"
         />
     </div>
     <div class="embla__viewport" ref="emblaRef">
