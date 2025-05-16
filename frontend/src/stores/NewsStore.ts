@@ -1,6 +1,6 @@
-import type { News } from "@/Interfaces/News"
-import NewsService from "@/Services/DataLayers/News"
-import { defineStore } from "pinia"
+import type { News, NewsCreatePayload, NewsUpdatePayload } from '@/Interfaces/News'
+import NewsService from '@/Services/DataLayers/News'
+import { defineStore } from 'pinia'
 
 export const useNewsStore = defineStore('news', {
   state: () => ({
@@ -17,11 +17,9 @@ export const useNewsStore = defineStore('news', {
       try {
         const response = await NewsService.getNews(params)
         this.news = response.data
-      }
-      catch (err: any) {
+      } catch (err: any) {
         this.error = err.message || 'Failed to get news'
-      }
-      finally {
+      } finally {
         this.loading = false
       }
     },
@@ -33,12 +31,10 @@ export const useNewsStore = defineStore('news', {
         const news = await NewsService.getById<News>(id)
         this.selectedNews = news
         return news
-      }
-      catch (err: any) {
+      } catch (err: any) {
         this.error = err.message || 'Failed to load news'
         return null
-      }
-      finally {
+      } finally {
         this.loading = false
       }
     },
@@ -46,15 +42,28 @@ export const useNewsStore = defineStore('news', {
       this.loading = true
       this.error = null
       try {
-        const newNews = await NewsService.createNews(formData)
+        const payload: NewsCreatePayload = {
+          title: JSON.parse(formData.get('title') as string),
+          content: JSON.parse(formData.get('content') as string),
+        }
+
+        const published_at = formData.get('published_at')
+        if (published_at) {
+          payload.published_at = published_at as string
+        }
+
+        const image = formData.get('image')
+        if (image) {
+          payload.image = image as File
+        }
+
+        const newNews = await NewsService.createNews(payload)
         this.news.push(newNews)
         return newNews
-      }
-      catch (err: any) {
+      } catch (err: any) {
         this.error = err.message || 'Failed to create news'
         throw err
-      }
-      finally {
+      } finally {
         this.loading = false
       }
     },
@@ -63,8 +72,32 @@ export const useNewsStore = defineStore('news', {
       this.loading = true
       this.error = null
       try {
-        const updatedNews = await NewsService.update<News>(id, formData)
-        const index = this.news.findIndex(n => n.id === updatedNews.id)
+        const payload: NewsUpdatePayload = {
+          id: typeof id === 'string' ? parseInt(id) : id,
+        }
+
+        const title = formData.get('title')
+        if (title) {
+          payload.title = JSON.parse(title as string)
+        }
+
+        const content = formData.get('content')
+        if (content) {
+          payload.content = JSON.parse(content as string)
+        }
+
+        const published_at = formData.get('published_at')
+        if (published_at) {
+          payload.published_at = published_at as string
+        }
+
+        const image = formData.get('image')
+        if (image) {
+          payload.image = image as File
+        }
+
+        const updatedNews = await NewsService.update<News>(id, payload)
+        const index = this.news.findIndex((n) => n.id === updatedNews.id)
         if (index !== -1) {
           this.news[index] = updatedNews
         }
@@ -72,30 +105,26 @@ export const useNewsStore = defineStore('news', {
           this.selectedNews = updatedNews
         }
         return updatedNews
-      }
-      catch (err: any) {
+      } catch (err: any) {
         this.error = err.message || 'Failed to update news'
         throw err
-      }
-      finally {
+      } finally {
         this.loading = false
       }
     },
-    
+
     async deleteNews(id: number | string) {
       this.loading = true
       this.error = null
       try {
         await NewsService.delete(id)
-        this.news = this.news.filter(n => n.id !== id)
+        this.news = this.news.filter((n) => n.id !== id)
         if (this.selectedNews?.id === id) {
           this.selectedNews = null
         }
-      }
-      catch (err: any) {
+      } catch (err: any) {
         this.error = err.message || 'Failed to delete news'
-      }
-      finally {
+      } finally {
         this.loading = false
       }
     },
@@ -106,6 +135,6 @@ export const useNewsStore = defineStore('news', {
 
     clearError() {
       this.error = null
-    }
-  }
+    },
+  },
 })
