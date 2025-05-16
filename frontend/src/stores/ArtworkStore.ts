@@ -1,5 +1,5 @@
 import { defineStore } from "pinia"
-import type { Artwork } from "@/Interfaces/Artwork"
+import type { Artwork, ArtworkCreatePayload } from "@/Interfaces/Artwork"
 import ArtworkService from '@/Services/DataLayers/Artwork'
 
 export const useArtworkStore = defineStore('artwork', {
@@ -41,7 +41,28 @@ export const useArtworkStore = defineStore('artwork', {
       this.loading = true
       this.error = null
       try {
-        const newArtwork = await ArtworkService.uploadArtwork(formData)
+        const payload: ArtworkCreatePayload = {
+          artist_id: Number(formData.get('artist_id')),
+          title: formData.get('title') as string,
+          images: formData.getAll('images[]') as File[],
+        };
+
+        const description = formData.get('description');
+        if (description) {
+          payload.description = JSON.parse(description as string);
+        }
+    
+        const dimensions = formData.get('dimensions');
+        if (dimensions) {
+          payload.dimensions = JSON.parse(dimensions as string);
+        }
+    
+        const creation_date = formData.get('creation_date');
+        if (creation_date) {
+          payload.creation_date = creation_date as string;
+        }
+    
+        const newArtwork = await ArtworkService.createArtwork(payload);
         this.artworks.push(newArtwork)
       } catch (err: any) {
         this.error = err.message || 'Failed to upload artwork'
