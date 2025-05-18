@@ -47,7 +47,7 @@ onMounted(() => {
 <template>
   <div :class="props.reverse ? 'background' : ''">
     <div
-      class="flex px-10 md:gap-10 items-center"
+      class="flex px-10 md:gap-10 items-center max-w-7xl mx-auto"
       :class="[
         props.first ? 'md:py-0 flex-col-reverse md:flex-row pb-10' : 'py-20',
         props.reverse ? 'lg:flex-row-reverse' : '',
@@ -64,7 +64,7 @@ onMounted(() => {
       </div>
 
       <!-- Content -->
-      <div class="flex-1 hero-content">
+      <div class="flex-1 hero-content ">
         <div v-if="props.first" class="flex justify-between w-full items-center">
           <h1 class="flex-1 text-(--color-teal)">LA ÚLTIMA CASA</h1>
           <div class="flex-1 flex justify-end">
