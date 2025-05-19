@@ -1,6 +1,7 @@
 import Logo from '@/components/Logo.vue'
 import HomeController from '@/Controllers/Visitors/Home/HomeController.vue'
 import WorkshopController from '@/Controllers/Visitors/Workshop/WorkshopController.vue'
+import WorkshopInfo from '../components/views/Visitors/Workshop/WorkshopInfo.vue'
 import { createRouter, createWebHistory } from 'vue-router'
 
 const routes = [
@@ -24,11 +25,11 @@ const routes = [
     name: 'Workshop',
     component: WorkshopController,
   },
-//   {
-//     path: '/workshops',/:id',
-//     name: 'WorkshopInfo',
-//     component: () => import('@/views/Workshop.vue'),
-//   },
+  {
+    path: '/workshops/:id',
+    name: 'WorkshopInfo',
+    component: WorkshopInfo,
+  },
 //   {
 //     path: '/news',
 //     name: 'News',
