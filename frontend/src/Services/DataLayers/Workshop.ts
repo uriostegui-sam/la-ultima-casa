@@ -84,10 +84,7 @@ class WorkshopService extends BaseService {
     }
   }
 
-  async getWorkshops(params?: {
-    artist_id?: number
-    type?: WorkshopType
-  }): Promise<ApiResponse<Workshop[]>> {
+  async getWorkshops(params = {}): Promise<ApiResponse<Workshop[]>> {
     return this.getPaginated<ApiResponse<Workshop[]>>(params)
   }
 }
