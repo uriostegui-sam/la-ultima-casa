@@ -4,6 +4,7 @@ import { Dialog, DialogPanel, PopoverGroup } from '@headlessui/vue'
 import { Bars3Icon, XMarkIcon } from '@heroicons/vue/24/outline'
 import LanguageToggle from '../LanguageToggle.vue'
 import Logo from '../Logo.vue'
+import NavLink from '../NavLink.vue'
 import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n()
@@ -12,7 +13,7 @@ const menuKeys = [
   { key: 'aboutUs', href: '/nosotros' },
   { key: 'artists', href: '/artistas' },
   { key: 'news', href: '/noticias' },
-  { key: 'courses', href: '/cursos' },
+  { key: 'workshops', href: '/workshops' },
   { key: 'contact', href: '/contacto' },
 ]
 
@@ -48,7 +49,11 @@ const mobileMenuOpen = ref(false)
       </div>
       <div class="hidden lg:flex lg:items-center lg:justify-around lg:max-w-2xl mx-auto mt-7">
         <template v-for="(item, index) in menuKeys" :key="item.key">
-          <a :href="item.href" class="text-(--color-grey)">{{ t(item.key) }}</a>
+          <router-link :to="item.href" custom v-slot="{ href, navigate, isActive }">
+            <NavLink :active="isActive" :href="href" :navigate="(e) => { console.log('Navigating'); navigate(e) }">
+              {{ t(item.key) }}
+            </NavLink>
+          </router-link>
           <span v-if="index < menuKeys.length - 1" class="text-(--color-salmon)">|</span>
         </template>
       </div>
@@ -73,11 +78,16 @@ const mobileMenuOpen = ref(false)
           <div class="-my-6 divide-y divide-gray-500/10">
             <div class="space-y-2 py-6">
               <template v-for="item in menuKeys" :key="item.key">
-                <a
-                  :href="item.href"
-                  class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50"
-                  >{{ t(item.key) }}</a
-                >
+                <router-link :to="item.href" custom v-slot="{ href, navigate, isActive }">
+                  <nav-link
+                    :active="isActive"
+                    :href="href"
+                    :navigate="navigate"
+                    class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50"
+                  >
+                    {{ t(item.key) }}
+                  </nav-link>
+                </router-link>
               </template>
             </div>
             <LanguageToggle :header="true" />
