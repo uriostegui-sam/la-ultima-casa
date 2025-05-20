@@ -44,7 +44,7 @@ onMounted(async () => {
         :key="index"
         :title="current === Languages.English ? workshop.title['en'] : workshop.title['es']"
         :description="current === Languages.English ? workshop.description['en'] : workshop.description['es']"
-        :image="workshop.image_url"
+        :image="workshop.cover_image_url"
         :type="workshop.type"
         :id="workshop.id"
       />

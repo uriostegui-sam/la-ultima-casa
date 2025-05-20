@@ -26,6 +26,8 @@
     "knowMore": "Saber más",
     "all": "Todos",
     "permanent": "Permanentes",
-    "temporary": "Temporales"
+    "temporary": "Temporales",
+    "typeOfWorkshopTemp": "curso temporal",
+    "typeOfWorkshopPerm": "curso permante"
   }
   

@@ -26,6 +26,8 @@
     "knowMore": "Know more",
     "all": "all",
     "permanent": "permanent",
-    "temporary": "temporary"
+    "temporary": "temporary",
+    "typeOfWorkshopTemp": "temporary workshop",
+    "typeOfWorkshopPerm": "permanent workshop"
   }
   
