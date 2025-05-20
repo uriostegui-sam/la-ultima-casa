@@ -5,11 +5,11 @@ import PlusSolid from '@/assets/Icons/plus-solid.svg'
 import { defineProps } from 'vue'
 
 const props = defineProps<{
-  title: string
-  description: string
-  image: string
-  type: string
-  id: number
+  title?: string
+  description?: string
+  image?: string
+  type?: string
+  id?: number
 }>()
 </script>
 
