@@ -1,13 +1,23 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import ActionButton from './ActionButton.vue';
+import { ref } from 'vue'
+
 const { t } = useI18n()
 
 const props = defineProps<{
-  active: string
+  active?: string
 }>()
 
+const emit = defineEmits(['change'])
+
+const activeFilter = ref(props.active || 'all')
 const options = ['all', 'permanent', 'temporary']
+
+const handleFilterChange = (option: string) => {
+  activeFilter.value = option
+  emit('change', option)
+}
 </script>
 
 <template>
@@ -15,11 +25,10 @@ const options = ['all', 'permanent', 'temporary']
     <ActionButton
       v-for="option in options"
       :is-filter="true"
-      :active="props.active"
+      :active="activeFilter"
       :key="option"
       :title="option"
-      variant="outline"
-      @click="$emit('change', option)"
+      :filter="handleFilterChange"
     />
   </div>
 </template>

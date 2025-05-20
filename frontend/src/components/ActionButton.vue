@@ -7,34 +7,42 @@ const { t } = useI18n()
 const props = defineProps<{
   title?: string
   color?: string
-//   href?: string
+  href?: string
   isFilter?: boolean
   active?: string
-  filter?: (e: MouseEvent) => void
+  filter?: (value: string) => void
 }>()
 
-const onClick = (e: MouseEvent) => {
-  if (props.filter) {
-    props.filter(e)
+const emit = defineEmits(['click'])
+
+const handleClick = () => {
+  if (props.isFilter && props.title) {
+    props.filter?.(props.title)
   }
+  emit('click')
 }
 </script>
 
 <template>
-  <button 
-    class="py-2 px-4"
-    :class="[
-      props.isFilter
-        ? 'rounded-full border text-sm font-medium transition-all border-(--color-salmon)'
-        : 'text-white font-bold rounded hover:bg-white hover:opacity-75',
-      props.isFilter && props.active === props.title
-        ? 'bg-(--color-salmon) text-white'
-        : 'bg-white text-(--color-salmon) hover:bg-(--color-salmon) hover:text-white',
-    ]"
+  <router-link 
+    v-if="!isFilter && href"
+    :to="href"
+    class="py-2 px-4 text-white font-bold rounded hover:bg-white hover:opacity-75 text-center"
     :style="{ backgroundColor: `var(${color})` }"
-    @click="onClick"
   >
-    <slot>{{capitalizeFirstLetter(t(props.title))}}</slot>
+    <slot>{{ capitalizeFirstLetter(t(title || '')) }}</slot>
+  </router-link>
+
+  <button
+    v-else
+    class="py-2 px-4 rounded-full border text-sm font-medium transition-all border-(--color-salmon)"
+    :class="{
+      'bg-(--color-salmon) text-white': active === title,
+      'bg-white text-(--color-salmon) hover:bg-(--color-salmon) hover:text-white': active !== title
+    }"
+    @click="handleClick"
+  >
+    <slot>{{ capitalizeFirstLetter(t(title || '')) }}</slot>
   </button>
 </template>
 
