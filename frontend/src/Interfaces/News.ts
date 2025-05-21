@@ -1,14 +1,16 @@
 export interface News {
   id: number
-  title: string
-  content: string
+  title: {
+    en?: string
+    es?: string
+  }
+  content: {
+    en?: string
+    es?: string
+  }
   image_path?: string
   image_url?: string
   published_at?: string
-  translations?: {
-    title?: Record<string, string>
-    content?: Record<string, string>
-  }
 }
 
 export interface NewsCreatePayload {

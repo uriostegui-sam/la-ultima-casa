@@ -9,7 +9,7 @@ const props = defineProps<{
   description?: string
   image?: string
   type?: string
-  id?: number
+  id?: string
 }>()
 </script>
 
@@ -41,14 +41,14 @@ const props = defineProps<{
       <ActionButton
         :title="$t('knowMore')"
         :color="'--color-salmon'"
-        :href="`/workshops/${props.id}`"
+        :href="props.id"
         class="hidden lg:block"
       />
     </div>
     <ActionButton
       :title="$t('knowMore')"
       :color="'--color-salmon'"
-      :href="`/workshops/${props.id}`"
+      :href="props.id"
       class="lg:hidden justify-self-center"
     />
   </div>

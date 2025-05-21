@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import NewsCarousel from '@/components/layout/NewsCarousel.vue'
+import NewsCarousel from '@/components/views/Visitors/News/NewsCarousel.vue'
 import Header from '@/components/layout/Header.vue'
 import Footer from '@/components/layout/Footer.vue'
 import Title from '@/components/Title.vue'
@@ -46,7 +46,7 @@ onMounted(async () => {
         :description="current === Languages.English ? workshop.description['en'] : workshop.description['es']"
         :image="workshop.cover_image_url"
         :type="workshop.type"
-        :id="workshop.id"
+        :id="`/workshops/${workshop.id}`"
       />
     </div>
   </section>
