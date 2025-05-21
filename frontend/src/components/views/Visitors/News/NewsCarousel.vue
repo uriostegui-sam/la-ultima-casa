@@ -1,12 +1,15 @@
 <script setup>
 import emblaCarouselVue from 'embla-carousel-vue'
-import NewsCard from '@/components/NewsCard.vue'
+import NewsCard from '@/components/views/Visitors/News/NewsCard.vue'
 import ActionButton from '@/components/ActionButton.vue'
 import { ref, onMounted, computed } from 'vue'
 import { useNewsStore } from '@/stores/NewsStore'
 import { useI18n } from 'vue-i18n'
+import { Languages, locale } from '@/Services/Translation'
 
 const { t } = useI18n()
+const current = locale
+
 const [emblaRef, emblaApi] = emblaCarouselVue({
   loop: false,
   align: 'start',
@@ -92,8 +95,8 @@ onMounted(() => {
           :class="{ 'blurred-slide': index === peekedIndex }"
         >
           <NewsCard
-            :title="newsItem.title"
-            :description="newsItem.content"
+            :title="current === Languages.English ? newsItem.title['en'] : newsItem.title['es']"
+            :description="current === Languages.English ? newsItem.content['en'] : newsItem.content['es']"
             :image="newsItem.image_url"
             :date="newsItem.published_at"
           />

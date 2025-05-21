@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import NewsCarousel from '@/components/layout/NewsCarousel.vue'
+import NewsCarousel from '@/components/views/Visitors/News/NewsCarousel.vue'
 import Header from '@/components/layout/Header.vue'
 import Footer from '@/components/layout/Footer.vue'
 import Title from '@/components/Title.vue'
@@ -44,6 +44,11 @@ const props = defineProps<{
           <p>
             ${{ props.price }} MXN
           </p>
+          <p>
+            {{ props.description }}
+          </p>
+        </div>
+        <div v-if="!props.isWorkshop" class="lg:flex-2/3">
           <p>
             {{ props.description }}
           </p>

@@ -6,7 +6,7 @@ import { useWorkshopStore } from '@/stores/WorkshopStore'
 import { useRoute } from 'vue-router'
 import { onMounted, computed, ref, watch } from 'vue'
 import { capitalizeFirstLetter, formatDateRange } from '@/Services/Helpers'
-import InfoComponent from '@/components/layout/InfoComponent.vue'
+import InfoComponent from '@/components/InfoComponent.vue'
 
 const currentLang = locale
 const route = useRoute()

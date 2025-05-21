@@ -1,7 +1,9 @@
 export interface Skill {
   id: number;
-  name: string;
-  translations: Record<string, string>;
+  name: {
+    en?: string
+    es?: string
+  }
   created_at?: string;
   updated_at?: string;
 }

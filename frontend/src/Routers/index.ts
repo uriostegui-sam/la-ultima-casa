@@ -3,6 +3,8 @@ import HomeController from '@/Controllers/Visitors/Home/HomeController.vue'
 import WorkshopController from '@/Controllers/Visitors/Workshop/WorkshopController.vue'
 import WorkshopInfo from '../components/views/Visitors/Workshop/WorkshopInfo.vue'
 import { createRouter, createWebHistory } from 'vue-router'
+import NewsController from '@/Controllers/Visitors/News/NewsController.vue'
+import NewsInfo from '@/components/views/Visitors/News/NewsInfo.vue'
 
 const routes = [
   {
@@ -30,18 +32,18 @@ const routes = [
     name: 'WorkshopInfo',
     component: WorkshopInfo,
   },
-//   {
-//     path: '/news',
-//     name: 'News',
-//     component: () => import('@/views/News.vue'),
-//     props: true
-//   },
-//   {
-//     path: '/news/:id',
-//     name: 'NewsInfo',
-//     component: () => import('@/views/News.vue'),
-//     props: true
-//   },
+  {
+    path: '/news',
+    name: 'News',
+    component: NewsController,
+    props: true
+  },
+  {
+    path: '/news/:id',
+    name: 'NewsInfo',
+    component: NewsInfo,
+    props: true
+  },
 //   // 404 fallback
   {
     path: '/:pathMatch(.*)*',

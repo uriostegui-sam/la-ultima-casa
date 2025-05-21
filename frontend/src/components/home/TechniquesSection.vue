@@ -1,6 +1,9 @@
 <script setup lang="ts">
+import { Languages, locale } from '@/Services/Translation'
 import { useSkillStore } from '@/stores/SkillStore'
 import { onMounted, computed } from 'vue'
+
+const current = locale
 
 const skillStore = useSkillStore()
 const skillTransformed = computed(() => {
@@ -28,7 +31,7 @@ onMounted(async () => {
           <!-- <img :src="skill.name" :alt="skill.name" /> -->
            <div class="flex flex-col items-center">
                <div class="bg-(--color-salmon) lg:h-20 h-17 lg:w-20 w-17 rounded-full"></div>
-               <h3 class="text-center">{{ skill.name }}</h3>
+               <h3 class="text-center">{{ current === Languages.English ? skill.name['en'] : skill.name['es'] }}</h3>
             </div>
         </div>
       </div>
