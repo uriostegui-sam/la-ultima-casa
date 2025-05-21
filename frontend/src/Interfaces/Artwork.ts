@@ -4,7 +4,10 @@ import type { ArtworkImage } from './ArtworkImage'
 export interface Artwork {
   id: number;
   title: string;
-  description: string;
+  description: {
+    en?: string
+    es?: string
+  }
   dimensions: {
     width?: number;
     height?: number;
@@ -13,10 +16,6 @@ export interface Artwork {
   creation_date: string;
   artist: Artist;
   images: ArtworkImage[];
-  translations?: {
-    title?: Record<string, string>;
-    description?: Record<string, string>;
-  }
 }
 
 export interface ArtworkCreatePayload {
