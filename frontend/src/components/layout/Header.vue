@@ -10,11 +10,11 @@ import { useI18n } from 'vue-i18n'
 const { t } = useI18n()
 
 const menuKeys = [
-  { key: 'aboutUs', href: '/nosotros' },
-  { key: 'artists', href: '/artistas' },
-  { key: 'news', href: '/noticias' },
+  { key: 'aboutUs', href: '/' },
+  { key: 'artists', href: '/artists' },
+  { key: 'news', href: '/news' },
   { key: 'workshops', href: '/workshops' },
-  { key: 'contact', href: '/contacto' },
+  { key: 'contact', href: '/contact' },
 ]
 
 const mobileMenuOpen = ref(false)
