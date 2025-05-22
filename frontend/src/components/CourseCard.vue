@@ -27,7 +27,7 @@ const props = defineProps<{
         <div
           class="absolute inset-0 bg-(--color-light-salmon) bg-opacity-30 opacity-0 group-hover:opacity-100 transition duration-300 flex items-center justify-center"
         >
-          <div class="card-img"></div>
+          <div class="img-hover"></div>
         </div>
       </div>
       <div>
@@ -54,19 +54,4 @@ const props = defineProps<{
   </div>
 </template>
 
-<style scoped>
-.card-img {
-  width: 20%;
-  height: 20%;
-  background-color: white;
-  display: inline-block;
-  mask-repeat: no-repeat;
-  mask-position: center;
-  mask-size: contain;
-  -webkit-mask-repeat: no-repeat;
-  -webkit-mask-position: center;
-  -webkit-mask-size: contain;
-  mask-image: url('../assets/Icons/plus-solid.svg');
-  -webkit-mask-image: url('../assets/Icons/plus-solid.svg');
-}
-</style>
+<style scoped></style>
