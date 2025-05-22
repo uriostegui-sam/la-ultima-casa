@@ -24,10 +24,19 @@ class ArtistResource extends JsonResource
             ],
             'name' => $this->user->getFullNameAttribute(),
             'profile_image' => $this->profile_image,
-            'minibio' => translate($this->minibio),
-            'bio' => translate($this->bio),
+            'minibio' => [
+                'en' => $this->minibio['en'],
+                'es' => $this->minibio['es'],
+            ],
+            'bio' => [
+                'en' => $this->bio['en'],
+                'es' => $this->bio['es'],
+            ],
             'skills' => $this->whenLoaded('skills', fn() =>
-                $this->skills->map(fn($skill) => translate($skill->name))
+                $this->skills->map(fn($skill) => [
+                    'en' => $skill->name['en'],
+                    'es' => $skill->name['es'],
+                ])
             ),
             'social_links' => [
                 'website' => $this->social_links['website'] ?? null,
@@ -41,8 +50,18 @@ class ArtistResource extends JsonResource
                     ? $this->artworks->map(fn ($artwork) => [
                     'id' => $artwork->id,
                     'title' => $artwork->title,
-                    'description' => translate($artwork->description),
+                    'description' => [
+                        'en' => $artwork->description['en'],
+                        'es' => $artwork->description['es'],
+                    ],
                     'creation_date' => $artwork->creation_date,
+                    'images' => $artwork->images->map(fn($img) => [
+                        'id' => $img->id,
+                        'path' => $img->path,
+                        'is_primary' => $img->is_primary,
+                        'order' => $img->order,
+                        'url' => $img->url,
+                    ]),
                 ]) : [];
             }),
         ];

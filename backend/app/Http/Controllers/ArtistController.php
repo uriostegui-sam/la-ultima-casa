@@ -155,7 +155,7 @@ class ArtistController extends Controller
     public function show(Artist $artist)
     {
         return new ArtistResource(
-            $artist->load(['user', 'skills', 'artworks'])
+            $artist->load(['user', 'skills', 'artworks.images'])
         );
     }
 
