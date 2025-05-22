@@ -32,3 +32,18 @@
 
   font-family: var(--font-body);
 }
+
+.img-hover {
+  width: 20%;
+  height: 20%;
+  background-color: white;
+  display: inline-block;
+  mask-repeat: no-repeat;
+  mask-position: center;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  -webkit-mask-size: contain;
+  mask-image: url('../Icons/plus-solid.svg');
+  -webkit-mask-image: url('../Icons/plus-solid.svg');
+}
