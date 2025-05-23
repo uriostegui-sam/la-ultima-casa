@@ -8,6 +8,11 @@ export interface Skill {
   updated_at?: string;
 }
 
+export interface TranslatedSkill {
+  en?: string
+  es?: string
+}
+
 export interface SkillCreatePayload {
   name: Record<string, string>;
 }
