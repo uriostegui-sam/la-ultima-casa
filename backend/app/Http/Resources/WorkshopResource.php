@@ -31,7 +31,10 @@ class WorkshopResource extends JsonResource
             'max_students' => $this->max_students,
             'cover_image_url' => $this->cover_image_url,
             'skills' => $this->whenLoaded('skills', fn() =>
-                $this->skills->map(fn($skill) => translate($skill->name))
+                $this->skills->map(fn($skill) => [
+                    'en' => $skill->name['en'],
+                    'es' => $skill->name['es'],
+                ])
             ),
             'artist_id' => $this->artist_id,
             'artist' => $this->whenLoaded('artist', function () {
