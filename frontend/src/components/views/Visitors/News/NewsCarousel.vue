@@ -131,26 +131,17 @@ h1 {
   width: 50%;
   line-height: 20px;
 }
-
 .embla {
-  position: relative;
   width: 100%;
-  overflow: hidden;
+  padding-bottom: 1rem;
 }
 
 .embla__viewport {
-  overflow: hidden;
   width: 100%;
 }
 
-.embla__container {
-  display: flex;
-}
-
 .embla__slide {
-  position: relative;
   flex: 0 0 90%;
-  min-width: 0;
   padding-right: 1.2rem;
 }
 
@@ -180,25 +171,6 @@ h1 {
   scale: 0.98;
 }
 
-.embla__slide__number {
-  font-size: 5rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 200px;
-  background-color: #ddd;
-}
-
-/* Arrows */
-.embla__controls {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  pointer-events: none;
-}
-
 .embla__button {
   position: absolute;
   top: 50%;
@@ -213,29 +185,8 @@ h1 {
   pointer-events: auto;
 }
 
-.embla__button.before_button {
-  left: 1rem;
-}
-
 .embla__button.after_button {
   right: 1rem;
-}
-
-/* Dots */
-.embla__dots {
-  display: flex;
-  justify-content: center;
-  margin-top: 1rem;
-}
-
-.embla__dot {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  margin: 0 4px;
-  background: #bbb;
-  border: none;
-  cursor: pointer;
 }
 
 .dot--selected {
