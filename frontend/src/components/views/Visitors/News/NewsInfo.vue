@@ -1,11 +1,14 @@
 <script setup lang="ts">
 import InfoComponent from '@/components/InfoComponent.vue';
+import Footer from '@/components/layout/Footer.vue';
 import type { News } from '@/Interfaces/News';
 import { Languages, locale } from '@/Services/Translation';
 import { useNewsStore } from '@/stores/NewsStore';
 import { onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
+import NewsCarousel from './NewsCarousel.vue';
+import Header from '@/components/layout/Header.vue';
 
 const currentLang = locale
 const route = useRoute()
@@ -22,6 +25,7 @@ onMounted(async () => {
 </script>
 
 <template>
+  <Header />
   <div v-if="currentNews">
         <InfoComponent
       :title="
@@ -38,6 +42,8 @@ onMounted(async () => {
     />
   </div>
   <div v-else>Loading...</div>
+   <NewsCarousel />
+  <Footer />
 </template>
 
 <style scoped></style>
