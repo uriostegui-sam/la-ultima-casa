@@ -8,6 +8,9 @@ import { onMounted, computed, ref, watch } from 'vue'
 import { capitalizeFirstLetter, formatDateRange } from '@/Services/Helpers'
 import InfoComponent from '@/components/InfoComponent.vue'
 import type { TranslatedSkill } from '@/Interfaces/Skill'
+import NewsCarousel from '../News/NewsCarousel.vue'
+import Footer from '@/components/layout/Footer.vue'
+import Header from '@/components/layout/Header.vue'
 
 const currentLang = ref(locale)
 const route = useRoute()
@@ -55,6 +58,7 @@ watch(locale, () => {
 </script>
 
 <template>
+  <Header />
   <div v-if="currentWorkshop">
     <InfoComponent
       :is-workshop="true"
@@ -82,6 +86,8 @@ watch(locale, () => {
     />
   </div>
   <div v-else>Loading...</div>
+  <NewsCarousel />
+  <Footer />
 </template>
 
 <style scoped></style>
