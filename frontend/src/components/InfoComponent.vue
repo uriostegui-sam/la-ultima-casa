@@ -1,12 +1,8 @@
 <script setup lang="ts">
-import NewsCarousel from '@/components/views/Visitors/News/NewsCarousel.vue'
-import Header from '@/components/layout/Header.vue'
-import Footer from '@/components/layout/Footer.vue'
 import Title from '@/components/Title.vue'
 import Facebook from '@/assets/Icons/facebook.svg'
 import Instagram from '@/assets/Icons/instagram.svg'
 import WorldWideWebSVG from '@/assets/Icons/world-wide-web.svg'
-import type { Artwork } from '@/Interfaces/Artwork'
 
 const props = defineProps<{
   title?: string
@@ -23,7 +19,6 @@ const props = defineProps<{
   instagram?: string
   facebook?: string
   website?: string
-  artworks?: Artwork[]
 }>()
 
 const socialLinks = [
@@ -46,13 +41,9 @@ const socialLinks = [
     condition: typeof props.website === 'string',
   },
 ]
-
-const getPrimaryImage = (artwork: Artwork) =>
-  artwork.images.find((img) => img.is_primary)?.url ?? '';
 </script>
 
 <template>
-  <Header />
   <section class="px-10 mx-auto max-w-7xl pb-10">
     <Title
       :title="props.title"
@@ -98,24 +89,4 @@ const getPrimaryImage = (artwork: Artwork) =>
       </div>
     </div>
   </section>
-  <section class="px-10 mx-auto max-w-7xl pb-10">
-    <div v-if="props.isArtist" class="relative pt-10 grid grid-cols-3 gap-1 grid-flow-dense">
-      <template v-for="(artwork, index) in props.artworks" :key="index">
-        <div class="relative group overflow-hidden" :class="index === 4 ? 'col-span-2 row-span-2' : ''">
-          <img
-            :src="getPrimaryImage(artwork)"
-            class="w-full h-full object-cover"
-            :alt="artwork.title"
-          />
-          <div
-            class="absolute inset-0 bg-(--color-light-salmon) opacity-0 group-hover:opacity-100 transition duration-300 flex items-center justify-center"
-          >
-            <div class="img-hover w-10 h-10"></div>
-          </div>
-        </div>
-      </template>
-    </div>
-  </section>
-  <NewsCarousel />
-  <Footer />
 </template>
