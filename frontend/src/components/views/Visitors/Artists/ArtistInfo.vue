@@ -7,6 +7,10 @@ import type { Artist } from '@/Interfaces/Artist'
 import { capitalizeFirstLetter } from '@/Services/Helpers'
 import InfoComponent from '@/components/InfoComponent.vue'
 import type { TranslatedSkill } from '@/Interfaces/Skill'
+import ArtworkGallery from '@/components/views/Visitors/Artwork/ArtworkGallery.vue'
+import NewsCarousel from '../News/NewsCarousel.vue'
+import Footer from '@/components/layout/Footer.vue'
+import Header from '@/components/layout/Header.vue'
 
 const currentLang = locale
 const route = useRoute()
@@ -35,26 +39,32 @@ onMounted(async() => {
 </script>
 
 <template>
-    <div v-if="currentArtist">
-    <InfoComponent
-      :is-workshop="false"
-      :is-artist="true"
-      :title="currentArtist.name"
-      :has-subtitle="true"
-      :subtitle="skillsTransformed"
-      :cover-image="currentArtist.profile_image_url"
-      :description="
-        currentLang === Languages.English
-          ? currentArtist.bio['en']
-          : currentArtist.bio['es']
-      "
-      :instagram="currentArtist.social_links['instagram'] ? currentArtist.social_links['instagram'] : undefined"
-      :facebook="currentArtist.social_links['twitter'] ? currentArtist.social_links['twitter'] : undefined"
-      :website="currentArtist.social_links['website'] ? currentArtist.social_links['website'] : undefined"
-      :artworks="currentArtist.artworks"
-    />
+  <Header />
+  <div v-if="currentArtist">
+    <div>
+      <InfoComponent
+        :is-workshop="false"
+        :is-artist="true"
+        :title="currentArtist.name"
+        :has-subtitle="true"
+        :subtitle="skillsTransformed"
+        :cover-image="currentArtist.profile_image_url"
+        :description="
+          currentLang === Languages.English
+            ? currentArtist.bio['en']
+            : currentArtist.bio['es']
+        "
+        :instagram="currentArtist.social_links['instagram'] ? currentArtist.social_links['instagram'] : undefined"
+        :facebook="currentArtist.social_links['twitter'] ? currentArtist.social_links['twitter'] : undefined"
+        :website="currentArtist.social_links['website'] ? currentArtist.social_links['website'] : undefined"
+        :artworks="currentArtist.artworks"
+      />
+      <ArtworkGallery :artist="currentArtist.name" :artworks="currentArtist.artworks" />
+    </div>
   </div>
   <div v-else>Loading...</div>
+  <NewsCarousel />
+  <Footer />
 </template>
 
 <style scoped></style>
