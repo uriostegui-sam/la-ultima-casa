@@ -77,7 +77,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <section class="max-w-7xl embla my-8 mx-auto ps-5">
+  <section class="relative w-full max-w-7xl embla my-8 mx-auto ps-5">
     <div class="flex justify-between items-center py-3 xl:px-0 pe-5">
         <h1 class="text-(--color-teal)">{{ $t('latestNews') }}</h1>
         <ActionButton
@@ -85,40 +85,40 @@ onMounted(() => {
           :color="'--color-teal'"
           :href="'/news'"
         />
-    </div>
-    <div class="embla__viewport" ref="emblaRef">
-      <div class="embla__container">
-        <div
-          class="embla__slide"
-          v-for="(newsItem, index) in newsTransformed"
-          :key="newsItem.id"
-          :class="{ 'blurred-slide': index === peekedIndex }"
-        >
-          <NewsCard
-            :title="current === Languages.English ? newsItem.title['en'] : newsItem.title['es']"
-            :description="current === Languages.English ? newsItem.content['en'] : newsItem.content['es']"
-            :image="newsItem.image_url"
-            :date="newsItem.published_at"
-          />
+      </div>
+      <div class="embla__viewport" ref="emblaRef">
+        <div class="embla__container">
+          <div
+            class="embla__slide"
+            v-for="(newsItem, index) in newsTransformed"
+            :key="newsItem.id"
+            :class="{ 'blurred-slide': index === peekedIndex }"
+          >
+            <NewsCard
+              :title="current === Languages.English ? newsItem.title['en'] : newsItem.title['es']"
+              :description="current === Languages.English ? newsItem.content['en'] : newsItem.content['es']"
+              :image="newsItem.image_url"
+              :date="newsItem.published_at"
+            />
+          </div>
         </div>
       </div>
-    </div>
 
-    <!-- Arrows -->
-    <div class="embla__controls">
-      <button @click="emblaApi?.scrollNext()" class="embla__button after_button">→</button>
-    </div>
+      <!-- Arrows -->
+      <div class="embla__controls">
+        <button @click="emblaApi?.scrollNext()" class="embla__button after_button">→</button>
+      </div>
 
-    <!-- Dots -->
-    <div class="embla__dots">
-      <button
-        v-for="index in emblaApi?.scrollSnapList().length || 0"
-        :key="index"
-        @click="scrollTo(index - 1)"
-        :class="{ 'dot--selected': selectedIndex === index - 1 }"
-        class="embla__dot"
-      />
-    </div>
+      <!-- Dots -->
+      <div class="embla__dots">
+        <button
+          v-for="index in emblaApi?.scrollSnapList().length || 0"
+          :key="index"
+          @click="scrollTo(index - 1)"
+          :class="{ 'dot--selected': selectedIndex === index - 1 }"
+          class="embla__dot"
+        />
+      </div>
   </section>
 </template>
 
