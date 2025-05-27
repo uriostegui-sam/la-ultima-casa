@@ -61,11 +61,11 @@ const socialLinks = [
         />
         <div
           v-if="props.isArtist"
-          class="mt-3 bg-(--color-salmon) flex justify-around w-1/2 rounded-full py-2"
+          class="mt-3 bg-(--color-salmon) flex justify-around lg:w-1/2 w-1/3 rounded-full py-1 lg:py-2"
         >
           <template v-for="link in socialLinks" :key="link.name">
             <a v-if="link.condition" :href="link.url" target="_blank" rel="noopener noreferrer">
-              <component :is="link.icon" class="w-7 h-7 fill-white" />
+              <component :is="link.icon" class="lg:w-7 lg:h-7 w-5 h-5 fill-white" />
             </a>
           </template>
         </div>
