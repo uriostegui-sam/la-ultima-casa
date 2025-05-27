@@ -7,6 +7,7 @@ import XSolid from '@/assets/Icons/xmark-solid.svg'
 import { capitalizeFirstLetter } from '@/Services/Helpers';
 import { useI18n } from 'vue-i18n'
 import { Languages, locale } from '@/Services/Translation';
+import InnerCarouselArtwork from './InnerCarouselArtwork.vue'
 
 const { t } = useI18n()
 const props = defineProps<{
@@ -44,17 +45,23 @@ watch(modalOpen, async (open) => {
   }
 })
 
+watch(emblaApi, (api) => {
+  if (api) {
+    selectedIndex.value = api.selectedScrollSnap()
+    api.on('select', () => {
+      selectedIndex.value = api.selectedScrollSnap()
+    })
+  }
+})
+
 const handleKeyDown = (e: KeyboardEvent) => {
   if (e.key === 'Escape') closeModal()
 }
 
 onMounted(() => {
   emblaApi.value?.on('select', () => {
+    selectedIndex.value = emblaApi.value?.selectedScrollSnap() ?? 0
   })
-})
-
-
-onMounted(() => {
   window.addEventListener('keydown', handleKeyDown)
 })
 
@@ -91,21 +98,23 @@ onBeforeUnmount(() => {
     class="fixed inset-0 bg-(--color-light-salmon) bg-opacity-70 z-50 flex items-center justify-center"
   >
   <div class="w-5/6 m-auto py-15 relative bg-white">
-    <XSolid class="close w-10 h-10 fill-(--color-salmon)" @click="closeModal()" />
+    <XSolid class="close lg:w-10 w-6 lg:h-10 h-6 fill-(--color-salmon)" @click="closeModal()" />
     <section class="embla w-5/6 m-auto">
       <div class="embla__viewport" ref="emblaRef">
         <div class="embla__container">
           <template v-for="(artwork, index) in props.artworks" :key="index">
             <div class="embla__slide">
-              <div class="flex gap-10">
-                <img
-                  src="https://picsum.photos/800"
-                  :alt="artwork.title"
-                  class="flex-1 w-full h-full object-cove"
-                />
+              <div class="flex flex-col lg:flex-row gap-10">
+                <div class="flex-1">
+                    <InnerCarouselArtwork
+                        :artwork="artwork"
+                        :title="artwork.title"
+                        :modal="modalOpen"
+                    />
+                </div>
                 <div class="flex-1">
                   <p class="text-(--color-salmon) md:text-xl text-lg">{{ props.artist }}</p>
-                  <h3 class="font-title md:text-5xl text-3xl py-2">{{ artwork.title }}</h3>
+                  <h3 class="font-title md:text-5xl text-2xl py-2">{{ artwork.title }}</h3>
                   <p class="pb-6">{{ current === Languages.English ? artwork.description['en'] : artwork.description['es'] }}</p>
                   <a class="font-bold text-(--color-salmon)">{{ capitalizeFirstLetter($t('knowMoreOf')) }} {{ props.artist }}</a>
                 </div>
@@ -115,13 +124,13 @@ onBeforeUnmount(() => {
         </div>
       </div>
     </section>
-    <div class="embla__controls">
-      <button @click="emblaApi?.scrollPrev()" class="embla__button before_button" type="button">
-        <ChrevronSolid class="w-4 h-4 fill-white" />
+    <div v-if="(props.artworks?.length ?? 0) > 1" class="embla__controls">
+      <button v-if="selectedIndex > 0" @click="emblaApi?.scrollPrev()" class="embla__button p-2 lg:p-3 before_button" type="button">
+        <ChrevronSolid class="lg:w-4 lg:h-4 w-3 h-3 fill-white" />
       </button>
 
-      <button @click="emblaApi?.scrollNext()" class="embla__button after_button" type="button">
-        <ChrevronSolid class="reverse w-4 h-4 fill-white" />
+      <button v-if="selectedIndex < ((props.artworks?.length ?? 0) - 1)" @click="emblaApi?.scrollNext()" class="embla__button p-2 lg:p-3 after_button" type="button">
+        <ChrevronSolid class="reverse lg:w-4 lg:h-4 w-3 h-3 fill-white" />
       </button>
     </div>
   </div>
@@ -140,7 +149,6 @@ onBeforeUnmount(() => {
   background: var(--color-salmon);
   color: white;
   border: 1px solid white;
-  padding: 1rem 1rem;
   cursor: pointer;
   border-radius: 100%;
   z-index: 10;
@@ -157,10 +165,6 @@ onBeforeUnmount(() => {
 
 .embla__button.after_button {
   right: -1.5rem;
-}
-
-.reverse {
-  transform: rotate(180deg);
 }
 
 .close {
