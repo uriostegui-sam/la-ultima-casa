@@ -7,7 +7,6 @@ const { t } = useI18n()
 const aboutKeys = [
   { key: 'whoWeAre', href: '/artistas' },
   { key: 'courses', href: '/cursos' },
-  { key: 'joinTeam', href: '/contacto' },
 ]
 
 const contactKeys = [
@@ -47,7 +46,7 @@ const contactKeys = [
           <ul>
             <template v-for="item in contactKeys" :key="item.key">
               <li>
-                <a :href="item.href" class="hover:underline">{{ t(item.key) }}</a>
+                <a :href="item.href" class="hover:underline">{{ item.key }}</a>
               </li>
             </template>
           </ul>
