@@ -41,6 +41,8 @@ const socialLinks = [
     condition: typeof props.website === 'string',
   },
 ]
+
+const noSocials = !props.facebook && !props.instagram && !props.website ? false : true;
 </script>
 
 <template>
@@ -60,7 +62,7 @@ const socialLinks = [
           class="w-full h-full object-cover"
         />
         <div
-          v-if="props.isArtist"
+          v-if="props.isArtist && noSocials === true"
           class="mt-3 bg-(--color-salmon) flex justify-around lg:w-1/2 w-1/3 rounded-full py-1 lg:py-2"
         >
           <template v-for="link in socialLinks" :key="link.name">
