@@ -11,7 +11,7 @@ defineProps<{
     to="/"
     custom v-slot="{ navigate }"
   >
-    <a :class="header ? '-m-1.5 p-1.5' : ''" @click="navigate">
+    <a class="cursor-pointer" :class="header ? '-m-1.5 p-1.5' : ''" @click="navigate">
       <span class="sr-only">La Última Casa</span>
       <Logo_UC
         :class="[
