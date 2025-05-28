@@ -45,7 +45,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div :class="props.reverse ? 'background' : ''">
+  <div :class="props.reverse ? 'background md:mt-6' : ''">
     <div
       class="flex px-10 md:gap-10 items-center max-w-7xl mx-auto"
       :class="[
@@ -92,7 +92,7 @@ onMounted(() => {
         <p class="py-6 text-lg" v-html="description" />
 
         <div class="flex justify-end">
-          <ActionButton :color="buttonColor" href="#">
+          <ActionButton :color="buttonColor" href="/workshops">
             <div class="flex items-center">
               {{ buttonText }}
               <ArrowRightIcon class="ml-2 w-4 h-4 fill-white" />
