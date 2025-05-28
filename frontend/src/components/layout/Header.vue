@@ -14,7 +14,6 @@ const menuKeys = [
   { key: 'artists', href: '/artists' },
   { key: 'news', href: '/news' },
   { key: 'workshops', href: '/workshops' },
-  { key: 'contact', href: '/contact' },
 ]
 
 const mobileMenuOpen = ref(false)
