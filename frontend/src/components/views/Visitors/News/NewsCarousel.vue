@@ -81,7 +81,7 @@ onMounted(() => {
     <div class="flex justify-between items-center py-3 xl:px-0 pe-5">
         <h1 class="text-(--color-teal)">{{ $t('latestNews') }}</h1>
         <ActionButton
-          :title="$t('seeAll')"
+          :title="'seeAll'"
           :color="'--color-teal'"
           :href="'/news'"
         />

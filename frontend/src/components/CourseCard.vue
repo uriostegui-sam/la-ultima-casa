@@ -1,7 +1,5 @@
 <script setup lang="ts">
 import ActionButton from '@/components/ActionButton.vue'
-import PlusSolid from '@/assets/Icons/plus-solid.svg'
-
 import { defineProps } from 'vue'
 
 const props = defineProps<{
@@ -14,7 +12,7 @@ const props = defineProps<{
 </script>
 
 <template>
-  <div class="flex flex-col lg:flex-row flex-1/4 bg-white rounded-xl justify-center">
+  <div class="flex flex-col lg:flex-row flex-1/4 bg-white rounded-xl justify-between lg:justify-center">
     <div class="flex lg:flex-col px-5 py-3 items-center justify-between text-center gap-3 lg:gap-0">
       <div
         class="relative group max-w-23 lg:max-w-none lg:h-45 lg:w-45 rounded-full overflow-hidden"
@@ -39,14 +37,14 @@ const props = defineProps<{
         </p>
       </div>
       <ActionButton
-        :title="$t('knowMore')"
+        :title="'knowMore'"
         :color="'--color-salmon'"
         :href="props.id"
         class="hidden lg:block"
       />
     </div>
     <ActionButton
-      :title="$t('knowMore')"
+      :title="'knowMore'"
       :color="'--color-salmon'"
       :href="props.id"
       class="lg:hidden justify-self-center"
