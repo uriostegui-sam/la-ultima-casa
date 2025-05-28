@@ -7,6 +7,7 @@ import { Languages, locale } from '@/Services/Translation'
 import { useArtistStore } from '@/stores/ArtistStore'
 import { computed, onMounted } from 'vue'
 import CourseCard from '@/components/CourseCard.vue'
+import Title from '@/components/Title.vue'
 
 const { t } = useI18n()
 const current = locale
@@ -25,6 +26,7 @@ onMounted(async () => {
 
 <template>
   <Header />
+  <Title :title="$t('artists')" />
   <section class="lg:pb-15 lg:pt-5 px-10 mx-auto">
     <div class="flex flex-wrap gap-y-7 gap-x-20">
       <CourseCard
