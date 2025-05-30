@@ -28,7 +28,7 @@ onMounted(async () => {
   <Header />
   <Title :title="$t('artists')" />
   <section class="lg:pb-15 lg:pt-5 px-10 mx-auto">
-    <div class="flex flex-wrap gap-y-7 gap-x-20">
+    <div class="flex flex-wrap gap-y-7 lg:gap-x-20">
       <CourseCard
         v-for="(artist, index) in artistTransformed"
         :key="index"
