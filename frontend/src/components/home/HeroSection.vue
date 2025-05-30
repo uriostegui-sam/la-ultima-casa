@@ -4,6 +4,7 @@ import { useI18n } from 'vue-i18n'
 import ActionButton from '../ActionButton.vue'
 import ArrowRightIcon from '@/assets/Icons/arrow-right-solid.svg'
 import { computed, onMounted, ref } from 'vue'
+import { capitalizeFirstLetter } from '@/Services/Helpers'
 
 const { t } = useI18n()
 const props = defineProps<{
@@ -29,12 +30,12 @@ const imageSrc = computed(() => {
 })
 
 const description = computed(() => {
-  if (props.first) return t('presentation')
+  if (props.first) return capitalizeFirstLetter(t('presentation'))
   return props.reverse ? descriptions.adults : descriptions.kids
 })
 
 const buttonColor = computed(() => (props.reverse ? '--color-salmon' : '--color-teal'))
-const buttonText = computed(() => (props.first ? t('join') : t('explore')))
+const buttonText = computed(() => (props.first ? capitalizeFirstLetter(t('join')) : capitalizeFirstLetter(t('explore'))))
 
 onMounted(() => {
   const header = document.querySelector('header')
@@ -78,7 +79,7 @@ onMounted(() => {
           class="font-title md:text-6xl text-4xl"
           :class="props.reverse ? 'text-(--color-salmon)' : 'text-(--color-teal)'"
         >
-          {{ $t('coursesFor') }}
+          {{ capitalizeFirstLetter($t('coursesFor')) }}
           <span class="font-title-alt">
             {{ props.reverse ? $t('adults') : $t('children') }}
           </span>

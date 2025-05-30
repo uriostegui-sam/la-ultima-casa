@@ -9,6 +9,7 @@ import { Languages, locale } from '@/Services/Translation/index.ts'
 import { useWorkshopStore } from '@/stores/WorkshopStore'
 import { onMounted, computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { capitalizeFirstLetter } from '@/Services/Helpers'
 
 const { t } = useI18n()
 const current = locale
@@ -35,7 +36,7 @@ onMounted(async () => {
 
 <template>
   <Header />
-  <Title :title="$t('workshops')" />
+  <Title :title="capitalizeFirstLetter($t('workshops'))" />
   <MenuFilter :active="activeFilter" @change="activeFilter = $event" class="mb-12" />
   <section class="lg:pb-15 lg:pt-5 px-10 mx-auto">
     <div class="flex flex-wrap gap-y-7 gap-x-20">
