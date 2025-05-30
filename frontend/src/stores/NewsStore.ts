@@ -29,7 +29,7 @@ export const useNewsStore = defineStore('news', {
       this.error = null
       try {
         const news = await NewsService.getById<News>(id)
-        this.selectedNews = news.data
+        this.selectedNews = news
         return news
       } catch (err: any) {
         this.error = err.message || 'Failed to load news'

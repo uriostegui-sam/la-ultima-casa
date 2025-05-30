@@ -36,7 +36,7 @@ onMounted(async () => {
   const id = Number(route.params.id)
 
   await workshopStore.getWorkshop(id)
-  currentWorkshop.value = workshopStore.selectedWorkshop?.data
+  currentWorkshop.value = workshopStore.selectedWorkshop
   updateFormattedDate()
 })
 
