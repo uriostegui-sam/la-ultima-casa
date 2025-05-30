@@ -12,11 +12,11 @@ const props = defineProps<{
 </script>
 
 <template>
-  <div class="flex flex-col lg:flex-row flex-1/4 bg-white rounded-xl justify-between lg:justify-center">
-    <div class="flex lg:flex-col px-5 py-3 items-center justify-between text-center gap-3 lg:gap-0">
+  <div class="flex flex-col lg:flex-row lg:flex-1/4 bg-white rounded-xl lg:justify-center w-full">
+    <div class="flex lg:flex-col px-5 py-3 items-center lg:justify-between text-center gap-3 lg:gap-0">
       <div
-        class="relative group max-w-23 lg:max-w-none lg:h-45 lg:w-45 rounded-full overflow-hidden"
-      >
+        class="relative group max-w-23 flex-1/3 lg:flex-none lg:max-w-none lg:h-45 lg:w-45 rounded-full overflow-hidden"
+        >
         <img
           :src="props.image"
           :alt="props.title"
@@ -28,7 +28,7 @@ const props = defineProps<{
           <div class="img-hover"></div>
         </div>
       </div>
-      <div>
+      <div class="flex-2/3 lg:flex-none">
         <h3 class="text-center font-bold md:text-lg/6 lg:py-3">
           {{ props.title }}
         </h3>
