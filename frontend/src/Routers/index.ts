@@ -5,6 +5,8 @@ import WorkshopInfo from '../components/views/Visitors/Workshop/WorkshopInfo.vue
 import { createRouter, createWebHistory } from 'vue-router'
 import NewsController from '@/Controllers/Visitors/News/NewsController.vue'
 import NewsInfo from '@/components/views/Visitors/News/NewsInfo.vue'
+import ArtistController from '@/Controllers/Visitors/Artists/ArtistController.vue'
+import ArtistInfo from '@/components/views/Visitors/Artists/ArtistInfo.vue'
 
 const routes = [
   {
@@ -12,16 +14,16 @@ const routes = [
     name: 'Home',
     component: HomeController,
   },
-//   {
-//     path: '/team',
-//     name: 'Team',
-//     component: () => import('@/views/Team.vue'),
-//   },
-//   {
-//     path: '/team/:id',
-//     name: 'TeamInfo',
-//     component: () => import('@/views/Team.vue'),
-//   },
+  {
+    path: '/artists',
+    name: 'Artist',
+    component: ArtistController,
+  },
+  {
+    path: '/artists/:id',
+    name: 'ArtistInfo',
+    component: ArtistInfo,
+  },
   {
     path: '/workshops',
     name: 'Workshop',

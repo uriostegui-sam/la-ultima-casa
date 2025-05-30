@@ -17,7 +17,10 @@ class ArtworkResource extends JsonResource
         return [
             'id' => $this->id,
             'title' => $this->title,
-            'description' => translate($this->description),
+            'description' => [
+                'en' => $this->description['en'],
+                'es' => $this->description['es'],
+            ],
             'dimensions' => $this->dimensions,
             'creation_date' => $this->creation_date,
             'artist_id' => $this->artist_id,

@@ -4,6 +4,7 @@ import { useI18n } from 'vue-i18n'
 import ActionButton from '../ActionButton.vue'
 import ArrowRightIcon from '@/assets/Icons/arrow-right-solid.svg'
 import { computed, onMounted, ref } from 'vue'
+import { capitalizeFirstLetter } from '@/Services/Helpers'
 
 const { t } = useI18n()
 const props = defineProps<{
@@ -29,12 +30,12 @@ const imageSrc = computed(() => {
 })
 
 const description = computed(() => {
-  if (props.first) return t('presentation')
+  if (props.first) return capitalizeFirstLetter(t('presentation'))
   return props.reverse ? descriptions.adults : descriptions.kids
 })
 
 const buttonColor = computed(() => (props.reverse ? '--color-salmon' : '--color-teal'))
-const buttonText = computed(() => (props.first ? t('join') : t('explore')))
+const buttonText = computed(() => (props.first ? capitalizeFirstLetter(t('join')) : capitalizeFirstLetter(t('explore'))))
 
 onMounted(() => {
   const header = document.querySelector('header')
@@ -45,7 +46,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div :class="props.reverse ? 'background' : ''">
+  <div :class="props.reverse ? 'background md:mt-6' : ''">
     <div
       class="flex px-10 md:gap-10 items-center max-w-7xl mx-auto"
       :class="[
@@ -78,7 +79,7 @@ onMounted(() => {
           class="font-title md:text-6xl text-4xl"
           :class="props.reverse ? 'text-(--color-salmon)' : 'text-(--color-teal)'"
         >
-          {{ $t('coursesFor') }}
+          {{ capitalizeFirstLetter($t('coursesFor')) }}
           <span class="font-title-alt">
             {{ props.reverse ? $t('adults') : $t('children') }}
           </span>
@@ -92,7 +93,7 @@ onMounted(() => {
         <p class="py-6 text-lg" v-html="description" />
 
         <div class="flex justify-end">
-          <ActionButton :color="buttonColor" href="#">
+          <ActionButton :color="buttonColor" href="/workshops">
             <div class="flex items-center">
               {{ buttonText }}
               <ArrowRightIcon class="ml-2 w-4 h-4 fill-white" />

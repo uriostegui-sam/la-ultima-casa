@@ -19,15 +19,17 @@ export interface Artist {
   name: string;
   profile_image?: string;
   profile_image_url?: string;
-  minibio: string;
-  bio: string;
+  minibio: {
+    en?: string
+    es?: string
+  }
+  bio: {
+    en?: string
+    es?: string
+  }
   skills: Skill[];
   social_links: SocialLinks;
   artworks?: Artwork[];
-  translations?: {
-    minibio: Record<string, string>;
-    bio: Record<string, string>;
-  }
 }
 
 export interface ArtistCreatePayload {

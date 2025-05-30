@@ -6,6 +6,7 @@ import { ref, onMounted, computed } from 'vue'
 import { useNewsStore } from '@/stores/NewsStore'
 import { useI18n } from 'vue-i18n'
 import { Languages, locale } from '@/Services/Translation'
+import { capitalizeFirstLetter } from '@/Services/Helpers'
 
 const { t } = useI18n()
 const current = locale
@@ -77,48 +78,48 @@ onMounted(() => {
 </script>
 
 <template>
-  <section class="max-w-7xl embla my-8 mx-auto ps-5">
+  <section class="relative w-full max-w-7xl embla my-8 mx-auto ps-5">
     <div class="flex justify-between items-center py-3 xl:px-0 pe-5">
-        <h1 class="text-(--color-teal)">{{ $t('latestNews') }}</h1>
+        <h1 class="text-(--color-teal)">{{ capitalizeFirstLetter($t('latestNews')) }}</h1>
         <ActionButton
-          :title="$t('seeAll')"
+          :title="'seeAll'"
           :color="'--color-teal'"
           :href="'/news'"
         />
-    </div>
-    <div class="embla__viewport" ref="emblaRef">
-      <div class="embla__container">
-        <div
-          class="embla__slide"
-          v-for="(newsItem, index) in newsTransformed"
-          :key="newsItem.id"
-          :class="{ 'blurred-slide': index === peekedIndex }"
-        >
-          <NewsCard
-            :title="current === Languages.English ? newsItem.title['en'] : newsItem.title['es']"
-            :description="current === Languages.English ? newsItem.content['en'] : newsItem.content['es']"
-            :image="newsItem.image_url"
-            :date="newsItem.published_at"
-          />
+      </div>
+      <div class="embla__viewport" ref="emblaRef">
+        <div class="embla__container">
+          <div
+            class="embla__slide"
+            v-for="(newsItem, index) in newsTransformed"
+            :key="newsItem.id"
+            :class="{ 'blurred-slide': index === peekedIndex }"
+          >
+            <NewsCard
+              :title="current === Languages.English ? newsItem.title['en'] : newsItem.title['es']"
+              :description="current === Languages.English ? newsItem.content['en'] : newsItem.content['es']"
+              :image="newsItem.image_url"
+              :date="newsItem.published_at"
+            />
+          </div>
         </div>
       </div>
-    </div>
 
-    <!-- Arrows -->
-    <div class="embla__controls">
-      <button @click="emblaApi?.scrollNext()" class="embla__button after_button">→</button>
-    </div>
+      <!-- Arrows -->
+      <div class="embla__controls">
+        <button @click="emblaApi?.scrollNext()" class="embla__button after_button">→</button>
+      </div>
 
-    <!-- Dots -->
-    <div class="embla__dots">
-      <button
-        v-for="index in emblaApi?.scrollSnapList().length || 0"
-        :key="index"
-        @click="scrollTo(index - 1)"
-        :class="{ 'dot--selected': selectedIndex === index - 1 }"
-        class="embla__dot"
-      />
-    </div>
+      <!-- Dots -->
+      <div class="embla__dots">
+        <button
+          v-for="index in emblaApi?.scrollSnapList().length || 0"
+          :key="index"
+          @click="scrollTo(index - 1)"
+          :class="{ 'dot--selected': selectedIndex === index - 1 }"
+          class="embla__dot"
+        />
+      </div>
   </section>
 </template>
 
@@ -131,26 +132,17 @@ h1 {
   width: 50%;
   line-height: 20px;
 }
-
 .embla {
-  position: relative;
   width: 100%;
-  overflow: hidden;
+  padding-bottom: 1rem;
 }
 
 .embla__viewport {
-  overflow: hidden;
   width: 100%;
 }
 
-.embla__container {
-  display: flex;
-}
-
 .embla__slide {
-  position: relative;
   flex: 0 0 90%;
-  min-width: 0;
   padding-right: 1.2rem;
 }
 
@@ -180,25 +172,6 @@ h1 {
   scale: 0.98;
 }
 
-.embla__slide__number {
-  font-size: 5rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 200px;
-  background-color: #ddd;
-}
-
-/* Arrows */
-.embla__controls {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  pointer-events: none;
-}
-
 .embla__button {
   position: absolute;
   top: 50%;
@@ -213,29 +186,8 @@ h1 {
   pointer-events: auto;
 }
 
-.embla__button.before_button {
-  left: 1rem;
-}
-
 .embla__button.after_button {
   right: 1rem;
-}
-
-/* Dots */
-.embla__dots {
-  display: flex;
-  justify-content: center;
-  margin-top: 1rem;
-}
-
-.embla__dot {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  margin: 0 4px;
-  background: #bbb;
-  border: none;
-  cursor: pointer;
 }
 
 .dot--selected {
