@@ -6,6 +6,7 @@ import { ref, onMounted, computed } from 'vue'
 import { useNewsStore } from '@/stores/NewsStore'
 import { useI18n } from 'vue-i18n'
 import { Languages, locale } from '@/Services/Translation'
+import { capitalizeFirstLetter } from '@/Services/Helpers'
 
 const { t } = useI18n()
 const current = locale
@@ -79,7 +80,7 @@ onMounted(() => {
 <template>
   <section class="relative w-full max-w-7xl embla my-8 mx-auto ps-5">
     <div class="flex justify-between items-center py-3 xl:px-0 pe-5">
-        <h1 class="text-(--color-teal)">{{ $t('latestNews') }}</h1>
+        <h1 class="text-(--color-teal)">{{ capitalizeFirstLetter($t('latestNews')) }}</h1>
         <ActionButton
           :title="'seeAll'"
           :color="'--color-teal'"
