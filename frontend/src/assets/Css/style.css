@@ -32,3 +32,75 @@
 
   font-family: var(--font-body);
 }
+
+.img-hover {
+  width: 20%;
+  height: 20%;
+  background-color: white;
+  display: inline-block;
+  mask-repeat: no-repeat;
+  mask-position: center;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  -webkit-mask-size: contain;
+  mask-image: url('../Icons/plus-solid.svg');
+  -webkit-mask-image: url('../Icons/plus-solid.svg');
+}
+
+.embla {
+  overflow: hidden;
+}
+
+.embla__viewport {
+  overflow: hidden;
+}
+
+.embla__container {
+  display: flex;
+}
+
+.embla__slide {
+  position: relative;
+  min-width: 0;
+}
+
+.embla__slide__number {
+  font-size: 5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+  background-color: #ddd;
+}
+
+/* Arrows */
+.embla__controls {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+}
+
+/* Dots */
+.embla__dots {
+  display: flex;
+  justify-content: center;
+  margin-top: .5rem;
+}
+
+.embla__dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin: 0 4px;
+  background: #bbb;
+  border: none;
+  cursor: pointer;
+}
+
+.reverse {
+  transform: rotate(180deg);
+}

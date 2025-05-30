@@ -7,8 +7,12 @@ import { useRoute } from 'vue-router'
 import { onMounted, computed, ref, watch } from 'vue'
 import { capitalizeFirstLetter, formatDateRange } from '@/Services/Helpers'
 import InfoComponent from '@/components/InfoComponent.vue'
+import type { TranslatedSkill } from '@/Interfaces/Skill'
+import NewsCarousel from '../News/NewsCarousel.vue'
+import Footer from '@/components/layout/Footer.vue'
+import Header from '@/components/layout/Header.vue'
 
-const currentLang = locale
+const currentLang = ref(locale)
 const route = useRoute()
 const workshopStore = useWorkshopStore()
 const currentWorkshop = ref<Workshop | null>(null)
@@ -17,13 +21,15 @@ const formattedDate = ref('')
 
 const skillsTransformed = computed(() => {
   if (!currentWorkshop.value?.skills) return ''
+  const skills = currentWorkshop.value.skills as TranslatedSkill[]
 
-  const skills = currentWorkshop.value.skills
-
-  return capitalizeFirstLetter(skills.toString().toLowerCase()).replaceAll(
-    ',',
-    ', ',
+  const translatedNames = skills.map((skill) => 
+    currentLang.value === Languages.English
+      ? skill.en
+      : skill.es
   )
+
+  return capitalizeFirstLetter(translatedNames.join(', ').toLowerCase())
 })
 
 onMounted(async () => {
@@ -52,6 +58,7 @@ watch(locale, () => {
 </script>
 
 <template>
+  <Header />
   <div v-if="currentWorkshop">
     <InfoComponent
       :is-workshop="true"
@@ -79,6 +86,8 @@ watch(locale, () => {
     />
   </div>
   <div v-else>Loading...</div>
+  <NewsCarousel />
+  <Footer />
 </template>
 
 <style scoped></style>

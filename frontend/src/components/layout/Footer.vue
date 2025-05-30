@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { capitalizeFirstLetter } from '@/Services/Helpers'
 import LanguageToggle from '../LanguageToggle.vue'
 import Logo from '../Logo.vue'
 import { useI18n } from 'vue-i18n'
@@ -7,7 +8,6 @@ const { t } = useI18n()
 const aboutKeys = [
   { key: 'whoWeAre', href: '/artistas' },
   { key: 'courses', href: '/cursos' },
-  { key: 'joinTeam', href: '/contacto' },
 ]
 
 const contactKeys = [
@@ -35,25 +35,25 @@ const contactKeys = [
           </div>
         </div>
         <div>
-          <h2 class="mb-2 uppercase font-bold">{{ $t('aboutUs') }}</h2>
+          <h2 class="mb-2 uppercase font-bold">{{ capitalizeFirstLetter($t('aboutUs')) }}</h2>
           <ul>
             <template v-for="item in aboutKeys" :key="item.key">
               <li>
-                <a :href="item.href" class="hover:underline">{{ t(item.key) }}</a>
+                <a :href="item.href" class="hover:underline">{{ capitalizeFirstLetter(t(item.key)) }}</a>
               </li>
             </template>
           </ul>
-          <h2 class="mb-2 mt-8 uppercase font-bold">{{ $t('contactUs') }}</h2>
+          <h2 class="mb-2 mt-8 uppercase font-bold">{{ capitalizeFirstLetter($t('contactUs')) }}</h2>
           <ul>
             <template v-for="item in contactKeys" :key="item.key">
               <li>
-                <a :href="item.href" class="hover:underline">{{ t(item.key) }}</a>
+                <a :href="item.href" class="hover:underline">{{ item.key }}</a>
               </li>
             </template>
           </ul>
         </div>
         <div class="flex flex-col justify-between">
-          <h2 class="mb-2 uppercase font-bold">{{ $t('comeMeetUs') }}</h2>
+          <h2 class="mb-2 uppercase font-bold">{{ capitalizeFirstLetter($t('comeMeetUs')) }}</h2>
           <p>
             Palma Kerpis 152 <br />
             Colinas de Santa Barbara <br />

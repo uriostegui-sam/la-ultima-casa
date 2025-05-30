@@ -1,7 +1,5 @@
 <script setup lang="ts">
 import ActionButton from '@/components/ActionButton.vue'
-import PlusSolid from '@/assets/Icons/plus-solid.svg'
-
 import { defineProps } from 'vue'
 
 const props = defineProps<{
@@ -14,11 +12,11 @@ const props = defineProps<{
 </script>
 
 <template>
-  <div class="flex flex-col lg:flex-row flex-1/4 bg-white rounded-xl justify-center">
-    <div class="flex lg:flex-col px-5 py-3 items-center justify-between text-center gap-3 lg:gap-0">
+  <div class="flex flex-col lg:flex-row lg:flex-1/4 bg-white rounded-xl lg:justify-center w-full">
+    <div class="flex lg:flex-col px-5 py-3 items-center lg:justify-between text-center gap-3 lg:gap-0">
       <div
-        class="relative group max-w-23 lg:max-w-none lg:h-45 lg:w-45 rounded-full overflow-hidden"
-      >
+        class="relative group max-w-23 flex-1/3 lg:flex-none lg:max-w-none lg:h-45 lg:w-45 rounded-full overflow-hidden"
+        >
         <img
           :src="props.image"
           :alt="props.title"
@@ -27,10 +25,10 @@ const props = defineProps<{
         <div
           class="absolute inset-0 bg-(--color-light-salmon) bg-opacity-30 opacity-0 group-hover:opacity-100 transition duration-300 flex items-center justify-center"
         >
-          <div class="card-img"></div>
+          <div class="img-hover"></div>
         </div>
       </div>
-      <div>
+      <div class="flex-2/3 lg:flex-none">
         <h3 class="text-center font-bold md:text-lg/6 lg:py-3">
           {{ props.title }}
         </h3>
@@ -39,14 +37,14 @@ const props = defineProps<{
         </p>
       </div>
       <ActionButton
-        :title="$t('knowMore')"
+        :title="'knowMore'"
         :color="'--color-salmon'"
         :href="props.id"
         class="hidden lg:block"
       />
     </div>
     <ActionButton
-      :title="$t('knowMore')"
+      :title="'knowMore'"
       :color="'--color-salmon'"
       :href="props.id"
       class="lg:hidden justify-self-center"
@@ -54,19 +52,4 @@ const props = defineProps<{
   </div>
 </template>
 
-<style scoped>
-.card-img {
-  width: 20%;
-  height: 20%;
-  background-color: white;
-  display: inline-block;
-  mask-repeat: no-repeat;
-  mask-position: center;
-  mask-size: contain;
-  -webkit-mask-repeat: no-repeat;
-  -webkit-mask-position: center;
-  -webkit-mask-size: contain;
-  mask-image: url('../assets/Icons/plus-solid.svg');
-  -webkit-mask-image: url('../assets/Icons/plus-solid.svg');
-}
-</style>
+<style scoped></style>

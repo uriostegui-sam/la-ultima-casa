@@ -3,6 +3,7 @@ import CourseCard from '@/components/CourseCard.vue'
 import Footer from '@/components/layout/Footer.vue'
 import Header from '@/components/layout/Header.vue'
 import Title from '@/components/Title.vue'
+import { capitalizeFirstLetter } from '@/Services/Helpers'
 import { Languages, locale } from '@/Services/Translation/index.ts'
 import { useNewsStore } from '@/stores/NewsStore'
 import { computed, onMounted } from 'vue'
@@ -25,8 +26,8 @@ onMounted(async () => {
 
 <template>
   <Header />
-  <Title :title="$t('latestNews')" />
-  <section class="lg:pb-15 lg:pt-5 px-10 mx-auto">
+  <Title :title="capitalizeFirstLetter($t('latestNews'))" />
+  <section class="lg:pb-15 lg:pt-5 px-10 mx-auto pb-8">
     <div class="flex flex-wrap gap-y-7 gap-x-20">
       <CourseCard
         v-for="(news, index) in newsTransformed"

@@ -16,8 +16,10 @@ class SkillResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'name' => $this->name[app()->getLocale()] ?? $this->name['es'],
-            'translations' => $this->when($request->user()?->isAdmin(), $this->name),
+            'name' => [
+                'en' => $this->name['en'],
+                'es' => $this->name['es'],
+            ],
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];
