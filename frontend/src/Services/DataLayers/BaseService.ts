@@ -9,8 +9,8 @@ export class BaseService {
   }
 
   async get<T>(url: string = '', config?: AxiosRequestConfig): Promise<T> {
-    const response = await axiosInstance.get<T>(`${this.baseUrl}${url}`, config)
-    return response.data
+    const response = await axiosInstance.get<{ data: T }>(`${this.baseUrl}${url}`, config)
+    return response.data.data
   }
 
   async getAll<T>(): Promise<T> {

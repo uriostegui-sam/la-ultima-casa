@@ -29,7 +29,7 @@ export const useArtistStore = defineStore('artist', {
       this.error = null
       try {
         const artist = await ArtistService.getById<Artist>(id)
-        this.selectedArtist = artist.data
+        this.selectedArtist = artist
         return artist
       } catch (err: any) {
         this.error = err.message || 'Failed to load artist'
