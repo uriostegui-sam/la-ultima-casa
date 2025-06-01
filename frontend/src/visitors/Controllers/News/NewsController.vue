@@ -1,0 +1,45 @@
+<script setup lang="ts">
+import CourseCard from '@/visitors/components/CourseCard.vue'
+import Footer from '@/visitors/components/layout/Footer.vue'
+import Header from '@/visitors/components/layout/Header.vue'
+import Title from '@/visitors/components/Title.vue'
+import { capitalizeFirstLetter } from '@/shared/services/Helpers'
+import { Languages, locale } from '@/shared/services/Translation'
+import { useNewsStore } from '@/shared/stores/NewsStore'
+import { computed, onMounted } from 'vue'
+import { useI18n } from 'vue-i18n'
+
+const newsStore = useNewsStore()
+const { t } = useI18n()
+const current = locale
+
+const newsTransformed = computed(() => {
+  return newsStore.news.map((news) => ({
+    ...news,
+  }))
+})
+
+onMounted(async () => {
+  await newsStore.getNews()
+})
+</script>
+
+<template>
+  <Header />
+  <Title :title="capitalizeFirstLetter($t('latestNews'))" />
+  <section class="lg:pb-15 lg:pt-5 px-10 mx-auto pb-8">
+    <div class="flex flex-wrap gap-y-7 gap-x-20">
+      <CourseCard
+        v-for="(news, index) in newsTransformed"
+        :key="index"
+        :title="current === Languages.English ? news.title['en'] : news.title['es']"
+        :description="current === Languages.English ? news.content['en'] : news.content['es']"
+        :image="news.image_url"
+        :id="`/news/${news.id}`"
+      />
+    </div>
+  </section>
+  <Footer />
+</template>
+
+<style scoped></style>
