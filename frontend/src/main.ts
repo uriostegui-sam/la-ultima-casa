@@ -1,9 +1,7 @@
-import './assets/Css/style.css'
-
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import App from './App.vue'
-import i18n from '@/Services/Translation/index.ts';
+import i18n from '@/shared/services/Translation';
 import router from './Routers';
 
 const app = createApp(App)
