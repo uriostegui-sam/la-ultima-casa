@@ -12,6 +12,8 @@ import ArtistAdminController from '@/admin/Controllers/Artists/ArtistAdminContro
 import { createRouter, createWebHistory } from 'vue-router'
 import Login from '@/admin/views/pages/auth/Login.vue'
 import { useAuthStore } from '@/shared/stores/AuthStore'
+import ArtistForm from '@/admin/views/pages/ArtistForm.vue'
+import ArtworkForm from '@/admin/views/pages/ArtworkForm.vue'
 
 const routes = [
   {
@@ -73,7 +75,22 @@ const routes = [
         name: 'adminArtist',
         component: ArtistAdminController,
       },
+      {
+        path: '/admin/artists/edit/:id',
+        name: 'adminArtistEdit',
+        component: ArtistForm,
+      },
+      {
+        path: '/admin/artists/:id/artwork/edit/:id',
+        name: 'adminArtistArtworkEdit',
+        component: ArtworkForm,
+      },
     ],
+  },
+  {
+    path: '/admin/auth/login',
+    name: 'login',
+    component: Login
   },
   {
     path: '/admin/auth/login',
