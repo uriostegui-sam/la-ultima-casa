@@ -9,6 +9,7 @@ export interface Skill {
 }
 
 export interface TranslatedSkill {
+  id?: number
   en?: string
   es?: string
 }
