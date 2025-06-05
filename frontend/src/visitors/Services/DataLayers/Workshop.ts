@@ -1,0 +1,19 @@
+import type { ApiResponse } from '@/shared/Interfaces/ApiResponse'
+import axiosInstance from '@/shared/services/DataLayers/AxiosInstance'
+import { BaseService } from '@/shared/services/DataLayers/BaseService'
+import type { Workshop, WorkshopCreatePayload, WorkshopUpdatePayload } from '@/shared/Interfaces/Workshop'
+import axios from 'axios'
+
+type WorkshopType = 'permanent' | 'temporary'
+
+class WorkshopService extends BaseService {
+  constructor() {
+    super('/workshops')
+  }
+
+  async getWorkshops(params = {}): Promise<ApiResponse<Workshop[]>> {
+    return this.getPaginated<ApiResponse<Workshop[]>>(params)
+  }
+}
+
+export default new WorkshopService()

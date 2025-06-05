@@ -1,57 +1,83 @@
-import Logo from '@/components/Logo.vue'
-import HomeController from '@/Controllers/Visitors/Home/HomeController.vue'
-import WorkshopController from '@/Controllers/Visitors/Workshop/WorkshopController.vue'
-import WorkshopInfo from '../components/views/Visitors/Workshop/WorkshopInfo.vue'
+import AppLayout from '@/admin/layout/AppLayout.vue'
+import Logo from '@/visitors/components/Logo.vue'
+import ArtistController from '@/visitors/Controllers/Artists/ArtistController.vue'
+import HomeController from '@/visitors/Controllers/Home/HomeController.vue'
+import NewsController from '@/visitors/Controllers/News/NewsController.vue'
+import WorkshopController from '@/visitors/Controllers/Workshop/WorkshopController.vue'
+import ArtistInfo from '@/visitors/views/Artists/ArtistInfo.vue'
+import NewsInfo from '@/visitors/views/News/NewsInfo.vue'
+import VisitorLayout from '@/visitors/views/VisitorLayout.vue'
+import WorkshopInfo from '@/visitors/views/Workshop/WorkshopInfo.vue'
+import ArtistAdminController from '@/admin/Controllers/Artists/ArtistAdminController.vue'
 import { createRouter, createWebHistory } from 'vue-router'
-import NewsController from '@/Controllers/Visitors/News/NewsController.vue'
-import NewsInfo from '@/components/views/Visitors/News/NewsInfo.vue'
-import ArtistController from '@/Controllers/Visitors/Artists/ArtistController.vue'
-import ArtistInfo from '@/components/views/Visitors/Artists/ArtistInfo.vue'
 
 const routes = [
   {
     path: '/',
-    name: 'Home',
-    component: HomeController,
+    component: VisitorLayout,
+    children: [
+      {
+        path: '/',
+        name: 'Home',
+        component: HomeController,
+        meta: { exact: true },
+      },
+      {
+        path: '/artists',
+        name: 'Artist',
+        component: ArtistController,
+      },
+      {
+        path: '/artists/:id',
+        name: 'ArtistInfo',
+        component: ArtistInfo,
+      },
+      {
+        path: '/workshops',
+        name: 'Workshop',
+        component: WorkshopController,
+      },
+      {
+        path: '/workshops/:id',
+        name: 'WorkshopInfo',
+        component: WorkshopInfo,
+      },
+      {
+        path: '/news',
+        name: 'News',
+        component: NewsController,
+        props: true,
+      },
+      {
+        path: '/news/:id',
+        name: 'NewsInfo',
+        component: NewsInfo,
+        props: true,
+      },
+    ],
   },
   {
-    path: '/artists',
-    name: 'Artist',
-    component: ArtistController,
+    path: '/admin',
+    component: AppLayout,
+    children: [
+      {
+        path: '/admin',
+        name: 'dashboard',
+        component: () => import('@/admin/views/Dashboard.vue'),
+      },
+      {
+        path: '/admin/artists',
+        name: 'adminArtist',
+        component: ArtistAdminController,
+      },
+    ],
   },
-  {
-    path: '/artists/:id',
-    name: 'ArtistInfo',
-    component: ArtistInfo,
-  },
-  {
-    path: '/workshops',
-    name: 'Workshop',
-    component: WorkshopController,
-  },
-  {
-    path: '/workshops/:id',
-    name: 'WorkshopInfo',
-    component: WorkshopInfo,
-  },
-  {
-    path: '/news',
-    name: 'News',
-    component: NewsController,
-    props: true
-  },
-  {
-    path: '/news/:id',
-    name: 'NewsInfo',
-    component: NewsInfo,
-    props: true
-  },
-//   // 404 fallback
+  //   // 404 fallback
   {
     path: '/:pathMatch(.*)*',
     name: 'NotFound',
     component: Logo,
-  }
+  },
 ]
 
 const router = createRouter({
