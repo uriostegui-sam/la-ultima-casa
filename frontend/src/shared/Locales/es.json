@@ -36,7 +36,7 @@
     "view": "ver más",
     "name": "nombre",
     "image": "imagen",
-    "minibio": "minibio",
+    "minibio": "mini biografía",
     "bio": "bio",
     "social": "social",
     "actions": "acciones",
@@ -51,6 +51,7 @@
     "success": "éxito",
     "successful": "exitoso",
     "artistDeleted": "artista eliminado",
+    "artistName": "nombre del artista",
     "new": "nuevo",
     "delete": "eliminar",
     "showingArtists": "mostrando del {first} al {last} de {totalRecords} artistas",
@@ -63,6 +64,11 @@
     "forgotPassword": "forgot password?",
     "signIn": "sign in",
     "profile": "perfil",
-    "logout": "log out"
+    "logout": "log out",
+    "skills": "técnicas",
+    "website": "sitio web",
+    "biography": "biografía",
+    "english": "inglés",
+    "spanish": "español"
   }
   
