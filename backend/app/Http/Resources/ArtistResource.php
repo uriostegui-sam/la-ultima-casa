@@ -34,6 +34,7 @@ class ArtistResource extends JsonResource
             ],
             'skills' => $this->whenLoaded('skills', fn() =>
                 $this->skills->map(fn($skill) => [
+                    'id' => $skill->id,
                     'en' => $skill->name['en'],
                     'es' => $skill->name['es'],
                 ])
