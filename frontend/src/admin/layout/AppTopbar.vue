@@ -1,6 +1,7 @@
 <script setup>
 import { useLayout } from '@/admin/layout/composables/layout';
 import AppConfigurator from './AppConfigurator.vue';
+import ProfileMenu from '../components/ProfileMenu.vue';
 import LanguageToggle from '../components/LanguageToggle.vue';
 
 const { toggleMenu, toggleDarkMode, isDarkTheme } = useLayout();
@@ -70,10 +71,7 @@ const { toggleMenu, toggleDarkMode, isDarkTheme } = useLayout();
                         <i class="pi pi-inbox"></i>
                         <span>Messages</span>
                     </button>
-                    <button type="button" class="layout-topbar-action">
-                        <i class="pi pi-user"></i>
-                        <span>Profile</span>
-                    </button>
+                    <ProfileMenu/>
                     <div class="languageToggle">
                         <LanguageToggle/>
                     </div>
