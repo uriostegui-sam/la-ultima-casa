@@ -61,6 +61,7 @@ const routes = [
   {
     path: '/admin',
     component: AppLayout,
+    meta: { requiresAuth: true, requiresAdmin: true },
     children: [
       {
         path: '/admin',
@@ -96,16 +97,22 @@ router.beforeEach(async (to) => {
   const authStore = useAuthStore()
   const isAuthenticated = authStore.isAuthenticated
 
+  if (isAuthenticated && !authStore.user) {
+    try {
+      await authStore.fetchUser()
+    } catch (e) {
+      // Failed to fetch user, probably invalid token
+      authStore.logout()
+      return '/admin/auth/login'
+    }
+  }
+
   if (to.meta.requiresAuth && !isAuthenticated) {
     return '/admin/auth/login'
   }
 
   if (to.meta.requiresAdmin && !authStore.isAdmin) {
     return '/'
-  }
-
-  if (to.meta.requiresAuth && isAuthenticated && !authStore.user) {
-    await authStore.fetchUser()
   }
 })
 

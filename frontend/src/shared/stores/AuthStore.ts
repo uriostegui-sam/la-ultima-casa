@@ -5,18 +5,22 @@ import AuthService from '../services/DataLayers/AuthService';
 import axiosInstance from '../services/DataLayers/AxiosInstance';
 
 const TOKEN_KEY = 'auth_token'
+const storedToken = localStorage.getItem(TOKEN_KEY) || sessionStorage.getItem(TOKEN_KEY)
 
+if (storedToken) {
+  axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${storedToken}`
+}
 export const useAuthStore = defineStore('auth', {
   state: (): AuthState => ({
     user: null,
-    token: localStorage.getItem(TOKEN_KEY) || null
+    token: storedToken,
   }),
 
   actions: {
-    async login(credentials: { email: string; password: string }) {
+    async login(credentials: { email: string; password: string; rememberMe: boolean }) {
       try {
         const response = await AuthService.login(credentials)
-        this.setToken(response.data.token)
+        this.setToken(response.data.token, credentials.rememberMe)
         await this.fetchUser()
         return response
       } catch (error) {
@@ -36,9 +40,13 @@ export const useAuthStore = defineStore('auth', {
       this.user = response.data
     },
 
-    setToken(token: string) {
+    setToken(token: string, remember: boolean = false) {
       this.token = token
-      localStorage.setItem(TOKEN_KEY, token)
+      if (remember) {
+        localStorage.setItem(TOKEN_KEY, token)
+      } else {
+        sessionStorage.setItem(TOKEN_KEY, token)
+      }
       axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${token}`
     },
 
@@ -46,6 +54,7 @@ export const useAuthStore = defineStore('auth', {
       this.token = null
       this.user = null
       localStorage.removeItem(TOKEN_KEY)
+      sessionStorage.removeItem(TOKEN_KEY)
       authService.logout()
     }
   },
