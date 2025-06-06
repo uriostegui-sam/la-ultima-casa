@@ -20,9 +20,9 @@ axiosInstance.defaults.withXSRFToken = true;
 // Request interceptor
 axiosInstance.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
-    const authStore = useAuthStore()
-    if (authStore.token) {
-      config.headers.set('Authorization', `Bearer ${authStore.token}`)
+    const token = localStorage.getItem('auth_token')
+    if (token) {
+      config.headers.set('Authorization', `Bearer ${token}`)
     }
     return config
   }
@@ -36,7 +36,7 @@ axiosInstance.interceptors.response.use(
     if (error.response?.status === 401) {
       const authStore = useAuthStore()
       authStore.logout()
-      window.location.href = '/login'
+      window.location.href = '/admin/auth/login'
     }
     return Promise.reject(error.response?.data || error)
   }
