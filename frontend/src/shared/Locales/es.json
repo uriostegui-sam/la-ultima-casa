@@ -54,6 +54,15 @@
     "new": "nuevo",
     "delete": "eliminar",
     "showingArtists": "mostrando del {first} al {last} de {totalRecords} artistas",
-    "manageArtist": "gestionar artistas"
+    "manageArtist": "gestionar artistas",
+    "welcomeTo": "welcome to",
+    "signInCont": "sign in to continue",
+    "email": "email",
+    "password": "password",
+    "rememberMe": "remember me",
+    "forgotPassword": "forgot password?",
+    "signIn": "sign in",
+    "profile": "perfil",
+    "logout": "log out"
   }
   
