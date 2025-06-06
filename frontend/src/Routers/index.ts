@@ -10,6 +10,8 @@ import VisitorLayout from '@/visitors/views/VisitorLayout.vue'
 import WorkshopInfo from '@/visitors/views/Workshop/WorkshopInfo.vue'
 import ArtistAdminController from '@/admin/Controllers/Artists/ArtistAdminController.vue'
 import { createRouter, createWebHistory } from 'vue-router'
+import Login from '@/admin/views/pages/auth/Login.vue'
+import { useAuthStore } from '@/shared/stores/AuthStore'
 
 const routes = [
   {
@@ -72,6 +74,11 @@ const routes = [
       },
     ],
   },
+  {
+    path: '/admin/auth/login',
+    name: 'login',
+    component: Login
+  },
   //   // 404 fallback
   {
     path: '/:pathMatch(.*)*',
@@ -83,6 +90,23 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(),
   routes,
+})
+
+router.beforeEach(async (to) => {
+  const authStore = useAuthStore()
+  const isAuthenticated = authStore.isAuthenticated
+
+  if (to.meta.requiresAuth && !isAuthenticated) {
+    return '/admin/auth/login'
+  }
+
+  if (to.meta.requiresAdmin && !authStore.isAdmin) {
+    return '/'
+  }
+
+  if (to.meta.requiresAuth && isAuthenticated && !authStore.user) {
+    await authStore.fetchUser()
+  }
 })
 
 export default router

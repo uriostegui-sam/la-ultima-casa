@@ -83,7 +83,7 @@ class AuthController extends Controller
     public function logout()
     {
         $this->authService->logoutUser(auth()->user());
-
-        return response()->json(['message' => 'Not authenticated'], 401);
+        
+        return response()->json(['message' => 'Logged out successfully']);
     }
 }
