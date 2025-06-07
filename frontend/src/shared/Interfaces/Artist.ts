@@ -11,11 +11,7 @@ export interface SocialLinks {
 export interface Artist {
   id: number;
   user_id: number;
-  user: {
-    id: number;
-    name: string;
-    email: string;
-  };
+  user: Record<string, string>;
   name: string;
   profile_image?: string;
   profile_image_url?: string;
@@ -34,6 +30,7 @@ export interface Artist {
 
 export interface ArtistCreatePayload {
   user_id: number;
+  user: Record<string, string>;
   profile_image?: File;
   minibio: Record<string, string>;
   bio: Record<string, string>;
@@ -43,7 +40,7 @@ export interface ArtistCreatePayload {
 
 export interface ArtistUpdatePayload {
   id: number
-  name?: string
+  user: Record<string, string>;
   user_id?: number
   minibio?: Record<string, string>
   bio?: Record<string, string>
