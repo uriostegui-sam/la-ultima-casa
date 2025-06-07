@@ -46,6 +46,11 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
+    public function artist()
+    {
+        return $this->hasOne(Artist::class);
+    }
+
     public function isAdmin(): bool
     {
         return $this->role === 'admin';
