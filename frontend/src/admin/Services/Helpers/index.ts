@@ -1,3 +1,5 @@
+import { capitalizeFirstLetter } from "@/shared/services/Helpers";
+
 export const getLanguageStatus = (textObj: { en?: string; es?: string }) => {
   const hasEN = !!textObj?.en;
   const hasES = !!textObj?.es;
@@ -25,3 +27,27 @@ export const getSocialLinksStatus = (links: Object) => {
         }
       }).join(' ');
 };
+
+export const showSuccessToast = (toast: any, t: Function, key: string, life = 3000) => {
+  toast.add({
+    severity: 'success',
+    summary: capitalizeFirstLetter(t('success')),
+    detail: capitalizeFirstLetter(t(key)),
+    life: life,
+  });
+}
+
+export const showErrorToast = (toast: any, t: Function, err: unknown, fallbackKey: string, life = 5000) => {
+  let errorMessage = t(fallbackKey);
+
+  if (err && typeof err === 'object' && 'message' in err) {
+    errorMessage = (err as { message?: string })?.message ?? errorMessage;
+  }
+
+  toast.add({
+    severity: 'error',
+    summary: capitalizeFirstLetter(t('error')),
+    detail: capitalizeFirstLetter(t(errorMessage)) || capitalizeFirstLetter(t(fallbackKey)),
+    life,
+  });
+}
