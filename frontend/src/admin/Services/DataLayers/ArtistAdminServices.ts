@@ -59,7 +59,6 @@ class ArtistAdminService extends BaseService {
       payload.skills.forEach(id => formData.append('skills[]', id.toString()))
     }
     
-    console.log(formData)
     formData.append('_method', 'PUT')
 
     const response = await axiosInstance.post<Artist>(

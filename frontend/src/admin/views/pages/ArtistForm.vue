@@ -8,24 +8,30 @@ import { useI18n } from 'vue-i18n'
 import { capitalizeFirstLetter } from '@/shared/services/Helpers'
 import { useRoute } from 'vue-router'
 import { useToast } from 'primevue/usetoast'
-import type { ArtistFormErrors } from '@/admin/Interfaces/Error'
+import { useAdminArtworkStore } from '@/admin/stores/ArtworkAdminStore'
+import { showErrorToast, showSuccessToast } from '@/admin/Services/Helpers'
 
 const emit = defineEmits<{
   (e: 'success', artist: Artist): void
 }>()
 
-const errors = ref<ArtistFormErrors>({})
+const profileImageFile = ref<File | null>(null)
+const profileImagePreview = ref<string | null>(null)
 const toast = useToast()
 const route = useRoute()
 const { t } = useI18n()
 const id = Number(route.params.id)
 const currentLang = locale
 const artistAdminStore = useAdminArtistStore()
+const artworkAdminStore = useAdminArtworkStore()
 const skillAdminStore = useAdminSkillStore()
 const isEditMode = computed(() => !!id)
 const currentArtist = ref<Artist | null>(null)
 const currentArtistSkills = ref<number[]>([])
 const artist = ref<Artist | null>(null)
+const displayConfirmation = ref(false)
+const artworkToDelete = ref<number | string | null>(null)
+
 const skillOptions = computed(() =>
   skillAdminStore.skills.map((skill) => ({
     label: currentLang.value === Languages.English ? skill.name.en : skill.name.es,
@@ -33,14 +39,54 @@ const skillOptions = computed(() =>
   })),
 )
 
+const openConfirmation = (id: number | string) => {
+  artworkToDelete.value = id
+  displayConfirmation.value = true
+}
+
+function closeConfirmation() {
+  displayConfirmation.value = false
+}
+
+const onProfileImageSelect = (event: any) => {
+  const file = event.files?.[0]
+  if (file) {
+    profileImageFile.value = file
+    profileImagePreview.value = URL.createObjectURL(file)
+  }
+}
+
+const removeProfileImage = () => {
+  profileImageFile.value = null
+  profileImagePreview.value = null
+}
+
+const removeArtwork = (id: string | number) => {
+  if (!currentArtist.value) return
+
+  displayConfirmation.value = false
+  try {
+    artworkAdminStore.deleteArtwork(id)
+
+    currentArtist.value.artworks =
+      currentArtist.value.artworks?.filter((art) => art.id !== id) || []
+
+    showSuccessToast(toast, t, 'artistSavedSuccessfully', 3000)
+  } catch (err: unknown) {
+    showErrorToast(toast, t, err, 'errorSavingArtist')
+  }
+}
+
 onMounted(async () => {
   await skillAdminStore.getSkills()
 
   if (route.params.id) {
     await artistAdminStore.getArtist(id)
-    artist.value = artistAdminStore.selectedArtist
 
+    artist.value = artistAdminStore.selectedArtist
+    profileImagePreview.value = artist.value?.profile_image_url ?? null
     currentArtist.value = JSON.parse(JSON.stringify(artist.value))
+
     currentArtistSkills.value = artist.value?.skills
       ? artist.value.skills.map((skill) => skill.id)
       : []
@@ -59,14 +105,14 @@ onMounted(async () => {
       skills: [],
       social_links: { website: '', instagram: '', twitter: '', flickr: '' },
       artworks: [],
+      profile_image_url: '',
     }
   }
 })
 
 const handleSubmit = async () => {
-  errors.value = {}; 
   if (!currentArtist.value) return
-  
+
   try {
     const payload: ArtistCreatePayload | ArtistUpdatePayload = {
       user_id: currentArtist.value.user_id,
@@ -75,6 +121,7 @@ const handleSubmit = async () => {
       bio: currentArtist.value.bio,
       skills: currentArtistSkills.value,
       social_links: currentArtist.value.social_links,
+      profile_image: profileImageFile.value ?? undefined,
     }
 
     let result: Artist
@@ -85,24 +132,9 @@ const handleSubmit = async () => {
     }
 
     emit('success', result)
-    toast.add({
-      severity: 'success',
-      summary: capitalizeFirstLetter(t('success')),
-      detail: capitalizeFirstLetter(t('artistSavedSuccessfully')),
-      life: 3000,
-    })
+    showSuccessToast(toast, t, 'artistSavedSuccessfully', 3000)
   } catch (err: unknown) {
-    let errorMessage = t('errorSavingArtist')
-
-    if (err && typeof err === 'object' && 'message' in err) {
-      errorMessage = (err as { message?: string })?.message ?? errorMessage
-    }
-    toast.add({
-      severity: 'error',
-      summary: capitalizeFirstLetter(t('error')),
-      detail: capitalizeFirstLetter(t(errorMessage)) || capitalizeFirstLetter(t('errorSavingArtist')),
-      life: 5000
-    })
+    showErrorToast(toast, t, err, 'errorSavingArtist')
   }
 }
 </script>
@@ -110,6 +142,38 @@ const handleSubmit = async () => {
 <template>
   <div v-if="currentArtist">
     <form @submit.prevent="handleSubmit" class="space-y-6">
+      <!-- Profile Image Upload -->
+      <div class="flex flex-wrap justify-center flex-col">
+        <label class="block font-semibold mb-1 text-center">{{
+          capitalizeFirstLetter(t('profileImage'))
+        }}</label>
+        <div v-if="profileImagePreview" class="my-4 mb-10 relative w-32 h-32 m-auto">
+          <img :src="profileImagePreview" class="w-full h-full object-cover rounded-full" />
+          <Button
+            icon="pi pi-trash"
+            outlined
+            severity="danger"
+            rounded
+            @click="removeProfileImage"
+          />
+        </div>
+        <div v-if="!profileImagePreview" class="">
+          <FileUpload
+            name="profile"
+            accept="image/*"
+            :maxFileSize="5000000"
+            @uploader="onProfileImageSelect"
+            mode="advanced"
+            :auto="false"
+            customUpload
+          >
+            <template #empty>
+              <p>{{ capitalizeFirstLetter(t('dragDrop')) }}</p>
+            </template>
+          </FileUpload>
+        </div>
+      </div>
+
       <!-- Name -->
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
@@ -118,7 +182,7 @@ const handleSubmit = async () => {
             v-model="currentArtist.user.name"
             :placeholder="`${capitalizeFirstLetter(t('artistName'))}`"
             class="w-full"
-          />          
+          />
         </div>
         <div>
           <label class="block font-semibold mb-1">{{ capitalizeFirstLetter(t('lastName')) }}</label>
@@ -126,7 +190,7 @@ const handleSubmit = async () => {
             v-model="currentArtist.user.lastname"
             :placeholder="`${capitalizeFirstLetter(t('artistLastName'))}`"
             class="w-full"
-          />          
+          />
         </div>
       </div>
 
@@ -142,7 +206,7 @@ const handleSubmit = async () => {
           <label class="block font-semibold mb-1">{{
             `${capitalizeFirstLetter(t('minibio'))} ${capitalizeFirstLetter(t('spanish'))}`
           }}</label>
-          <Textarea v-model="currentArtist.minibio.es" rows="2" class="w-full" />          
+          <Textarea v-model="currentArtist.minibio.es" rows="2" class="w-full" />
         </div>
       </div>
 
@@ -158,7 +222,7 @@ const handleSubmit = async () => {
           <label class="block font-semibold mb-1">{{
             `${capitalizeFirstLetter(t('biography'))} ${capitalizeFirstLetter(t('spanish'))}`
           }}</label>
-          <Textarea v-model="currentArtist.bio.es" rows="5" class="w-full" />          
+          <Textarea v-model="currentArtist.bio.es" rows="5" class="w-full" />
         </div>
       </div>
 
@@ -174,7 +238,7 @@ const handleSubmit = async () => {
           class="w-full"
           option-label="label"
           option-value="value"
-        />        
+        />
       </div>
 
       <!-- Social Links -->
@@ -213,9 +277,10 @@ const handleSubmit = async () => {
       />
     </form>
 
-    <div class="flex flex-wrap mt-10 gap-3">
-      <div v-for="(artwork, index) in currentArtist.artworks" :key="index" class="">
-        <RouterLink :to="`/admin/artists/${currentArtist.id}/artwork/edit/${artwork.id}`">
+    <div class="pt-5 mt-10 ">
+      <label class="block font-semibold mb-1">{{ capitalizeFirstLetter(t('artworks')) }}</label>
+      <div class="flex flex-wrap gap-3 justify-around">
+        <div v-for="(artwork, index) in currentArtist.artworks" :key="index" class="">
           <p>{{ artwork.title }}</p>
           <!-- :src="getPrimaryImage(artwork)"  -->
           <Image
@@ -223,7 +288,46 @@ const handleSubmit = async () => {
             :alt="artwork.title"
             width="250"
           />
-        </RouterLink>
+          <div class="flex justify-around pt-2">
+            <Button
+              icon="pi pi-trash"
+              severity="danger"
+              rounded
+              @click="openConfirmation(artwork.id)"
+            />
+            <Dialog
+              :header="capitalizeFirstLetter(t('confirmation'))"
+              v-model:visible="displayConfirmation"
+              :style="{ width: '350px' }"
+              :modal="true"
+            >
+              <div class="flex items-center justify-center">
+                <i class="pi pi-exclamation-triangle mr-4" style="font-size: 2rem" />
+                <span>{{ capitalizeFirstLetter(t('sureDelete')) }}</span>
+              </div>
+              <template #footer>
+                <Button
+                  :label="capitalizeFirstLetter(t('no'))"
+                  icon="pi pi-times"
+                  @click="closeConfirmation"
+                  text
+                  severity="secondary"
+                />
+                <Button
+                  :label="capitalizeFirstLetter(t('yes'))"
+                  icon="pi pi-check"
+                  @click="removeArtwork(artwork.id)"
+                  severity="danger"
+                  outlined
+                  autofocus
+                />
+              </template>
+            </Dialog>
+            <RouterLink :to="`/admin/artists/${currentArtist.id}/artwork/edit/${artwork.id}`">
+              <Button icon="pi pi-pencil" rounded class="mr-2" />
+            </RouterLink>
+          </div>
+        </div>
       </div>
     </div>
   </div>
