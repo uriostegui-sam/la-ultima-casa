@@ -12,6 +12,7 @@
     "closeMenu": "close menu",
     "openMainMenu": "open main menu",
     "artists": "artists",
+    "artworks": "artworks",
     "news": "news",
     "latestNews": "latest news",
     "seeAll": "see all",
@@ -54,6 +55,7 @@
     "success": "success",
     "successful": "successful",
     "artistDeleted": "artist deleted",
+    "artistsDeleted": "artists deleted",
     "new": "new",
     "delete": "delete",
     "showingArtists": "showing {first} to {last} of {totalRecords} artists",
@@ -86,6 +88,7 @@
     "saveArtist": "save artist",
     "error": "error",
     "artistSavedSuccessfully": "artist saved successfully.",
+    "artistDeletedSuccessfully": "artist deleted successfully.",    
     "errorSavingArtist": "there was an error saving the artist.",
     "nameRequired" :"the name is required",
     "lastNameRequired" :"the last name is required",
@@ -93,6 +96,9 @@
     "minibioMin" :"the minibio has to have at least :min characters",
     "bioRequired" :"the biography in spanish is required",
     "bioMin" :"the biography has to have at least :min characters",
-    "selectRequired" :"you have to select at least one skill"
+    "selectRequired" :"you have to select at least one skill",
+    "profileImage": "profile picture",
+    "confirmation": "confirmation",
+    "cannotArtistWArtwork": "cannot delete artist with existing artworks"
   }
   
