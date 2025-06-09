@@ -15,6 +15,8 @@ export const getSocialLinksStatus = (links: Object) => {
     .filter(([_, value]) => value !== null)
     .map(([key]) => key);
   
+  if (completed.length === 0) return 'pi-times'
+  
   return completed.length === 4 
     ? 'pi-face-smile' 
     : completed.map(platform => {

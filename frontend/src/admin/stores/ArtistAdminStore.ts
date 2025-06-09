@@ -85,6 +85,7 @@ export const useAdminArtistStore = defineStore('adminArtist', {
         }
       } catch (err: any) {
         this.error = err.message || 'Failed to delete artist'
+        throw err
       } finally {
         this.loading = false
       }
