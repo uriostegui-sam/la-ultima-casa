@@ -23,7 +23,10 @@ class StoreArtistRequest extends FormRequest
     {
         return [
             'profile_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'user_id' => 'required|exists:users,id',
+            'user_id' => 'nullable|exists:users,id',
+            'user.email' => 'required_without:user_id|email|unique:users,email',
+            'user.name' => 'required_without:user_id|string|max:255',
+            'user.lastname' => 'required_without:user_id|string|max:255',            
             'minibio.en' => 'required|string|min:20|max:160',
             'minibio.es' => 'required|string|min:20|max:160',
             'bio.en' => 'required|string|min:100',

@@ -3,13 +3,26 @@
 namespace App\Services;
 
 use App\Models\Artist;
+use App\Models\User;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class ArtistService
 {
     public function createArtist(array $data): Artist
     {
+        if (empty($data['user_id']) && !empty($data['user'])) {
+            $user = User::create([
+                'first_name' => $data['user']['name'],
+                'last_name' => $data['user']['lastname'],
+                'email' => $data['user']['email'],
+                'password' => bcrypt('laultimacasa'), // or set a default/password reset flow
+                'role' => 'artist',
+            ]);
+            $data['user_id'] = $user->id;
+        }
+        
         if (array_key_exists('profile_image', $data) && $data['profile_image'] instanceof UploadedFile) {
             $data['profile_image'] = $this->storeProfileImage($data['profile_image']);
         }
