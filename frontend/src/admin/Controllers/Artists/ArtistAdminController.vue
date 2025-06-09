@@ -3,7 +3,7 @@ import { FilterMatchMode } from '@primevue/core/api'
 import { useToast } from 'primevue/usetoast'
 import { computed, onMounted, ref } from 'vue'
 import { useAdminArtistStore } from '@/admin/stores/ArtistAdminStore'
-import { getLanguageStatus, getSocialLinksStatus } from '@/admin/Services/Helpers'
+import { getLanguageStatus, getSocialLinksStatus, showErrorToast, showSuccessToast } from '@/admin/Services/Helpers'
 import { capitalizeFirstLetter } from '@/shared/services/Helpers'
 import { useI18n } from 'vue-i18n'
 
@@ -22,49 +22,60 @@ const artistTransformed = computed(() => {
 
 onMounted(async () => {
   await artistAdminStore.getArtists()
-  console.log(artistTransformed)
 })
 
 const toast = useToast()
 const dt = ref()
-const artists = ref()
+const artists = ref([])
 const artistDialog = ref(false)
 const deleteArtistDialog = ref(false)
 const deleteArtistsDialog = ref(false)
 const artist = ref({})
-const selectedArtists = ref()
+const selectedArtists = ref([])
 const filters = ref({
   global: { value: null, matchMode: FilterMatchMode.CONTAINS },
 })
 const submitted = ref(false)
-
-function openNew() {
-  artist.value = {}
-  submitted.value = false
-  artistDialog.value = true
-}
 
 function confirmDeleteArtist(art) {
   artist.value = art
   deleteArtistDialog.value = true
 }
 
-function deleteArtist() {
-  artists.value = artists.value.filter((val) => val.id !== artist.value.id)
+async function deleteArtist(id) {
   deleteArtistDialog.value = false
+    try {
+    await artistAdminStore.deleteArtist(id)
+
+    showSuccessToast(toast, t, 'artistDeletedSuccessfully', 3000)
+    artist.value = {}
+  } catch (err) {
+    showErrorToast(toast, t, err, 'errorSavingArtist')
+  }
   artist.value = {}
-  toast.add({ severity: "success", summary: capitalizeFirstLetter(t('successful')), detail: capitalizeFirstLetter(t('artistDeleted')), life: 3000 })
 }
 
 function confirmDeleteSelected() {
   deleteArtistsDialog.value = true
 }
 
-function deleteSelectedArtists() {
-  artists.value = artists.value.filter((val) => !selectedArtists.value.includes(val))
-  deleteArtistsDialog.value = false
-  selectedArtists.value = null
-  toast.add({ severity: 'success', summary: capitalizeFirstLetter(t('successful')), detail: capitalizeFirstLetter(t('artistDeleted')), life: 3000 })
+async function deleteSelectedArtists() {
+  try {
+    const deletePromises = selectedArtists.value.map(artist => 
+      artistAdminStore.deleteArtist(artist.id)
+    );
+    
+    await Promise.all(deletePromises);
+    
+    await artistAdminStore.getArtists();
+    
+    selectedArtists.value = [];
+    deleteArtistsDialog.value = false;
+    
+    showSuccessToast(toast, t, 'artistsDeleted', 3000);
+  } catch (err) {
+    showErrorToast(toast, t, err, 'errorDeletingArtists');
+  }
 }
 </script>
 
@@ -73,6 +84,8 @@ function deleteSelectedArtists() {
     <div class="card">
       <Toolbar class="mb-6">
         <template #start>
+          <RouterLink 
+                :to="{ name: 'adminArtistArtistCreate'}">
           <Button
             :label="capitalizeFirstLetter(t('new'))"
             icon="pi pi-plus"
@@ -80,6 +93,7 @@ function deleteSelectedArtists() {
             class="mr-2"
             @click="openNew"
           />
+          </RouterLink>
           <Button
             :label="capitalizeFirstLetter(t('delete'))"
             icon="pi pi-trash"
@@ -151,7 +165,8 @@ function deleteSelectedArtists() {
         </Column>
         <Column :header="capitalizeFirstLetter(t('actions'))" :exportable="false" style="min-width: 12rem">
           <template #body="slotProps">
-            <RouterLink :to="`/admin/artists/edit/${slotProps.data.id}`">
+            <RouterLink 
+                :to="{ name: 'adminArtistEdit', params: { id: slotProps.data.id } }">
                 <Button
                 icon="pi pi-pencil"
                 outlined
@@ -186,7 +201,7 @@ function deleteSelectedArtists() {
       </div>
       <template #footer>
         <Button :label="capitalizeFirstLetter(t('no'))" icon="pi pi-times" text @click="deleteArtistDialog = false" />
-        <Button :label="capitalizeFirstLetter(t('yes'))" icon="pi pi-check" @click="deleteArtist" />
+        <Button :label="capitalizeFirstLetter(t('yes'))" icon="pi pi-check" @click="deleteArtist(artist.id)" />
       </template>
     </Dialog>
 
@@ -198,11 +213,11 @@ function deleteSelectedArtists() {
     >
       <div class="flex items-center gap-4">
         <i class="pi pi-exclamation-triangle !text-3xl" />
-        <span v-if="artist">{{ capitalizeFirstLetter(t('sureDeleteSelectedProducts')) }}</span>
+        <span v-if="artist">{{ capitalizeFirstLetter(t('sureDeleteSelectedArtists')) }}</span>
       </div>
       <template #footer>
         <Button :label="capitalizeFirstLetter(t('no'))" icon="pi pi-times" text @click="deleteArtistsDialog = false" />
-        <Button :label="capitalizeFirstLetter(t('yes'))" icon="pi pi-check" text @click="deleteSelectedArtists" />
+        <Button :label="capitalizeFirstLetter(t('yes'))" icon="pi pi-check" @click="deleteSelectedArtists" />
       </template>
     </Dialog>
   </div>
