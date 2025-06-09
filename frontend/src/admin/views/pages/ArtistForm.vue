@@ -6,7 +6,7 @@ import type { Artist, ArtistCreatePayload, ArtistUpdatePayload } from '@/shared/
 import { Languages, locale } from '@/shared/services/Translation'
 import { useI18n } from 'vue-i18n'
 import { capitalizeFirstLetter } from '@/shared/services/Helpers'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { useToast } from 'primevue/usetoast'
 import { useAdminArtworkStore } from '@/admin/stores/ArtworkAdminStore'
 import { showErrorToast, showSuccessToast } from '@/admin/Services/Helpers'
@@ -19,6 +19,7 @@ const profileImageFile = ref<File | null>(null)
 const profileImagePreview = ref<string | null>(null)
 const toast = useToast()
 const route = useRoute()
+const router = useRouter()
 const { t } = useI18n()
 const id = Number(route.params.id)
 const currentLang = locale
@@ -129,6 +130,10 @@ const handleSubmit = async () => {
       result = await artistAdminStore.updateArtist(id, { ...payload, id } as ArtistUpdatePayload)
     } else {
       result = await artistAdminStore.createArtist(payload as ArtistCreatePayload)
+      
+      if (result?.id) {
+        router.push({ name: 'adminArtistEdit', params: { id: result.id } })
+      }
     }
 
     emit('success', result)
@@ -241,8 +246,36 @@ const handleSubmit = async () => {
         />
       </div>
 
+      <!-- User -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label class="block font-semibold mb-1">Email</label>
+          <InputText
+            v-model="currentArtist.user.email"
+            :placeholder="capitalizeFirstLetter(t('email'))"
+            class="w-full"
+          />
+        </div>
+        <div>
+          <label class="block font-semibold mb-1">{{ capitalizeFirstLetter(t('password')) }}</label>
+          <Password
+            v-model="currentArtist.user.password"
+            :placeholder="capitalizeFirstLetter(t('password'))"
+            class="w-full"
+          />
+        </div>
+      </div>
+
       <!-- Social Links -->
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label class="block font-semibold mb-1">Instagram</label>
+          <InputText
+            v-model="currentArtist.social_links.instagram"
+            placeholder="@username"
+            class="w-full"
+          />
+        </div>
         <div>
           <label class="block font-semibold mb-1">Twitter</label>
           <InputText
@@ -251,10 +284,12 @@ const handleSubmit = async () => {
             class="w-full"
           />
         </div>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
-          <label class="block font-semibold mb-1">Instagram</label>
+          <label class="block font-semibold mb-1">Tiktok</label>
           <InputText
-            v-model="currentArtist.social_links.instagram"
+            v-model="currentArtist.social_links.flickr"
             placeholder="@username"
             class="w-full"
           />
@@ -267,6 +302,7 @@ const handleSubmit = async () => {
             class="w-full"
           />
         </div>
+      
       </div>
 
       <!-- Submit -->
