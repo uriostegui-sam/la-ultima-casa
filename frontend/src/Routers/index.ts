@@ -81,6 +81,11 @@ const routes = [
         component: ArtistForm,
       },
       {
+        path: '/admin/artists/create',
+        name: 'adminArtistArtistCreate',
+        component: ArtistForm,
+      },
+      {
         path: '/admin/artists/:id/artwork/edit/:id',
         name: 'adminArtistArtworkEdit',
         component: ArtworkForm,
