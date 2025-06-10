@@ -11,7 +11,6 @@ const axiosInstance: AxiosInstance = axios.create({
   withCredentials: true,
   headers: {
     'Accept': 'application/json',
-    'Content-Type': 'application/json'
   }
 })
 
@@ -24,6 +23,17 @@ axiosInstance.interceptors.request.use(
     if (token) {
       config.headers.set('Authorization', `Bearer ${token}`)
     }
+    
+    // Only set Content-Type if it's NOT FormData
+    const isFormData = (data: any): data is FormData => {
+      return typeof FormData !== 'undefined' && data && typeof data.append === 'function' && data instanceof FormData;
+    };
+
+    if (!isFormData(config.data)) {
+      config.headers.set('Content-Type', 'application/json');
+    }
+
+    
     return config
   }
 )
