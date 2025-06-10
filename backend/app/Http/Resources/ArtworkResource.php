@@ -21,7 +21,11 @@ class ArtworkResource extends JsonResource
                 'en' => $this->description['en'],
                 'es' => $this->description['es'],
             ],
-            'dimensions' => $this->dimensions,
+            'dimensions' => [
+                'width' => $this->dimensions['width'],
+                'height' => $this->dimensions['height'],
+                'depth' => $this->dimensions['depth'],
+            ],
             'creation_date' => $this->creation_date,
             'artist_id' => $this->artist_id,
             'artist' => new ArtistResource($this->whenLoaded('artist')),

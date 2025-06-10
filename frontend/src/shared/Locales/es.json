@@ -99,6 +99,12 @@
     "selectRequired": "debe seleccionar al menos una técnica",
     "profileImage": "imagen de perfil",
     "confirmation": "confirmación",
-    "cannotArtistWArtwork": "no se puede eliminar un artista con obras de arte existentes"
+    "cannotArtistWArtwork": "no se puede eliminar un artista con obras de arte existentes",
+    "selectImages": "selecciona imágenes",
+    "upload": "subir",
+    "cancel": "cancelar",
+    "primaryImage": "imagen primaria",
+    "setPrimary": "hacerla primaria",
+    "deleteImage": "eliminar imagen"
   }
   

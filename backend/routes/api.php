@@ -53,6 +53,9 @@ Route::middleware(['auth:sanctum', 'throttle:api'])->group(function () {
     Route::delete('/artworks/{artwork}/images/{image}', [ArtworkController::class, 'destroyImage'])
         ->middleware('can:update,artwork');
     Route::apiResource('artworks', ArtworkController::class)->except(['index', 'show']);
+    Route::patch('artworks/{artwork}/images/{image}/set-primary', [ArtworkController::class, 'setPrimaryImage']);
+    Route::patch('artworks/{artwork}/reorder-images', [ArtworkController::class, 'reorderImages']);
+    Route::delete('artworks/{artwork}/images/{image}', [ArtworkController::class, 'deleteImage']);
 });
 
 // Admin-only routes
