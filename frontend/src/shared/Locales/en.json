@@ -99,6 +99,12 @@
     "selectRequired" :"you have to select at least one skill",
     "profileImage": "profile picture",
     "confirmation": "confirmation",
-    "cannotArtistWArtwork": "cannot delete artist with existing artworks"
+    "cannotArtistWArtwork": "cannot delete artist with existing artworks",
+    "selectImages": "select Images",
+    "upload": "upload",
+    "cancel": "cancel",
+    "primaryImage": "primary image",
+    "setPrimary": "set as primary",
+    "deleteImage": "delete image"
   }
   
