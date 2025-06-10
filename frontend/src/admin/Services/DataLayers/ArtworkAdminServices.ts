@@ -2,57 +2,23 @@ import type { Artwork, ArtworkCreatePayload, ArtworkUpdatePayload } from '@/shar
 import type { ApiResponse } from '@/shared/Interfaces/ApiResponse'
 import { BaseService } from "@/shared/services/DataLayers/BaseService"
 import axiosInstance from '@/shared/services/DataLayers/AxiosInstance'
+import { buildArtworkFormData } from '../Helpers/formArtworkHelper'
 
-class ArtworkService extends BaseService {
+class ArtworkAdminService extends BaseService {
   constructor() {
     super('/artworks')
   }
 
   async createArtwork(payload: ArtworkCreatePayload): Promise<Artwork> {
-    const formData = new FormData()
+    const formData = buildArtworkFormData(payload)
     
-    // Append JSON fields
-    formData.append('title', payload.title)
-    formData.append('artist_id', payload.artist_id.toString())
-    if (payload.description) {
-      formData.append('description', JSON.stringify(payload.description))
-    }
-    if (payload.dimensions) {
-      formData.append('dimensions', JSON.stringify(payload.dimensions))
-    }
-    if (payload.creation_date) {
-      formData.append('creation_date', payload.creation_date)
-    }
-    
-    // Append images
-    payload.images.forEach(file => {
-      formData.append('images[]', file)
-    })
-
-    const response = await axiosInstance.post<Artwork>(this.baseUrl, formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data'
-      }
-    })
-    return response.data
+    return await this.create<Artwork>(formData)
   }
 
-  async updateArtwork(
-    id: number,
-    payload: ArtworkUpdatePayload
-  ): Promise<Artwork> {
-      formData.append('_method', 'PUT')
+  async updateArtwork(id: number, payload: ArtworkUpdatePayload): Promise<Artwork> {
+   const formData = buildArtworkFormData(payload);
 
-    const response = await axiosInstance.post<Artwork>(
-      `${this.baseUrl}/${id}?_method=PUT`,
-      formData,
-      {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      }
-    )
-    return response.data
+   return await this.update<Artwork>(id, formData);
   }
 
   async deleteImage(artworkId: number, imageId: number): Promise<void> {
@@ -84,4 +50,4 @@ class ArtworkService extends BaseService {
   }
 }
 
-export default new ArtworkService()
+export default new ArtworkAdminService()

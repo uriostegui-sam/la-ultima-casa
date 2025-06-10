@@ -10,41 +10,41 @@ export function buildArtistFormData(
     formData.append('user_id', payload.user_id.toString());
   }
   if (payload.user?.email) {
-    formData.append('user[email]', payload.user.email.toString());
+    formData.append('user[email]', payload.user.email);
   }
   if (payload.user?.name) {
-    formData.append('user[name]', payload.user.name.toString());
+    formData.append('user[name]', payload.user.name);
   }
   if (payload.user?.lastname) {
-    formData.append('user[lastname]', payload.user.lastname.toString());
+    formData.append('user[lastname]', payload.user.lastname);
   }
 
   // Content fields
   if (payload.minibio?.en) {
-    formData.append('minibio[en]', payload.minibio.en.toString());
+    formData.append('minibio[en]', payload.minibio.en);
   }
   if (payload.minibio?.es) {
-    formData.append('minibio[es]', payload.minibio.es.toString());
+    formData.append('minibio[es]', payload.minibio.es);
   }
   if (payload.bio?.es) {
-    formData.append('bio[es]', payload.bio.es.toString());
+    formData.append('bio[es]', payload.bio.es);
   }
   if (payload.bio?.en) {
-    formData.append('bio[en]', payload.bio.en.toString());
+    formData.append('bio[en]', payload.bio.en);
   }
 
   // Social links
   if (payload.social_links?.website) {
-    formData.append('social_links[website]', payload.social_links.website.toString());
+    formData.append('social_links[website]', payload.social_links.website);
   }
   if (payload.social_links?.instagram) {
-    formData.append('social_links[instagram]', payload.social_links.instagram.toString());
+    formData.append('social_links[instagram]', payload.social_links.instagram);
   }
   if (payload.social_links?.twitter) {
-    formData.append('social_links[twitter]', payload.social_links.twitter.toString());
+    formData.append('social_links[twitter]', payload.social_links.twitter);
   }
   if (payload.social_links?.flickr) {
-    formData.append('social_links[flickr]', payload.social_links.flickr.toString());
+    formData.append('social_links[flickr]', payload.social_links.flickr);
   }
 
   // File uploads
@@ -56,6 +56,8 @@ export function buildArtistFormData(
   if ('skills' in payload && payload.skills) {
     payload.skills.forEach(id => formData.append('skills[]', id.toString()));
   }
+
+  formData.append('_method', 'PUT')
 
   return formData;
 }
