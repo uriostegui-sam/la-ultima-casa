@@ -34,6 +34,7 @@ declare module 'vue' {
     Knob: typeof import('primevue/knob')['default']
     Listbox: typeof import('primevue/listbox')['default']
     Menu: typeof import('primevue/menu')['default']
+    Message: typeof import('primevue/message')['default']
     MultiSelect: typeof import('primevue/multiselect')['default']
     Password: typeof import('primevue/password')['default']
     ProgressBar: typeof import('primevue/progressbar')['default']
