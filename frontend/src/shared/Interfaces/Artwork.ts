@@ -16,6 +16,7 @@ export interface Artwork {
   }
   creation_date: Date;
   artist: Artist;
+  primary_image?: ArtworkImage | null;
   images: ArtworkImage[];
 }
 
@@ -28,11 +29,13 @@ export interface ArtworkCreatePayload {
     height?: number;
     depth?: number;
   }
-  creation_date?: string;
-  images: File[];
+  creation_date?: Date | string;
+  new_images: File[];
 }
 
 export interface ArtworkUpdatePayload {
+  id: number
+  artist_id: number;
   title?: string;
   description?: Record<string, string>;
   dimensions?: {
@@ -40,6 +43,7 @@ export interface ArtworkUpdatePayload {
     height?: number;
     depth?: number;
   }
-  creation_date?: string;
+  creation_date?: Date | string;
+  images_to_delete: number[];
   new_images?: File[];
 }
