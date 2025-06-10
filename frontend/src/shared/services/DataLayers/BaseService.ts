@@ -15,7 +15,7 @@ export class BaseService {
 
   async getAll<T>(): Promise<T> {
     return this.get<T>()
-  }  
+  }
 
   async getById<T>(id: number | string): Promise<T> {
     return this.get<T>(`/${id}`)
@@ -27,7 +27,7 @@ export class BaseService {
   }
 
   async update<T>(id: number | string, data: any): Promise<T> {
-    const response = await axiosInstance.put<{ data: T }>(`${this.baseUrl}/${id}`, data)
+    const response = await axiosInstance.post<{ data: T }>(`${this.baseUrl}/${id}`, data)
     return response.data.data
   }
 
