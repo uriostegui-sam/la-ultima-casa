@@ -25,12 +25,13 @@ class UpdateArtworkRequest extends FormRequest
             'title' => 'sometimes|string|max:255',
             'description.en' => 'nullable|string',
             'description.es' => 'nullable|string',
-            'images' => 'sometimes|array|min:1|max:10',
-            'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
             'dimensions.width' => 'nullable|numeric',
             'dimensions.height' => 'nullable|numeric',
             'dimensions.depth' => 'nullable|numeric',
-            'creation_date' => 'sometimes|string|max:255',
+            'creation_date' => 'sometimes|date',
+            'images' => 'sometimes|array',
+            'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+            'images_to_delete' => 'sometimes|json',
         ];
     }
 }
