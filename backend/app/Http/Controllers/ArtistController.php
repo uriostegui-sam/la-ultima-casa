@@ -226,7 +226,7 @@ class ArtistController extends Controller
         // Prevent deletion if has related artworks
         if ($artist->artworks()->exists()) {
             return response()->json([
-                'message' => 'Cannot delete artist with existing artworks'
+                'message' => 'cannotArtistWArtwork'
             ], 422);
         }
 

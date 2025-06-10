@@ -4,7 +4,7 @@ import axiosInstance from "@/shared/services/DataLayers/AxiosInstance"
 import { BaseService } from "@/shared/services/DataLayers/BaseService"
 import axios from "axios"
 
-class ArtistService extends BaseService {
+class ArtistAdminService extends BaseService {
   constructor() {
     super('/artists')
   }
@@ -13,10 +13,18 @@ class ArtistService extends BaseService {
     const formData = new FormData()
     
     // Required fields
-    formData.append('user_id', payload.user_id.toString())
-    formData.append('minibio', JSON.stringify(payload.minibio))
-    formData.append('bio', JSON.stringify(payload.bio))
-    formData.append('social_links', JSON.stringify(payload.social_links))
+    if (payload.user_id) formData.append('user_id', payload.user_id.toString())
+    if (payload.user?.email) formData.append('user[email]', payload.user.email.toString())
+    if (payload.user?.name) formData.append('user[name]', payload.user.name.toString())
+    if (payload.user?.lastname) formData.append('user[lastname]', payload.user.lastname.toString())
+    if (payload.minibio?.en) formData.append('minibio[en]', payload.minibio.en.toString())
+    if (payload.minibio?.es) formData.append('minibio[es]', payload.minibio.es.toString())
+    if (payload.bio?.es) formData.append('bio[es]', payload.bio.es.toString())
+    if (payload.bio?.en) formData.append('bio[en]', payload.bio.en.toString())
+    if (payload.social_links?.website) formData.append('social_links[website]', payload.social_links.website.toString())
+    if (payload.social_links?.instagram) formData.append('social_links[instagram]', payload.social_links.instagram.toString())
+    if (payload.social_links?.twitter) formData.append('social_links[twitter]', payload.social_links.twitter.toString())
+    if (payload.social_links?.flickr) formData.append('social_links[flickr]', payload.social_links.flickr.toString())
 
     // Optional fields
     if (payload.profile_image) {
@@ -26,44 +34,34 @@ class ArtistService extends BaseService {
       payload.skills.forEach(id => formData.append('skills[]', id.toString()))
     }
 
-    const response = await axiosInstance.post<Artist>(this.baseUrl, formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data'
-      }
-    })
-    return response.data
+    return await this.create<Artist>(formData)
   }
 
   async updateArtist(id: number, payload: ArtistUpdatePayload): Promise<Artist> {
     const formData = new FormData()
     
     // Append only provided fields
-    if (payload.name) formData.append('name', payload.name) 
     if (payload.user_id) formData.append('user_id', payload.user_id.toString())
-    if (payload.minibio) formData.append('minibio', JSON.stringify(payload.minibio))
-    if (payload.bio) formData.append('bio', JSON.stringify(payload.bio))
-    if (payload.social_links) {
-      formData.append('social_links', JSON.stringify(payload.social_links))
-    }
+    if (payload.user?.email) formData.append('user[email]', payload.user.email.toString())
+    if (payload.user?.name) formData.append('user[name]', payload.user.name.toString())
+    if (payload.user?.lastname) formData.append('user[lastname]', payload.user.lastname.toString())
+    if (payload.minibio?.en) formData.append('minibio[en]', payload.minibio.en.toString())
+    if (payload.minibio?.es) formData.append('minibio[es]', payload.minibio.es.toString())
+    if (payload.bio?.es) formData.append('bio[es]', payload.bio.es.toString())
+    if (payload.bio?.en) formData.append('bio[en]', payload.bio.en.toString())
+    if (payload.social_links?.website) formData.append('social_links[website]', payload.social_links.website.toString())
+    if (payload.social_links?.instagram) formData.append('social_links[instagram]', payload.social_links.instagram.toString())
+    if (payload.social_links?.twitter) formData.append('social_links[twitter]', payload.social_links.twitter.toString())
+    if (payload.social_links?.flickr) formData.append('social_links[flickr]', payload.social_links.flickr.toString())
+    
     if (payload.profile_image) {
       formData.append('profile_image', payload.profile_image)
     }
     if (payload.skills) {
       payload.skills.forEach(id => formData.append('skills[]', id.toString()))
     }
-    
-    formData.append('_method', 'PUT')
 
-    const response = await axiosInstance.post<Artist>(
-      `${this.baseUrl}/${id}`,
-      formData,
-      {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      }
-    )
-    return response.data
+    return await this.update<Artist>(id, formData)
   }
 
   async deleteArtist(id: number): Promise<void> {
@@ -71,7 +69,7 @@ class ArtistService extends BaseService {
       await axiosInstance.delete(`${this.baseUrl}/${id}`)
     } catch (error) {
       if (axios.isAxiosError(error) && error.response?.status === 422) {
-        throw new Error('Cannot delete artist with existing artworks')
+        throw new Error('cannotArtistWArtwork')
       }
       throw error
     }
@@ -82,4 +80,4 @@ class ArtistService extends BaseService {
   }
 }
 
-export default new ArtistService()
+export default new ArtistAdminService()

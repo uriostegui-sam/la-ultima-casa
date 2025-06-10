@@ -1,3 +1,10 @@
+<script setup lang="ts">
+</script>
+
 <template>
-  <router-view></router-view>
+  <Toast />
+  <router-view />
 </template>
+
+<style scoped>
+</style>

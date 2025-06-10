@@ -3,6 +3,7 @@ import type { ArtworkImage } from './ArtworkImage'
 
 export interface Artwork {
   id: number;
+  artist_id: number;
   title: string;
   description: {
     en?: string
@@ -13,7 +14,7 @@ export interface Artwork {
     height?: number;
     depth?: number;
   }
-  creation_date: string;
+  creation_date: Date;
   artist: Artist;
   images: ArtworkImage[];
 }
