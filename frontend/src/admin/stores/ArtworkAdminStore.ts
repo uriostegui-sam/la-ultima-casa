@@ -1,8 +1,10 @@
 import { defineStore } from "pinia"
-import type { Artwork, ArtworkCreatePayload } from "@/shared/Interfaces/Artwork"
-import ArtworkService from '@/visitors/Services/DataLayers/Artwork'
+import type { Artwork, ArtworkCreatePayload, ArtworkUpdatePayload } from "@/shared/Interfaces/Artwork"
+import ArtworkAdminServices from "../Services/DataLayers/ArtworkAdminServices"
+import axiosInstance from "@/shared/services/DataLayers/AxiosInstance"
+// import ArtworkAdminServices from "../Services/DataLayers/ArtworkAdminServices"
 
-export const useArtworkStore = defineStore('adminArtwork', {
+export const useAdminArtworkStore = defineStore('adminArtwork', {
   state: () => ({
     artworks: [] as Artwork[],
     selectedArtwork: null as Artwork | null,
@@ -37,54 +39,37 @@ export const useArtworkStore = defineStore('adminArtwork', {
       }
     },
 
-    async createArtwork(formData: FormData) {
+    async createArtwork(payload: ArtworkCreatePayload) {
       this.loading = true
       this.error = null
-      try {
-        const payload: ArtworkCreatePayload = {
-          artist_id: Number(formData.get('artist_id')),
-          title: formData.get('title') as string,
-          images: formData.getAll('images[]') as File[],
-        };
-
-        const description = formData.get('description');
-        if (description) {
-          payload.description = JSON.parse(description as string);
-        }
-    
-        const dimensions = formData.get('dimensions');
-        if (dimensions) {
-          payload.dimensions = JSON.parse(dimensions as string);
-        }
-    
-        const creation_date = formData.get('creation_date');
-        if (creation_date) {
-          payload.creation_date = creation_date as string;
-        }
-    
+      try {    
         const newArtwork = await ArtworkAdminServices.createArtwork(payload);
         this.artworks.push(newArtwork)
+        return newArtwork
       } catch (err: any) {
         this.error = err.message || 'Failed to upload artwork'
+        throw err
       } finally {
         this.loading = false
       }
     },
 
-    async updateArtwork(id: number | string, formData: FormData) {
+    async updateArtwork(id: number, payload: ArtworkUpdatePayload) {
       this.loading = true
       this.error = null
       try {
-        const updatedArtwork = await ArtworkAdminServices.update<Artwork>(id, formData)
-        const index = this.artworks.findIndex(a => a.id === updatedArtwork.id)
+        const updatedArtwork = await ArtworkAdminServices.updateArtwork(id, payload)
+        const index = this.artworks.findIndex((a) => a.id === id);
         if (index !== -1) {
           this.artworks[index] = updatedArtwork
         }
-        if (this.selectedArtwork?.id === updatedArtwork.id) {
+        if (this.selectedArtwork?.id === id) {
           this.selectedArtwork = updatedArtwork
         }
+        return updatedArtwork
       } catch (err: any) {
         this.error = err.message || 'Failed to update artwork'
+        throw err
       } finally {
         this.loading = false
       }

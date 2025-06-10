@@ -173,16 +173,16 @@ class ArtworkController extends Controller
     public function store(StoreArtworkRequest $request)
     {
         $this->authorize('create', Artwork::class);
-    
+
         $artwork = Artwork::create($request->except('images'));
-        
+
         if ($request->hasFile('images')) {
             $this->artworkService->storeImages(
-                $artwork, 
+                $artwork,
                 $request->file('images')
             );
         }
-    
+
         return new ArtworkResource($artwork->load('images', 'artist.user'));
     }
 
@@ -222,21 +222,26 @@ class ArtworkController extends Controller
     public function update(UpdateArtworkRequest $request, Artwork $artwork)
     {
         $this->authorize('update', $artwork);
-
+        
         // Update the artwork fields (except images)
-        $artwork->update($request->except('images'));
+        $artwork->update($request->except(['images', 'images_to_delete']));
 
+        if ($request->has('images_to_delete')) {
+            $imageIds = json_decode($request->input('images_to_delete'), true);
+            ArtworkImage::whereIn('id', $imageIds)->delete();
+        }
+    
         // Handle new images if provided
         if ($request->hasFile('images')) {
             $lastImageNumber = $artwork->images->max('order') + 1;
-        
+
             foreach ($request->file('images') as $index => $image) {
                 $path = $this->artworkService->storeImage(
-                    $image, 
-                    $artwork, 
+                    $image,
+                    $artwork,
                     $lastImageNumber + $index
                 );
-                
+
                 ArtworkImage::create([
                     'artwork_id' => $artwork->id,
                     'path' => $path,
@@ -258,63 +263,52 @@ class ArtworkController extends Controller
         foreach ($artwork->images as $image) {
             $this->artworkService->deleteImage($image);
         }
-    
+
         $artwork->delete();
-    
+
         return response()->noContent();
     }
 
-    /**
-     * @OA\Delete(
-     *     path="/api/artworks/{artworkId}/images/{imageId}",
-     *     tags={"Artworks"},
-     *     summary="Delete an artwork image",
-     *     description="Delete a specific image from an artwork",
-     *     security={{"bearerAuth": {}}},
-     *     @OA\Parameter(
-     *         name="artworkId",
-     *         in="path",
-     *         required=true,
-     *         description="Artwork ID",
-     *         @OA\Schema(type="integer")
-     *     ),
-     *     @OA\Parameter(
-     *         name="imageId",
-     *         in="path",
-     *         required=true,
-     *         description="Image ID",
-     *         @OA\Schema(type="integer")
-     *     ),
-     *     @OA\Response(
-     *         response=204,
-     *         description="Image deleted successfully"
-     *     ),
-     *     @OA\Response(
-     *         response=401,
-     *         description="Unauthorized"
-     *     ),
-     *     @OA\Response(
-     *         response=403,
-     *         description="Forbidden"
-     *     ),
-     *     @OA\Response(
-     *         response=404,
-     *         description="Artwork or image not found"
-     *     )
-     * )
-     */
-    public function destroyImage(Artwork $artwork, ArtworkImage $image)
+    public function setPrimaryImage(Artwork $artwork, ArtworkImage $image)
     {
         $this->authorize('update', $artwork);
 
-        if ($image->artwork_id !== $artwork->id) {
-            return response()->json([
-                'message' => 'This image does not belong to the given artwork.'
-            ], 403);
+        // Remove primary status from all other images
+        $artwork->images()->update(['is_primary' => false]);
+
+        // Set this image as primary
+        $image->update(['is_primary' => true]);
+
+        return new ArtworkResource($artwork->load('images', 'artist.user'));
+    }
+
+    public function reorderImages(Artwork $artwork, UpdateArtworkRequest $request)
+    {
+        $this->authorize('update', $artwork);
+
+        $request->validate([
+            'image_ids' => 'required|array',
+            'image_ids.*' => 'exists:artwork_images,id,artwork_id,' . $artwork->id
+        ]);
+
+        foreach ($request->image_ids as $order => $id) {
+            ArtworkImage::where('id', $id)->update(['order' => $order]);
         }
-    
+
+        return new ArtworkResource($artwork->load('images', 'artist.user'));
+    }
+
+    public function deleteImage(Artwork $artwork, ArtworkImage $image)
+    {
+        $this->authorize('update', $artwork);
+
         $this->artworkService->deleteImage($image);
-    
+
+        // If we deleted the primary image, set a new one
+        if ($image->is_primary && $artwork->images()->count() > 0) {
+            $artwork->images()->first()->update(['is_primary' => true]);
+        }
+
         return response()->noContent();
     }
 }

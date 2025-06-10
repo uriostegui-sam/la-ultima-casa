@@ -1,182 +1,216 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
-import type { Artwork } from '@/shared/Interfaces/Artwork'
-import { useAdminArtistStore } from '../../stores/ArtistAdminStore'
-import { useAdminArtworkStore } from '../../stores/ArtworkAdminStore'
-import { useRoute } from 'vue-router'
+import type {
+  Artwork,
+  ArtworkCreatePayload,
+  ArtworkUpdatePayload,
+} from '@/shared/Interfaces/Artwork'
+import { useRoute, useRouter } from 'vue-router'
+import { useAdminArtistStore } from '@/admin/stores/ArtistAdminStore'
+import { useAdminArtworkStore } from '@/admin/stores/ArtworkAdminStore'
+import { capitalizeFirstLetter } from '@/shared/services/Helpers'
+import { useI18n } from 'vue-i18n'
+import { useToast } from 'primevue/usetoast'
+import { showErrorToast, showSuccessToast } from '@/admin/Services/Helpers'
+import ArtworkAdminServices from '@/admin/Services/DataLayers/ArtworkAdminServices'
 
-const props = defineProps<{
-  artwork?: Artwork | null
+const emit = defineEmits<{
+  (e: 'success', artwork: Artwork): void
 }>()
 
+const { t } = useI18n()
 const route = useRoute()
-const emit = defineEmits(['success'])
-const currentArtwork = ref<Artwork | null>(null)
+const router = useRouter()
+const id = Number(route.params.id)
+const toast = useToast()
 const artistAdminStore = useAdminArtistStore()
 const artworkAdminStore = useAdminArtworkStore()
+const isEditMode = computed(() => !!id)
+const currentArtwork = ref<Artwork | null>(null)
+const artists = computed(() => artistAdminStore.artists)
+const imageToDelete = ref<number | string | null>(null)
+const displayConfirmation = ref(false)
+const artwork = ref<Artwork | null>(null)
 
-const loading = ref(false)
-const form = ref({
-  id: props.artwork?.id || null,
-  title: props.artwork?.title || '',
-  artist_id: props.artwork?.artist_id || null,
-  description: {
-    en: props.artwork?.description?.en || '',
-    es: props.artwork?.description?.es || ''
-  },
-  dimensions: {
-    width: props.artwork?.dimensions?.width || null,
-    height: props.artwork?.dimensions?.height || null,
-    depth: props.artwork?.dimensions?.depth || null
-  },
-  creation_date: props.artwork?.creation_date ? new Date(props.artwork.creation_date) : null,
-  images: [] as File[],
-  existingImages: props.artwork?.images || [],
-  imagesToDelete: [] as number[]
-})
+const newImages = ref<File[]>([])
+const imagesToDelete = ref<number[]>([])
+const isUploading = ref(false)
 
-// Image handling
-const imagePreviews = computed(() => {
-  const previews = form.value.existingImages
-    .filter(img => !form.value.imagesToDelete.includes(img.id))
-    .map(img => ({
-      id: img.id,
-      url: `/storage/${img.path}`,
-      isPrimary: img.is_primary
-    }))
+const openConfirmation = (imageId: number | string) => {
+  imageToDelete.value = imageId
+  displayConfirmation.value = true
+}
 
-  form.value.images.forEach(file => {
-    previews.push({
-      id: null,
-      url: URL.createObjectURL(file),
-      isPrimary: previews.length === 0 // Auto-set first as primary
-    })
-  })
+function closeConfirmation() {
+  displayConfirmation.value = false
+  imageToDelete.value = null
+}
 
-  return previews
+const allImages = computed(() => {
+  const existing =
+    currentArtwork.value?.images?.filter((img) => !imagesToDelete.value.includes(img.id)) || []
+  const newPreviews = newImages.value.map((file, index) => ({
+    id: `new-${index}`,
+    url: URL.createObjectURL(file),
+    is_primary: false,
+    isNew: true,
+    file,
+  }))
+
+  return [...existing, ...newPreviews]
 })
 
 const onImageSelect = (event: { files: File[] }) => {
-  form.value.images = [...form.value.images, ...event.files]
+  newImages.value = [...newImages.value, ...event.files]
 }
 
-const removeImage = (index: number) => {
-  const preview = imagePreviews.value[index]
-  if (preview.id) {
-    // Mark existing image for deletion
-    form.value.imagesToDelete.push(preview.id)
-  } else {
+const removeImage = (imageId: string | number) => {
+  if (typeof imageId === 'string' && imageId.startsWith('new-')) {
     // Remove new image
-    const newImageIndex = index - form.value.existingImages.length
-    form.value.images.splice(newImageIndex, 1)
+    const index = parseInt(imageId.split('-')[1])
+    newImages.value.splice(index, 1)
+  } else if (typeof imageId === 'number') {
+    // Mark existing image for deletion
+    if (!imagesToDelete.value.includes(imageId)) {
+      imagesToDelete.value.push(imageId)
+    }
   }
 }
 
-const setPrimaryImage = (index: number) => {
-  imagePreviews.value.forEach((img, i) => {
-    img.isPrimary = i === index
-  })
-}
-
-// Form submission
-const handleSubmit = async () => {
-  if (!form.value.artist_id) {
-    alert('Artist is required')
-    return
-  }
-
-  loading.value = true
+const setPrimaryImage = async (imageId: number) => {
+  if (!currentArtwork.value) return
 
   try {
-    const formData = new FormData()
-    formData.append('title', form.value.title)
-    formData.append('artist_id', form.value.artist_id.toString())
-    formData.append('description', JSON.stringify(form.value.description))
+    const updatedArtwork = await ArtworkAdminServices.setPrimaryImage(
+      currentArtwork.value.id,
+      imageId,
+    )
 
-    if (form.value.dimensions.width && form.value.dimensions.height) {
-      formData.append('dimensions', JSON.stringify(form.value.dimensions))
+    if (currentArtwork.value.images) {
+      currentArtwork.value.images = currentArtwork.value.images.map((img) => ({
+        ...img,
+        is_primary: img.id === imageId,
+      }))
     }
 
-    if (form.value.creation_date) {
-      formData.append('creation_date', form.value.creation_date.toISOString().split('T')[0])
-    }
-
-    // Append new images
-    form.value.images.forEach(file => {
-      formData.append('images[]', file)
-    })
-
-    // Append images to delete
-    form.value.imagesToDelete.forEach(id => {
-      formData.append('delete_images[]', id.toString())
-    })
-
-    // Set primary image
-    const primaryIndex = imagePreviews.value.findIndex(img => img.isPrimary)
-    if (primaryIndex >= 0) {
-      const primaryId = imagePreviews.value[primaryIndex].id
-      if (primaryId) {
-        formData.append('primary_image_id', primaryId.toString())
-      }
-    }
-
-    if (form.value.id) {
-      await artworkAdminStore.updateArtwork(form.value.id, formData)
-    } else {
-      await artworkAdminStore.createArtwork(formData)
-    }
-
-    emit('success')
-  } finally {
-    loading.value = false
+    showSuccessToast(toast, t, 'primaryImageUpdated', 3000)
+  } catch (err) {
+    showErrorToast(toast, t, err, 'errorUpdatingPrimaryImage')
   }
 }
 
-// Load artists and artwork
-onMounted(async () => {
-  if (!artistAdminStore.artists.length) {
-    await artistAdminStore.getArtists()
+const confirmDeleteImage = async () => {
+  if (!imageToDelete.value || typeof imageToDelete.value !== 'number' || !currentArtwork.value)
+    return
+
+  try {
+    await ArtworkAdminServices.deleteImage(currentArtwork.value.id, imageToDelete.value)
+
+    if (currentArtwork.value.images) {
+      currentArtwork.value.images = currentArtwork.value.images.filter(
+        (img) => img.id !== imageToDelete.value,
+      )
+    }
+
+    showSuccessToast(toast, t, 'imageDeletedSuccessfully', 3000)
+  } catch (err) {
+    showErrorToast(toast, t, err, 'errorDeletingImage')
+  } finally {
+    closeConfirmation()
   }
-  
-  if (route.params.id) {
-    const id = Number(route.params.id)
+}
+
+onMounted(async () => {
+  await artistAdminStore.getArtists()
+
+  if (id) {
     await artworkAdminStore.getArtwork(id)
-    currentArtwork.value = artworkAdminStore.selectedArtwork
-    
-    if (currentArtwork.value) {
-      form.value = {
-        ...form.value,
-        id: currentArtwork.value.id,
-        title: currentArtwork.value.title,
-        artist_id: currentArtwork.value.artist_id,
-        description: currentArtwork.value.description,
-        dimensions: currentArtwork.value.dimensions,
-        creation_date: currentArtwork.value.creation_date ? new Date(currentArtwork.value.creation_date) : null,
-        existingImages: currentArtwork.value.images || []
-      }
+
+    artwork.value = artworkAdminStore.selectedArtwork
+    currentArtwork.value = JSON.parse(JSON.stringify(artwork.value))
+  } else {
+    currentArtwork.value = {
+      id: 0,
+      artist_id: 0,
+      title: '',
+      artist: undefined,
+      description: {
+        en: '',
+        es: '',
+      },
+      dimensions: { width: 0, height: 0, depth: 0 },
+      creation_date: new Date(),
+      images: [],
+      primary_image: undefined,
     }
   }
 })
 
-const artists = computed(() => artistAdminStore.artists)
+// Form submission
+const handleSubmit = async () => {
+  if (!currentArtwork.value) return
+
+  try {
+    const basePayload = {
+      artist_id: currentArtwork.value.artist_id,
+      title: currentArtwork.value.title,
+      description: currentArtwork.value.description,
+      dimensions: currentArtwork.value.dimensions,
+      creation_date: currentArtwork.value.creation_date,
+    }
+
+    let result: Artwork
+    if (isEditMode.value) {
+      const updatePayload: ArtworkUpdatePayload = {
+        ...basePayload,
+        id,
+        images_to_delete: imagesToDelete.value,
+        new_images: newImages.value,
+      }
+      result = await artworkAdminStore.updateArtwork(id, updatePayload)
+
+      artwork.value = result
+      currentArtwork.value = JSON.parse(JSON.stringify(result))
+    } else {
+      const createPayload: ArtworkCreatePayload = {
+        ...basePayload,
+        new_images: newImages.value,
+      }
+
+      result = await artworkAdminStore.createArtwork(createPayload)
+
+      if (result?.id) {
+        router.push({ name: 'adminArworkEdit', params: { id: result.id } })
+      }
+    }
+
+    newImages.value = []
+    imagesToDelete.value = []
+
+    emit('success', result)
+    showSuccessToast(toast, t, 'artworkSavedSuccessfully', 3000)
+  } catch (err: unknown) {
+    showErrorToast(toast, t, err, 'errorSavingArtwork')
+  }
+}
 </script>
 
 <template>
-  <div v-if="currentArtwork || !route.params.id">
+  <div v-if="currentArtwork">
     <form @submit.prevent="handleSubmit" class="space-y-6">
       <!-- Basic Info -->
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <!-- Title -->
         <div>
-          <label class="block mb-2 font-medium">Title*</label>
-          <InputText v-model="form.title" required class="w-full" />
+          <label class="block mb-2 font-medium">{{ capitalizeFirstLetter(t('title')) }}</label>
+          <InputText v-model="currentArtwork.title" required class="w-full" />
         </div>
 
         <!-- Artist Selection -->
         <div>
-          <label class="block mb-2 font-medium">Artist*</label>
+          <label class="block mb-2 font-medium">{{ capitalizeFirstLetter(t('artist')) }}</label>
           <Dropdown
-            v-model="form.artist_id"
+            v-model="currentArtwork.artist_id"
             :options="artists"
             optionLabel="name"
             optionValue="id"
@@ -189,91 +223,155 @@ const artists = computed(() => artistAdminStore.artists)
       <!-- Descriptions -->
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
-          <label class="block mb-2 font-medium">Description (English)</label>
-          <Textarea v-model="form.description.en" rows="5" class="w-full" />
+          <label class="block mb-2 font-medium">{{
+            capitalizeFirstLetter(t('descriptionEn'))
+          }}</label>
+          <Textarea v-model="currentArtwork.description.en" rows="5" class="w-full" />
         </div>
         <div>
-          <label class="block mb-2 font-medium">Description (Spanish)</label>
-          <Textarea v-model="form.description.es" rows="5" class="w-full" />
+          <label class="block mb-2 font-medium">{{
+            capitalizeFirstLetter(t('descriptionSp'))
+          }}</label>
+          <Textarea v-model="currentArtwork.description.es" rows="5" class="w-full" />
         </div>
       </div>
 
       <!-- Dimensions -->
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div>
-          <label class="block mb-2 font-medium">Width (cm)</label>
-          <InputNumber v-model="form.dimensions.width" class="w-full" />
+          <label class="block mb-2 font-medium">{{ capitalizeFirstLetter(t('width')) }}</label>
+          <InputNumber v-model="currentArtwork.dimensions.width" class="w-full" />
         </div>
         <div>
-          <label class="block mb-2 font-medium">Height (cm)</label>
-          <InputNumber v-model="form.dimensions.height" class="w-full" />
+          <label class="block mb-2 font-medium">{{ capitalizeFirstLetter(t('height')) }}</label>
+          <InputNumber v-model="currentArtwork.dimensions.height" class="w-full" />
         </div>
         <div>
-          <label class="block mb-2 font-medium">Depth (cm)</label>
-          <InputNumber v-model="form.dimensions.depth" class="w-full" />
+          <label class="block mb-2 font-medium">{{ capitalizeFirstLetter(t('depth')) }}</label>
+          <InputNumber v-model="currentArtwork.dimensions.depth" class="w-full" />
         </div>
       </div>
 
       <!-- Creation Date -->
       <div>
-        <label class="block mb-2 font-medium">Creation Date</label>
-        <Calendar 
-          v-model="form.creation_date" 
-          dateFormat="yy-mm-dd" 
-          class="w-full" 
+        <label class="block mb-2 font-medium">{{ capitalizeFirstLetter(t('creationDate')) }}</label>
+        <Calendar
+          v-model="currentArtwork.creation_date"
+          dateFormat="yy-mm-dd"
+          class="w-full"
           :showIcon="true"
         />
       </div>
 
       <!-- Image Upload -->
       <div>
-        <label class="block mb-2 font-medium">Images</label>
-        <FileUpload 
+        <label class="block mb-2 font-medium">{{ capitalizeFirstLetter(t('images')) }}</label>
+        <FileUpload
           name="images[]"
           multiple
           accept="image/*"
           :maxFileSize="10000000"
           @select="onImageSelect"
+          mode="advanced"
+          :auto="false"
+          :chooseLabel="capitalizeFirstLetter(t('selectImages'))"
+          :uploadLabel="capitalizeFirstLetter(t('upload'))"
+          :cancelLabel="capitalizeFirstLetter(t('cancel'))"
         >
           <template #empty>
-            <p>Drag & drop images here or click to browse</p>
+            <p>{{ capitalizeFirstLetter(t('dragDrop')) }}</p>
           </template>
         </FileUpload>
 
-        <!-- Image Preview -->
+        <!-- Image Preview Grid -->
         <div class="mt-4 grid grid-cols-2 md:grid-cols-4 gap-4">
-          <div 
-            v-for="(image, index) in imagePreviews" 
-            :key="index"
-            class="relative group"
+          <div
+            v-for="(image, index) in allImages"
+            :key="image.id"
+            class="relative group rounded-lg overflow-hidden border"
+            :class="{ 'ring-2 ring-primary-500': image.is_primary }"
           >
-            <img 
-              :src="image.url" 
-              class="w-full h-32 object-cover rounded"
+            <img
+              :src="`http://localhost/storage/${image.path}`"
+              class="w-full h-40 object-cover"
+              :alt="`Artwork image ${index + 1}`"
             />
-            <Button 
-              icon="pi pi-times" 
-              class="absolute top-2 right-2 p-1 w-8 h-8 !bg-red-500 !text-white opacity-0 group-hover:opacity-100"
-              @click="removeImage(index)"
-            />
-            <Button
-              icon="pi pi-star"
-              class="absolute top-2 left-2 p-1 w-8 h-8"
-              :class="[image.isPrimary ? '!bg-yellow-500' : '!bg-gray-500']"
-              @click="setPrimaryImage(index)"
-            />
+
+            <!-- Image actions overlay -->
+            <div
+              class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-all flex items-center justify-center opacity-0 group-hover:opacity-100"
+            >
+              <!-- Set as primary button -->
+              <Button
+                icon="pi pi-star"
+                class="p-2 w-10 h-10 mr-2"
+                :class="[image.is_primary ? 'bg-yellow-500' : 'bg-gray-700']"
+                :disabled="image.is_primary"
+                @click.stop="typeof image.id === 'number' ? setPrimaryImage(image.id) : null"
+                v-tooltip.top="
+                  image.is_primary
+                    ? capitalizeFirstLetter(t('primaryImage'))
+                    : capitalizeFirstLetter(t('setPrimary'))
+                "
+              />
+
+              <!-- Delete button -->
+              <Button
+                icon="pi pi-trash"
+                class="p-2 w-10 h-10 bg-red-500"
+                @click.stop="
+                  typeof image.id === 'number' ? openConfirmation(image.id) : removeImage(image.id)
+                "
+                v-tooltip.top="capitalizeFirstLetter(t('deleteImage'))"
+              />
+            </div>
+
+            <!-- Primary badge -->
+            <span
+              v-if="image.is_primary"
+              class="absolute top-2 left-2 bg-yellow-500 text-white text-xs px-2 py-1 rounded"
+            >
+              Primary
+            </span>
           </div>
         </div>
       </div>
 
-      <!-- Submit -->
-      <Button 
-        type="submit" 
-        label="Save Artwork" 
-        :loading="loading" 
+      <!-- Submit Button -->
+      <Button
+        type="submit"
+        :label="capitalizeFirstLetter(t('saveArtwork'))"
         class="w-full md:w-auto"
+        :loading="isUploading"
+        :disabled="isUploading"
       />
     </form>
+    <Dialog
+      v-model:visible="displayConfirmation"
+      :style="{ width: '450px' }"
+      :header="capitalizeFirstLetter(t('confirm'))"
+      :modal="true"
+    >
+      <div class="confirmation-content">
+        <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem" />
+        <span>{{ capitalizeFirstLetter(t('sureDelete')) }}</span>
+      </div>
+      <template #footer>
+        <Button
+          :label="capitalizeFirstLetter(t('no'))"
+          icon="pi pi-times"
+          @click="closeConfirmation"
+          class="p-button-text"
+        />
+        <Button
+          :label="capitalizeFirstLetter(t('yes'))"
+          icon="pi pi-check"
+          @click="confirmDeleteImage"
+          class="p-button-danger"
+          autofocus
+        />
+      </template>
+    </Dialog>
   </div>
   <div v-else>Loading...</div>
 </template>
