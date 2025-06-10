@@ -22,13 +22,13 @@ export class BaseService {
   }
 
   async create<T>(data: any): Promise<T> {
-    const response = await axiosInstance.post<T>(this.baseUrl, data)
-    return response.data
+    const response = await axiosInstance.post<{ data: T }>(this.baseUrl, data)
+    return response.data.data
   }
 
   async update<T>(id: number | string, data: any): Promise<T> {
-    const response = await axiosInstance.put<T>(`${this.baseUrl}/${id}`, data)
-    return response.data
+    const response = await axiosInstance.put<{ data: T }>(`${this.baseUrl}/${id}`, data)
+    return response.data.data
   }
 
   async delete<T>(id: number | string): Promise<T> {

@@ -41,26 +41,7 @@ class ArtworkService extends BaseService {
     id: number,
     payload: ArtworkUpdatePayload
   ): Promise<Artwork> {
-    const formData = new FormData()
-    
-    // Append fields if they exist
-    if (payload.title) formData.append('title', payload.title)
-    if (payload.description) {
-      formData.append('description', JSON.stringify(payload.description))
-    }
-    if (payload.dimensions) {
-      formData.append('dimensions', JSON.stringify(payload.dimensions))
-    }
-    if (payload.creation_date) {
-      formData.append('creation_date', payload.creation_date)
-    }
-    
-    // Append new images
-    if (payload.new_images) {
-      payload.new_images.forEach(file => {
-        formData.append('images[]', file)
-      })
-    }
+      formData.append('_method', 'PUT')
 
     const response = await axiosInstance.post<Artwork>(
       `${this.baseUrl}/${id}?_method=PUT`,

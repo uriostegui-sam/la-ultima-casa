@@ -7,6 +7,7 @@ import PrimeVue from 'primevue/config';
 import Lara from '@primeuix/themes/lara';
 import ConfirmationService from 'primevue/confirmationservice';
 import ToastService from 'primevue/toastservice';
+import Toast from 'primevue/toast';
 
 const app = createApp(App)
 
@@ -26,4 +27,5 @@ app.use(PrimeVue, {
 app.use(ToastService);
 app.use(ConfirmationService);
 
+app.component('Toast', Toast)
 app.mount('#app')

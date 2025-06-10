@@ -15,7 +15,7 @@ export const useArtworkStore = defineStore('adminArtwork', {
       this.loading = true
       this.error = null
       try {
-        const response = await ArtworkService.getArtworks(params)
+        const response = await ArtworkAdminServices.getArtworks(params)
         this.artworks = response.data
       } catch (err: any) {
         this.error = err.message || 'Failed to load artworks'
@@ -28,7 +28,7 @@ export const useArtworkStore = defineStore('adminArtwork', {
       this.loading = true
       this.error = null
       try {
-        const artwork = await ArtworkService.getById<Artwork>(id)
+        const artwork = await ArtworkAdminServices.getById<Artwork>(id)
         this.selectedArtwork = artwork
       } catch (err: any) {
         this.error = err.message || 'Failed to load artwork'
@@ -62,7 +62,7 @@ export const useArtworkStore = defineStore('adminArtwork', {
           payload.creation_date = creation_date as string;
         }
     
-        const newArtwork = await ArtworkService.createArtwork(payload);
+        const newArtwork = await ArtworkAdminServices.createArtwork(payload);
         this.artworks.push(newArtwork)
       } catch (err: any) {
         this.error = err.message || 'Failed to upload artwork'
@@ -75,7 +75,7 @@ export const useArtworkStore = defineStore('adminArtwork', {
       this.loading = true
       this.error = null
       try {
-        const updatedArtwork = await ArtworkService.update<Artwork>(id, formData)
+        const updatedArtwork = await ArtworkAdminServices.update<Artwork>(id, formData)
         const index = this.artworks.findIndex(a => a.id === updatedArtwork.id)
         if (index !== -1) {
           this.artworks[index] = updatedArtwork
@@ -94,7 +94,7 @@ export const useArtworkStore = defineStore('adminArtwork', {
       this.loading = true
       this.error = null
       try {
-        await ArtworkService.delete(id)
+        await ArtworkAdminServices.delete(id)
         this.artworks = this.artworks.filter(a => a.id !== id)
         if (this.selectedArtwork?.id === id) {
           this.selectedArtwork = null
