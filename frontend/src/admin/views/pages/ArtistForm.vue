@@ -47,6 +47,8 @@ const openConfirmation = (id: number | string) => {
 
 function closeConfirmation() {
   displayConfirmation.value = false
+  artworkToDelete.value = null
+
 }
 
 const onProfileImageSelect = (event: any) => {
@@ -130,7 +132,7 @@ const handleSubmit = async () => {
       result = await artistAdminStore.updateArtist(id, { ...payload, id } as ArtistUpdatePayload)
     } else {
       result = await artistAdminStore.createArtist(payload as ArtistCreatePayload)
-      
+
       if (result?.id) {
         router.push({ name: 'adminArtistEdit', params: { id: result.id } })
       }
