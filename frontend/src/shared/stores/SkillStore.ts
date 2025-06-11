@@ -15,8 +15,8 @@ export const useSkillStore = defineStore('skill', {
       this.loading = true
       this.error = null
       try {
-        const response = await SkillService.getAll() as { data: Skill[] }
-        this.skills = response.data
+        const response = await SkillService.getAll<Skill[]>()
+        this.skills = response
       } catch (err: any) {
         this.error = err.message || 'Failed to get skills'
       } finally {
