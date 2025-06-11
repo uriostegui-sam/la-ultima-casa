@@ -105,6 +105,15 @@
     "cancel": "cancel",
     "primaryImage": "primary image",
     "setPrimary": "set as primary",
-    "deleteImage": "delete image"
+    "deleteImage": "delete image",
+    "saveSkill": "save skill",
+    "showingSkills": "showing {first} to {last} of {totalRecords} skills",
+    "manageSkill": "manage skills",
+    "skillSavedSuccessfully": "skill saved successfully.",
+    "errorSavingSkill": "there was an error saving the skill.",
+    "skillDeletedSuccessfully": "skill deleted successfully.",
+    "skillsDeleted": "skills deleted",
+    "errorDeletingSkills": "there was an error deleting the skills.",
+    "sureDeleteSelectedSkills":  "are you sure you want to delete the selected skills?"
   }
   

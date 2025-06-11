@@ -2,6 +2,7 @@ import type { ArtworkCreatePayload, ArtworkUpdatePayload } from '@/shared/Interf
 
 export function buildArtworkFormData(
   payload: ArtworkCreatePayload | ArtworkUpdatePayload,
+  isCreate: boolean = true
 ): FormData {
   const formData = new FormData()
 
@@ -43,7 +44,9 @@ export function buildArtworkFormData(
     formData.append('images_to_delete', JSON.stringify(payload.images_to_delete));
   }
 
-  formData.append('_method', 'PUT')
+  if (!isCreate) {
+    formData.append('_method', 'PUT')
+  }
 
   return formData
 }

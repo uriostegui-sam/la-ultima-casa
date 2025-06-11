@@ -1,8 +1,8 @@
-import type { Skill } from '@/shared/Interfaces/Skill'
-import SkillService from '@/visitors/Services/DataLayers/Skill'
+import type { Skill, SkillCreatePayload, SkillUpdatePayload } from '@/shared/Interfaces/Skill'
 import { defineStore } from 'pinia'
+import SkillAdminServices from '../Services/DataLayers/SkillAdminServices'
 
-export const useSkillStore = defineStore('adminSkill', {
+export const useAdminSkillStore = defineStore('adminSkill', {
   state: () => ({
     skills: [] as Skill[],
     selectedSkill: null as Skill | null,
@@ -15,8 +15,8 @@ export const useSkillStore = defineStore('adminSkill', {
       this.loading = true
       this.error = null
       try {
-        const response = await SkillService.getAll() as { data: Skill[] }
-        this.skills = response.data
+      const response = await SkillAdminServices.getAll<Skill[]>()
+      this.skills = response
       } catch (err: any) {
         this.error = err.message || 'Failed to get skills'
       } finally {
@@ -28,7 +28,7 @@ export const useSkillStore = defineStore('adminSkill', {
       this.loading = true
       this.error = null
       try {
-        const skill = await SkillService.getById<Skill>(id)
+        const skill = await SkillAdminServices.getById<Skill>(id)
         this.selectedSkill = skill
         return skill
       } catch (err: any) {
@@ -39,11 +39,11 @@ export const useSkillStore = defineStore('adminSkill', {
       }
     },
 
-    async createSkill(payload: Skill) {
+    async createSkill(payload: SkillCreatePayload) {
       this.loading = true
       this.error = null
       try {
-        const newSkill = await SkillService.create<Skill>(payload)
+        const newSkill = await SkillAdminServices.createSkill(payload)
         this.skills.push(newSkill)
         return newSkill
       } catch (err: any) {
@@ -54,14 +54,17 @@ export const useSkillStore = defineStore('adminSkill', {
       }
     },
 
-    async updateSkill(id: number | string, payload: Skill) {
+    async updateSkill(id: number, payload: SkillUpdatePayload) {
       this.loading = true
       this.error = null
       try {
-        const updatedSkill = await SkillService.update<Skill>(id, payload)
-        const index = this.skills.findIndex((a) => a.id === updatedSkill.id)
+        const updatedSkill = await SkillAdminServices.updateSkill(id, payload)
+        const index = this.skills.findIndex((a) => a.id === id)
         if (index !== -1) {
           this.skills[index] = updatedSkill
+        }
+        if (this.selectedSkill?.id === id) {
+          this.selectedSkill = updatedSkill
         }
         return updatedSkill
       } catch (err: any) {
@@ -76,13 +79,14 @@ export const useSkillStore = defineStore('adminSkill', {
       this.loading = true
       this.error = null
       try {
-        await SkillService.delete(id)
+        await SkillAdminServices.delete(id)
         this.skills = this.skills.filter((a) => a.id !== id)
         if (this.selectedSkill?.id === id) {
           this.selectedSkill = null
         }
       } catch (err: any) {
         this.error = err.message || 'Failed to delete skill'
+        throw err
       } finally {
         this.loading = false
       }

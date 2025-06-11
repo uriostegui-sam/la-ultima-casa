@@ -85,7 +85,7 @@ async function deleteSelectedArtists() {
       <Toolbar class="mb-6">
         <template #start>
           <RouterLink 
-                :to="{ name: 'adminArtistArtistCreate'}">
+                :to="{ name: 'adminArtistCreate'}">
           <Button
             :label="capitalizeFirstLetter(t('new'))"
             icon="pi pi-plus"

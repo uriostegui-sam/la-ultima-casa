@@ -1,7 +1,8 @@
 import type { ArtistCreatePayload, ArtistUpdatePayload } from "@/shared/Interfaces/Artist";
 
 export function buildArtistFormData(
-  payload: ArtistCreatePayload | ArtistUpdatePayload
+  payload: ArtistCreatePayload | ArtistUpdatePayload,
+  isCreate: boolean = true
 ): FormData {
   const formData = new FormData();
 
@@ -57,7 +58,9 @@ export function buildArtistFormData(
     payload.skills.forEach(id => formData.append('skills[]', id.toString()));
   }
 
-  formData.append('_method', 'PUT')
+  if (!isCreate) {
+    formData.append('_method', 'PUT')
+  }
 
   return formData;
 }

@@ -10,13 +10,13 @@ class ArtworkAdminService extends BaseService {
   }
 
   async createArtwork(payload: ArtworkCreatePayload): Promise<Artwork> {
-    const formData = buildArtworkFormData(payload)
+    const formData = buildArtworkFormData(payload, true);
     
     return await this.create<Artwork>(formData)
   }
 
   async updateArtwork(id: number, payload: ArtworkUpdatePayload): Promise<Artwork> {
-   const formData = buildArtworkFormData(payload);
+   const formData = buildArtworkFormData(payload, false);
 
    return await this.update<Artwork>(id, formData);
   }

@@ -28,10 +28,8 @@ onMounted(async () => {
             :key="index"
             class="flex-1/4"
         >
-        <!-- WIP still in need to add the image to the skills -->
-          <!-- <img :src="skill.name" :alt="skill.name" /> -->
-           <div class="flex flex-col items-center">
-               <div class="bg-(--color-salmon) lg:h-20 h-17 lg:w-20 w-17 rounded-full"></div>
+            <div class="flex flex-col items-center">
+               <img class="lg:h-20 h-17 lg:w-20 w-17 rounded-full object-cover" :src="`http://localhost/storage/${skill.profile_image}`" :alt="current === Languages.English ? skill.name['en'] : skill.name['es']" />
                <h3 class="text-center">{{ current === Languages.English ? skill.name['en'] : skill.name['es'] }}</h3>
             </div>
         </div>
