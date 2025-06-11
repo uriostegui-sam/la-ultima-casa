@@ -14,6 +14,8 @@ import Login from '@/admin/views/pages/auth/Login.vue'
 import { useAuthStore } from '@/shared/stores/AuthStore'
 import ArtistForm from '@/admin/views/pages/ArtistForm.vue'
 import ArtworkForm from '@/admin/views/pages/ArtworkForm.vue'
+import SkillForm from '@/admin/views/pages/SkillForm.vue'
+import SkillAdminController from '@/admin/Controllers/Skill/SkillAdminController.vue'
 
 const routes = [
   {
@@ -82,13 +84,28 @@ const routes = [
       },
       {
         path: '/admin/artists/create',
-        name: 'adminArtistArtistCreate',
+        name: 'adminArtistCreate',
         component: ArtistForm,
       },
       {
         path: '/admin/artists/:id/artwork/edit/:id',
         name: 'adminArtistArtworkEdit',
         component: ArtworkForm,
+      },
+      {
+        path: '/admin/skills',
+        name: 'adminSkill',
+        component: SkillAdminController,
+      },
+      {
+        path: '/admin/skills/edit/:id',
+        name: 'adminSkillEdit',
+        component: SkillForm,
+      },
+      {
+        path: '/admin/skills/create',
+        name: 'adminSkillCreate',
+        component: SkillForm,
       },
     ],
   },

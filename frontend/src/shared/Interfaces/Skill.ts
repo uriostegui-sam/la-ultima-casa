@@ -4,16 +4,29 @@ export interface Skill {
     en?: string
     es?: string
   }
+  profile_image?: File
   created_at?: string;
   updated_at?: string;
 }
 
-export interface TranslatedSkill {
-  id?: number
-  en?: string
-  es?: string
+export interface SkillCreatePayload {
+  name: {
+    en?: string
+    es?: string
+  }
+  profile_image?: File
 }
 
-export interface SkillCreatePayload {
-  name: Record<string, string>;
+export interface SkillUpdatePayload {
+  id: number
+  name: {
+    en?: string
+    es?: string
+  }
+  profile_image?: File
+}
+
+export interface TranslatedSkill {
+  en?: string
+  es?: string
 }

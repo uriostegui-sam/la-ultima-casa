@@ -11,13 +11,13 @@ class ArtistAdminService extends BaseService {
   }
 
   async createArtist(payload: ArtistCreatePayload): Promise<Artist> {
-    const formData = buildArtistFormData(payload);
+    const formData = buildArtistFormData(payload, true);
 
     return await this.create<Artist>(formData)
   }
 
   async updateArtist(id: number, payload: ArtistUpdatePayload): Promise<Artist> {
-    const formData = buildArtistFormData(payload);
+    const formData = buildArtistFormData(payload, false);
     
     return await this.update<Artist>(id, formData)
   }

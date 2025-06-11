@@ -23,7 +23,8 @@ class StoreSkillRequest extends FormRequest
     {
         return [
             'name.es' => 'required|string|max:255',
-            'name.en' => 'required|string|max:255'
+            'name.en' => 'required|string|max:255',
+            'profile_image' => 'sometimes|image|mimes:jpeg,png,jpg,gif|max:2048',
         ];
     }
 }

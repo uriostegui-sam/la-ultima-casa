@@ -23,7 +23,8 @@ class UpdateSkillRequest extends FormRequest
     {
         return [
             'name.en' => 'sometimes|string|max:255',
-            'name.fr' => 'sometimes|string|max:255'
+            'name.es' => 'sometimes|string|max:255',
+            'profile_image' => 'sometimes|image|mimes:jpeg,png,jpg,gif|max:2048',
         ];
     }
 }

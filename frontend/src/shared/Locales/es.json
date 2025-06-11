@@ -105,6 +105,15 @@
     "cancel": "cancelar",
     "primaryImage": "imagen primaria",
     "setPrimary": "hacerla primaria",
-    "deleteImage": "eliminar imagen"
+    "deleteImage": "eliminar imagen",
+    "saveSkill": "guardar técnica",
+    "showingSkills": "mostrando del {first} al {last} de {totalRecords} técnicas",
+    "manageSkill": "gestionar técnicas",
+    "skillSavedSuccessfully": "la técnica se guardó correctamente.",
+    "errorSavingSkill": "la técnica se guardó correctamente.",
+    "skillDeletedSuccessfully": "la técnica se eliminó correctamente.",
+    "skillsDeleted": "técnicas eliminadas",
+    "errorDeletingSkills": "hubo un error al eliminar las técnicas.",
+    "sureDeleteSelectedSkills": "¿Estás seguro que quieres eliminar las técnicas seleccionadas?"
   }
   
