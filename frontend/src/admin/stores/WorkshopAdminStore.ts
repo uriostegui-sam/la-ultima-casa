@@ -1,8 +1,8 @@
 import { defineStore } from 'pinia'
 import type { Workshop, WorkshopCreatePayload, WorkshopUpdatePayload } from '@/shared/Interfaces/Workshop'
-import WorkshopService from '@/visitors/Services/DataLayers/Workshop'
+import WorkshopAdminServices from '../Services/DataLayers/WorkshopAdminServices';
 
-export const useWorkshopStore = defineStore('adminWorkshop', {
+export const useAdminWorkshopStore = defineStore('adminWorkshop', {
   state: () => ({
     workshops: [] as Workshop[],
     selectedWorkshop: null as Workshop | null,
@@ -15,7 +15,7 @@ export const useWorkshopStore = defineStore('adminWorkshop', {
         this.loading = true;
         this.error = null;
     try {
-        const response = await WorkshopService.getWorkshops(params)
+        const response = await WorkshopAdminServices.getWorkshops(params)
         this.workshops = response.data
       } catch (err: any) {
         this.error = err.message || 'Failed to load workshops'
@@ -28,7 +28,7 @@ export const useWorkshopStore = defineStore('adminWorkshop', {
       this.loading = true
       this.error = null
       try {
-        const workshop = await WorkshopService.getById<Workshop>(id)
+        const workshop = await WorkshopAdminServices.getById<Workshop>(id)
         this.selectedWorkshop = workshop
       } catch (err: any) {
         this.error = err.message || 'Failed to load workshop'
@@ -37,82 +37,38 @@ export const useWorkshopStore = defineStore('adminWorkshop', {
       }
     },
 
-    async createWorkshop(formData: FormData) {
+    async createWorkshop(payload: WorkshopCreatePayload) {
       this.loading = true
       this.error = null
       try {
-        const payload: WorkshopCreatePayload = {
-          artist_id: Number(formData.get('artist_id')),
-          title: JSON.parse(formData.get('title') as string),
-          description: JSON.parse(formData.get('description') as string),
-          type: formData.get('type') as 'permanent' | 'temporary',
-          start_date: formData.get('start_date') as string,
-          end_date: formData.get('end_date') as string,
-          price: Number(formData.get('price')),
-          max_students: Number(formData.get('max_students')),
-          cover_image: formData.get('cover_image') as File,
-          skills: formData.getAll('skills[]').map((s) => Number(s)),
-        }
-
-        const newWorkshop = await WorkshopService.createWorkshop(payload)
+        const newWorkshop = await WorkshopAdminServices.createWorkshop(payload)
         this.workshops.push(newWorkshop)
+        return newWorkshop
       } catch (err: any) {
         this.error = err.message || 'Failed to create workshop'
+        throw err
       } finally {
         this.loading = false
       }
     },
 
-    async updateWorkshop(id: number | string, formData: FormData) {
+    async updateWorkshop(id: number, payload: WorkshopUpdatePayload) {
       this.loading = true
       this.error = null
       try {
-        const payload: WorkshopUpdatePayload = {
-          id: Number(id),
-        }
+        const updatedWorkshop = await WorkshopAdminServices.updateWorkshop(id, payload)
 
-        if (formData.has('artist_id')) {
-          payload.artist_id = Number(formData.get('artist_id'))
-        }
-        if (formData.has('title')) {
-          payload.title = JSON.parse(formData.get('title') as string)
-        }
-        if (formData.has('description')) {
-          payload.description = JSON.parse(formData.get('description') as string)
-        }
-        if (formData.has('type')) {
-          payload.type = formData.get('type') as 'permanent' | 'temporary'
-        }
-        if (formData.has('start_date')) {
-          payload.start_date = formData.get('start_date') as string
-        }
-        if (formData.has('end_date')) {
-          payload.end_date = formData.get('end_date') as string
-        }
-        if (formData.has('price')) {
-          payload.price = Number(formData.get('price'))
-        }
-        if (formData.has('max_students')) {
-          payload.max_students = Number(formData.get('max_students'))
-        }
-        if (formData.has('cover_image')) {
-          payload.cover_image = formData.get('cover_image') as File
-        }
-        if (formData.has('skills[]')) {
-          payload.skills = formData.getAll('skills[]').map((id) => Number(id))
-        }
-
-        const updatedWorkshop = await WorkshopService.updateWorkshop(payload)
-
-        const index = this.workshops.findIndex((w) => w.id === updatedWorkshop.id)
+        const index = this.workshops.findIndex((w) => w.id === id)
         if (index !== -1) {
           this.workshops[index] = updatedWorkshop
         }
         if (this.selectedWorkshop?.id === updatedWorkshop.id) {
           this.selectedWorkshop = updatedWorkshop
         }
+        return updatedWorkshop
       } catch (err: any) {
         this.error = err.message || 'Failed to update workshop'
+        throw err
       } finally {
         this.loading = false
       }
@@ -122,13 +78,14 @@ export const useWorkshopStore = defineStore('adminWorkshop', {
       this.loading = true
       this.error = null
       try {
-        await WorkshopService.deleteWorkshop(id)
+        await WorkshopAdminServices.deleteWorkshop(id)
         this.workshops = this.workshops.filter((w) => w.id !== id)
         if (this.selectedWorkshop?.id === id) {
           this.selectedWorkshop = null
         }
       } catch (err: any) {
         this.error = err.message || 'Failed to delete workshop'
+        throw err
       } finally {
         this.loading = false
       }
