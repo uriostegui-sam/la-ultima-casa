@@ -22,16 +22,19 @@ class UpdateWorkshopRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'artist_id' => 'required', 'exists:artists,id',
             'title.en' => 'sometimes|string|max:255',
             'title.es' => 'sometimes|string|max:255',
             'description.en' => 'nullable|string',
             'description.es' => 'nullable|string',
             'type' => 'sometimes|string|max:255',
             'start_date' => 'sometimes|string|max:255',
-            'end_date' => 'sometimes|string|max:255',
+            'end_date' => 'nullable|string|max:255',
             'price' => 'sometimes|string|max:255',
             'max_students' => 'sometimes|string|max:255',
-            'cover_image' => 'sometimes|image|max:255',
+            'cover_image' => 'sometimes|image|max:2048',
+            'skills' => 'required|array',
+            'skills.*' => 'exists:skills,id'
         ];
     }
 }
