@@ -16,7 +16,7 @@ class ArtworkService
             'artist_id' => $data['artist_id'],
             'title' => $data['title'],
             'description' => $data['description'] ?? null,
-            'image_path' => $this->storeImage($image),
+            'image_path' => $this->storeImage($image, $data['title']),
             'dimensions' => $data['dimensions'] ?? null,
             'creation_date' => $data['creation_date'] ?? now()
         ]);
@@ -36,18 +36,16 @@ class ArtworkService
         }
     }
 
-    public function storeImage(UploadedFile $image, Artwork $artwork, int $index): string
+    public function storeImage(UploadedFile $image, Artwork|string $artworkOrTitle, int $index = 0): string
     {
-        $slug = Str::slug($artwork->title);
+        $title = is_string($artworkOrTitle) ? $artworkOrTitle : $artworkOrTitle->title;
+        $slug = Str::slug($title);
         $extension = $image->getClientOriginalExtension();
         $filename = "{$slug}-{$index}.{$extension}";
-        
-        return $image->storeAs(
-            'artworks/images', 
-            $filename, 
-            'public'
-        );
+
+        return $image->storeAs('artworks/images', $filename, 'public');
     }
+
 
     public function deleteImage(ArtworkImage $image): void
     {

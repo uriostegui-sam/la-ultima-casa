@@ -1,4 +1,5 @@
 import type { ArtworkCreatePayload, ArtworkUpdatePayload } from '@/shared/Interfaces/Artwork'
+import { formatDateToYMD } from '.'
 
 export function buildArtworkFormData(
   payload: ArtworkCreatePayload | ArtworkUpdatePayload,
@@ -29,7 +30,7 @@ export function buildArtworkFormData(
     formData.append('dimensions[depth]', payload.dimensions.depth.toString())
   }
   if (payload.creation_date) {
-    formData.append('creation_date', new Date(payload.creation_date).toISOString())
+    formData.append('creation_date', formatDateToYMD(payload.creation_date))
   }
 
   // Handle new images

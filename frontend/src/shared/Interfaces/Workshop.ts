@@ -16,17 +16,13 @@ export interface Workshop {
     es?: string
   }
   type: WorkshopType
-  start_date: string
-  end_date: string
+  start_date: Date
+  end_date: Date | null
   price: number
   max_students: number
   cover_image_path?: string
   cover_image_url?: string
   skills?: Skill[]
-  translations?: {
-    title: Record<string, string>
-    description: Record<string, string>
-  }
 }
 
 export interface WorkshopCreatePayload {
@@ -34,8 +30,8 @@ export interface WorkshopCreatePayload {
   title: Record<string, string>
   description: Record<string, string>
   type: WorkshopType
-  start_date: string
-  end_date: string
+  start_date: Date
+  end_date: Date | null
   price: number
   max_students: number
   cover_image?: File

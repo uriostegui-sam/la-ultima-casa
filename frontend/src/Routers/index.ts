@@ -16,6 +16,8 @@ import ArtistForm from '@/admin/views/pages/ArtistForm.vue'
 import ArtworkForm from '@/admin/views/pages/ArtworkForm.vue'
 import SkillForm from '@/admin/views/pages/SkillForm.vue'
 import SkillAdminController from '@/admin/Controllers/Skill/SkillAdminController.vue'
+import WorkshopsAdminController from '@/admin/Controllers/Workshop/WorkshopsAdminController.vue'
+import WorkshopForm from '@/admin/views/pages/WorkshopForm.vue'
 
 const routes = [
   {
@@ -106,6 +108,21 @@ const routes = [
         path: '/admin/skills/create',
         name: 'adminSkillCreate',
         component: SkillForm,
+      },
+      {
+        path: '/admin/workshops',
+        name: 'adminWorkshops',
+        component: WorkshopsAdminController,
+      },
+      {
+        path: '/admin/workshops/edit/:id',
+        name: 'adminWorkshopEdit',
+        component: WorkshopForm,
+      },
+      {
+        path: '/admin/workshops/create',
+        name: 'adminWorkshopCreate',
+        component: WorkshopForm,
       },
     ],
   },
