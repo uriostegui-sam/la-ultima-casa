@@ -22,6 +22,7 @@ class StoreWorkshopRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'artist_id' => 'required', 'exists:artists,id',
             'title.en' => 'required|string|max:255',
             'title.es' => 'required|string|max:255',
             'description.en' => 'nullable|string',
@@ -31,7 +32,9 @@ class StoreWorkshopRequest extends FormRequest
             'end_date' => 'nullable|string|max:255',
             'price' => 'required|string|max:255',
             'max_students' => 'required|string|max:255',
-            'cover_image' => 'required|image|max:255',
+            'cover_image' => 'required|image|max:2048',
+            'skills' => 'required|array',
+            'skills.*' => 'exists:skills,id'
         ];
     }
 }
