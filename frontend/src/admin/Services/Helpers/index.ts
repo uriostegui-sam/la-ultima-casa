@@ -53,3 +53,20 @@ export const showErrorToast = (toast: any, t: Function, err: unknown, fallbackKe
     life,
   });
 }
+
+export const formatDateToYMD = (date: Date | string): string => {
+  let d: Date
+
+  if (typeof date === 'string') {
+    d = new Date(date)
+    if (isNaN(d.getTime())) return ''
+  } else {
+    d = date
+  }
+
+  const year = d.getFullYear()
+  const month = String(d.getMonth() + 1).padStart(2, '0')
+  const day = String(d.getDate()).padStart(2, '0')
+
+  return `${year}-${month}-${day}`
+}

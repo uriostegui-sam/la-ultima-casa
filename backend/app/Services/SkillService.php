@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Skill;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class SkillService
 {
@@ -16,7 +17,7 @@ class SkillService
     public function createSkill(array $data)
     {
         if (array_key_exists('profile_image', $data) && $data['profile_image'] instanceof UploadedFile) {
-            $data['profile_image'] = $this->storeProfileImage($data['profile_image']);
+            $data['profile_image'] = $this->storeProfileImage($data['profile_image'], $data);
         }
 
         $skill = Skill::create([
@@ -31,10 +32,7 @@ class SkillService
     {
         if (isset($data['profile_image'])) {
             $this->deleteOldImage($skill->profile_image);
-            $data['profile_image'] = $data['profile_image']->store(
-                'skills/profile-images',
-                'public'
-            );
+            $data['profile_image'] = $this->storeProfileImage($data['profile_image'], $skill);
         }
 
         $skill->update($data);
@@ -53,8 +51,13 @@ class SkillService
         }
     }
 
-    protected function storeProfileImage(UploadedFile $image): string
+    protected function storeProfileImage(UploadedFile $image, Skill|array $skill): string
     {
-        return $image->store('skills/profile-images', 'public');
+        $name = is_array($skill) ? $skill['name']['es'] : $skill->name['es'];
+        $slug = Str::slug($name);
+        $extension = $image->getClientOriginalExtension();
+        $filename = "{$slug}.{$extension}";
+
+        return $image->storeAs('skills/profile-images', $filename, 'public');
     }
 }

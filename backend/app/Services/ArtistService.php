@@ -24,7 +24,7 @@ class ArtistService
         }
         
         if (array_key_exists('profile_image', $data) && $data['profile_image'] instanceof UploadedFile) {
-            $data['profile_image'] = $this->storeProfileImage($data['profile_image']);
+            $data['profile_image'] = $this->storeProfileImage($data['profile_image'], $data);
         }
 
         $artist = Artist::create([
@@ -46,10 +46,7 @@ class ArtistService
     {
         if (isset($data['profile_image'])) {
             $this->deleteOldImage($artist->profile_image);
-            $data['profile_image'] = $data['profile_image']->store(
-                'artists/profile-images',
-                'public'
-            );
+            $data['profile_image'] = $this->storeProfileImage($data['profile_image'], $artist);
         }
 
         $artist->update($data);
@@ -68,8 +65,13 @@ class ArtistService
         }
     }
 
-    protected function storeProfileImage(UploadedFile $image): string
+    protected function storeProfileImage(UploadedFile $image, Artist|array $artist): string
     {
-        return $image->store('artists/profile-images', 'public');
+        $name = is_array($artist) ? $artist['user']['name'] . ' ' . $artist['user']['lastname'] : $artist->user->first_name . ' ' . $artist->user->last_name;
+        $slug = Str::slug($name);
+        $extension = $image->getClientOriginalExtension();
+        $filename = "{$slug}.{$extension}";
+
+        return $image->storeAs('artists/profile-images', $filename, 'public');
     }
 }

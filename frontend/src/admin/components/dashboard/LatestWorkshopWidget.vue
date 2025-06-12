@@ -1,5 +1,5 @@
 <script setup>
-import { useWorkshopAdminStore } from '@/admin/stores/WorkshopAdminStore';
+import { useAdminWorkshopStore } from '@/admin/stores/WorkshopAdminStore';
 import { capitalizeFirstLetter } from '@/shared/services/Helpers';
 import { Languages, locale } from '@/shared/services/Translation';
 import { computed, onMounted, ref } from 'vue';
@@ -7,7 +7,7 @@ import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n()
 const current = locale
-const workshopStore = useWorkshopAdminStore()
+const workshopStore = useAdminWorkshopStore()
 
 const workshopTransformed = computed(() => {
     return workshopStore.workshops.map((workshop) => ({

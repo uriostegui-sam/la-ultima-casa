@@ -3,6 +3,7 @@ import axiosInstance from '@/shared/services/DataLayers/AxiosInstance'
 import { BaseService } from '@/shared/services/DataLayers/BaseService'
 import type { Workshop, WorkshopCreatePayload, WorkshopUpdatePayload } from '@/shared/Interfaces/Workshop'
 import axios from 'axios'
+import { buildWorkshopFormData } from '../Helpers/formWorkshopHelper'
 
 type WorkshopType = 'permanent' | 'temporary'
 
@@ -12,65 +13,14 @@ class WorkshopService extends BaseService {
   }
 
   async createWorkshop(payload: WorkshopCreatePayload): Promise<Workshop> {
-    const formData = new FormData()
-    
-    // Required fields
-    formData.append('artist_id', payload.artist_id.toString())
-    formData.append('title', JSON.stringify(payload.title))
-    formData.append('description', JSON.stringify(payload.description))
-    formData.append('type', payload.type)
-    formData.append('start_date', payload.start_date)
-    formData.append('end_date', payload.end_date)
-    formData.append('price', payload.price.toString())
-    formData.append('max_students', payload.max_students.toString())
-
-    // Optional fields
-    if (payload.cover_image) {
-      formData.append('cover_image', payload.cover_image)
-    }
-    if (payload.skills) {
-      payload.skills.forEach(id => formData.append('skills[]', id.toString()))
-    }
-
-    const response = await axiosInstance.post<Workshop>(this.baseUrl, formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data'
-      }
-    })
-    return response.data
+    const formData = buildWorkshopFormData(payload, true);
+    return await this.create<Workshop>(formData)
   }
 
-  async updateWorkshop(payload: WorkshopUpdatePayload): Promise<Workshop> {
-    const formData = new FormData()
-    
-    // Append only provided fields
-    if (payload.artist_id) formData.append('artist_id', payload.artist_id.toString())
-    if (payload.title) formData.append('title', JSON.stringify(payload.title))
-    if (payload.description) formData.append('description', JSON.stringify(payload.description))
-    if (payload.type) formData.append('type', payload.type)
-    if (payload.start_date) formData.append('start_date', payload.start_date)
-    if (payload.end_date) formData.append('end_date', payload.end_date)
-    if (payload.price) formData.append('price', payload.price.toString())
-    if (payload.max_students) formData.append('max_students', payload.max_students.toString())
-    if (payload.cover_image) {
-      formData.append('cover_image', payload.cover_image)
-    }
-    if (payload.skills) {
-      payload.skills.forEach(id => formData.append('skills[]', id.toString()))
-    }
-    
-    formData.append('_method', 'PUT')
-
-    const response = await axiosInstance.post<Workshop>(
-      `${this.baseUrl}/${payload.id}`,
-      formData,
-      {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      }
-    )
-    return response.data
+  async updateWorkshop(id: number, payload: WorkshopUpdatePayload): Promise<Workshop> {
+    const formData = buildWorkshopFormData(payload, false);
+    console.log(formData)
+    return await this.update<Workshop>(id, formData)
   }
 
   async deleteWorkshop(id: number): Promise<void> {
