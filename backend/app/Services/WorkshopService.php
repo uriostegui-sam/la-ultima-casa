@@ -6,37 +6,50 @@ use App\Models\Workshop;
 use App\Models\Skill;
 use App\Models\Artist;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class WorkshopService
 {
     public function createWorkshop(array $data, UploadedFile $image): Workshop
     {
-        $data['cover_image_path'] = $this->storeImage($image);
+        $data['cover_image_path'] = $this->storeImage($image, $data);
+        $artistId = $data['artist_id'] ?? null;
 
-        $workshop = Workshop::create($data);
+        $workshop = Workshop::create([
+            'artist_id' => $artistId,
+            'title' => $data['title'],
+            'description' => $data['description'] ?? null,
+            'cover_image_path' => $data['cover_image_path'],
+            'start_date' => $data['start_date'] ?? now(),
+            'end_date' => $data['end_date'] ?? now()->addDays(7),
+            'type' => $data['type'] ?? 'temporary',
+            'price' => $data['price'] ?? 0.0,
+            'max_students' => $data['max_students'] ?? 0,
+        ]);
 
-        if (isset($data['skills'])) {
+        if (!empty($data['skills'])) {
             $workshop->skills()->sync($data['skills']);
         }
 
-        return $workshop;
+        return $workshop->load('skills');
     }
 
     public function updateWorkshop(Workshop $workshop, array $data, ?UploadedFile $image = null): Workshop
     {
         if ($image) {
             $this->deleteImage($workshop->cover_image_path);
-            $data['cover_image_path'] = $this->storeImage($image);
+            $data['cover_image_path'] = $this->storeImage($image, $workshop);
         }
 
         $workshop->update($data);
 
-        if (isset($data['skills'])) {
-            $workshop->skills()->sync($data['skills']);
+        if (array_key_exists('skills', $data)) {
+            $workshop->skills()->sync($data['skills'] ?? []);
         }
 
-        return $workshop;
+        return $workshop->fresh()->load('skills');
     }
 
     public function deleteWorkshop(Workshop $workshop): void
@@ -45,9 +58,14 @@ class WorkshopService
         $workshop->delete();
     }
 
-    public function storeImage(UploadedFile $image): string
+    public function storeImage(UploadedFile $image, Workshop|array $workshop): string
     {
-        return $image->store('workshops/images', 'public');
+        $name = is_array($workshop) ? $workshop['title']['es'] : $workshop->title['es'];
+        $slug = Str::slug($name);
+        $extension = $image->getClientOriginalExtension();
+        $filename = "{$slug}.{$extension}";
+
+        return $image->storeAs('workshops/images', $filename, 'public');
     }
 
     public function deleteImage(string $path): void
