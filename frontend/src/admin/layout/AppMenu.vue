@@ -16,7 +16,7 @@ const model = ref([
     {
         label: 'Pages',
         items: [
-            { label: capitalizeFirstLetter(t('aboutUs')), icon: 'pi pi-fw pi-id-card', to: '/admin/aboutUs' },
+            { label: capitalizeFirstLetter(t('aboutUs')), icon: 'pi pi-fw pi-id-card', to: '/admin/about-us' },
             { label: capitalizeFirstLetter(t('artists')), icon: 'pi pi-fw pi-palette', to: '/admin/artists' },
             { label: capitalizeFirstLetter(t('news')), icon: 'pi pi-fw pi-folder-open', to: '/admin/news', class: 'rotated-icon' },
             { label: capitalizeFirstLetter(t('workshops')), icon: 'pi pi-fw pi-wrench', to: '/admin/workshops' },
