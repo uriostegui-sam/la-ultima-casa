@@ -2,6 +2,8 @@ import type { News, NewsCreatePayload, NewsUpdatePayload } from '@/shared/Interf
 import type { ApiResponse } from '@/shared/Interfaces/ApiResponse'
 import { BaseService } from '@/shared/services/DataLayers/BaseService'
 import axiosInstance from '@/shared/services/DataLayers/AxiosInstance'
+import { buildNewsFormData } from '../Helpers/formNewsHelper'
+import axios from 'axios'
 
 class NewsService extends BaseService {
   constructor() {
@@ -9,56 +11,26 @@ class NewsService extends BaseService {
   }
 
   async createNews(payload: NewsCreatePayload): Promise<News> {
-    const formData = new FormData()
+    const formData = buildNewsFormData(payload, true)
 
-    // Append JSON fields
-    formData.append('title', JSON.stringify(payload.title))
-    formData.append('content', JSON.stringify(payload.content))
-
-    if (payload.published_at) {
-      formData.append('published_at', payload.published_at)
-    }
-
-    // Append image if exists
-    if (payload.image) {
-      formData.append('image', payload.image)
-    }
-
-    const response = await axiosInstance.post<News>(this.baseUrl, formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    })
-    return response.data
+    return await this.create<News>(formData)
   }
 
-  async updateNews(payload: NewsUpdatePayload): Promise<News> {
-    const formData = new FormData()
+  async updateNews(id: number, payload: NewsUpdatePayload): Promise<News> {
+    const formData = buildNewsFormData(payload, false)
 
-    if (payload.title) {
-      formData.append('title', JSON.stringify(payload.title))
-    }
-    if (payload.content) {
-      formData.append('content', JSON.stringify(payload.content))
-    }
-    if (payload.published_at) {
-      formData.append('published_at', payload.published_at)
-    }
-    if (payload.image) {
-      formData.append('image', payload.image)
-    }
-    formData.append('_method', 'PUT')
-
-    const response = await axiosInstance.post<News>(`${this.baseUrl}/${payload.id}`, formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    })
-    return response.data
+    return await this.update<News>(id, formData)
   }
 
   async deleteNews(id: number): Promise<void> {
-    await axiosInstance.delete(`${this.baseUrl}/${id}`)
+    try {
+      await axiosInstance.delete(`${this.baseUrl}/${id}`)
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response?.status === 422) {
+        throw new Error(error.response.data.message || 'Cannot delete news')
+      }
+      throw error
+    }
   }
 
   async getNews(params?: {
