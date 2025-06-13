@@ -41,7 +41,6 @@ async function handleLogin() {
 </script>
 
 <template>
-    <FloatingConfigurator />
     <div class="flex items-center justify-center min-h-screen min-w-[100vw] overflow-hidden">
         <div class="flex flex-col items-center justify-center">
             <div class="bg-(--color-light-salmon) rounded-4xl">
