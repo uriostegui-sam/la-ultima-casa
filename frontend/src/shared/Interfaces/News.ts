@@ -8,7 +8,6 @@ export interface News {
     en?: string
     es?: string
   }
-  image_path?: string
   image_url?: string
   published_at?: string
 }
@@ -17,7 +16,7 @@ export interface NewsCreatePayload {
   title: Record<string, string>
   content: Record<string, string>
   published_at?: string
-  image?: File
+  cover_image?: File
 }
 
 export interface NewsUpdatePayload extends Partial<NewsCreatePayload> {
