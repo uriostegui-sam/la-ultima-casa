@@ -26,7 +26,7 @@ class UpdateNewsRequest extends FormRequest
             'title.es' => 'sometimes|string|max:255',
             'content.en' => 'sometimes|string',
             'content.es' => 'sometimes|string',
-            'image' => 'nullable|image|max:2048',
+            'cover_image' => 'nullable|image|max:2048',
             'published_at' => 'nullable|date',
         ];
     }
