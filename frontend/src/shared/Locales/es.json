@@ -148,6 +148,13 @@
     "errorDeletingNews": "hubo un error al eliminar las noticias.",
     "sureDeleteSelectedNews": "¿Estás seguro que quieres eliminar las noticias seleccionadas?",
     "manageNews": "gestionar noticias",
-    "showingNews": "showing {first} to {last} of {totalRecords} news"
+    "showingNews": "mostrando del {first} al {last} de {totalRecords} noticias",
+    "phoneNumber": "número de teléfono",
+    "address": "dirección",
+    "addressMap": "dirección en el mapa",
+    "saveAboutUs": "guardar acerca de nosotros",
+    "aboutUsSavedSuccessfully": "acerca de nosotros guardado correctamente.",
+    "errorSavingAboutUs": "hubo un error al guardar acerca de nosotros.",
+    "aboutUsDeletedSuccessfully": "acerca de nosotros eliminado correctamente.",
+    "aboutUsDeleted": "acerca de nosotros eliminado"
   }
-  

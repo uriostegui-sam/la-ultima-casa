@@ -148,6 +148,14 @@
     "errorDeletingNews": "there was an error deleting the news.",
     "sureDeleteSelectedNews": "are you sure you want to delete the selected news?",
     "manageNews": "manage news",
-    "showingNews": "showing {first} to {last} of {totalRecords} news"
+    "showingNews": "showing {first} to {last} of {totalRecords} news",
+    "phoneNumber": "phone number",
+    "address": "address",
+    "addressMap": "address on map",
+    "saveAboutUs":  "save about us",
+    "aboutUsSavedSuccessfully": "about us saved successfully.",
+    "errorSavingAboutUs": "there was an error saving the about us.",
+    "aboutUsDeletedSuccessfully": "about us deleted successfully.",
+    "aboutUsDeleted": "about us deleted"
   }
   
