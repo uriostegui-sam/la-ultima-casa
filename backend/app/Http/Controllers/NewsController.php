@@ -124,7 +124,7 @@ class NewsController extends Controller
 
         $news = $this->newsService->createNews(
             $request->validated(),
-            $request->file('image')
+            $request->file('cover_image')
         );
 
         return new NewsResource($news);
@@ -211,7 +211,7 @@ class NewsController extends Controller
         $news = $this->newsService->updateNews(
             $news,
             $request->validated(),
-            $request->file('image')
+            $request->file('cover_image')
         );
 
         return new NewsResource($news);

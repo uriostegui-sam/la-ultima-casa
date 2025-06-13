@@ -138,6 +138,16 @@
     "sureDeleteSelectedArtworks": "¿Estás seguro que quieres eliminar las obras de arte seleccionadas?",
     "primaryImageUpdated": "la imagen primaria se actualizó correctamente.",
     "errorUpdatingPrimaryImage": "hubo un error al actualizar la imagen primaria.",
-    "coverImage": "imagen de portada"
+    "coverImage": "imagen de portada",
+    "content": "contenido",
+    "saveNews": "guardar noticia",
+    "newsSavedSuccessfully": "la noticia se guardó correctamente.",
+    "errorSavingNews": "hubo un error al guardar la noticia.",
+    "newsDeletedSuccessfully": "la noticia se eliminó correctamente.",
+    "newsDeleted": "noticias eliminadas",
+    "errorDeletingNews": "hubo un error al eliminar las noticias.",
+    "sureDeleteSelectedNews": "¿Estás seguro que quieres eliminar las noticias seleccionadas?",
+    "manageNews": "gestionar noticias",
+    "showingNews": "showing {first} to {last} of {totalRecords} news"
   }
   
