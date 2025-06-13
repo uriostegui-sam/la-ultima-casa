@@ -18,6 +18,8 @@ import SkillForm from '@/admin/views/pages/SkillForm.vue'
 import SkillAdminController from '@/admin/Controllers/Skill/SkillAdminController.vue'
 import WorkshopsAdminController from '@/admin/Controllers/Workshop/WorkshopsAdminController.vue'
 import WorkshopForm from '@/admin/views/pages/WorkshopForm.vue'
+import NewsAdminController from '@/admin/Controllers/News/NewsAdminController.vue'
+import NewsForm from '@/admin/views/pages/NewsForm.vue'
 
 const routes = [
   {
@@ -123,6 +125,21 @@ const routes = [
         path: '/admin/workshops/create',
         name: 'adminWorkshopCreate',
         component: WorkshopForm,
+      },
+      {
+        path: '/admin/news',
+        name: 'adminNews',
+        component: NewsAdminController,
+      },
+      {
+        path: '/admin/news/edit/:id',
+        name: 'adminNewsEdit',
+        component: NewsForm,
+      },
+      {
+        path: '/admin/news/create',
+        name: 'adminNewsCreate',
+        component: NewsForm,
       },
     ],
   },
