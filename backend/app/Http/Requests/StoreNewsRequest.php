@@ -26,7 +26,7 @@ class StoreNewsRequest extends FormRequest
             'title.es' => 'required|string|max:255',
             'content.en' => 'required|string',
             'content.es' => 'required|string',
-            'image' => 'nullable|image|max:2048',
+            'cover_image' => 'nullable|image|max:2048',
             'published_at' => 'nullable|date',
         ];
     }

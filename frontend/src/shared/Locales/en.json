@@ -138,6 +138,16 @@
     "sureDeleteSelectedArtworks": "are you sure you want to delete the selected artworks?",
     "primaryImageUpdated": "primary image updated successfully.",
     "errorUpdatingPrimaryImage": "there was an error updating the primary image.",
-    "coverImage": "cover image"
+    "coverImage": "cover image",
+    "content": "content",
+    "saveNews": "save news",
+    "newsSavedSuccessfully": "news saved successfully.",
+    "errorSavingNews": "there was an error saving the news.",
+    "newsDeletedSuccessfully": "news deleted successfully.",
+    "newsDeleted": "news deleted",
+    "errorDeletingNews": "there was an error deleting the news.",
+    "sureDeleteSelectedNews": "are you sure you want to delete the selected news?",
+    "manageNews": "manage news",
+    "showingNews": "showing {first} to {last} of {totalRecords} news"
   }
   

@@ -21,8 +21,8 @@ class NewsResource extends JsonResource
                 'es' => $this->title['es'],
             ],
             'content' => [
-                'en' => $this->title['en'],
-                'es' => $this->title['es'],
+                'en' => $this->content['en'],
+                'es' => $this->content['es'],
             ],
             'image_url' => $this->image_url,
             'published_at' => $this->published_at,

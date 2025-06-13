@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\News;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class NewsService
 {
@@ -13,11 +14,16 @@ class NewsService
      */
     public function createNews(array $data, ?UploadedFile $image = null): News
     {
-        if ($image) {
-            $data['image_path'] = $this->storeImage($image);
+        if ($image instanceof UploadedFile) {
+            $data['image_path'] = $this->storeImage($image, $data);
         }
 
-        return News::create($data);
+        return News::create([
+            'title' => $data['title'],
+            'content' => $data['content'],
+            'published_at' => $data['published_at'],
+            'image_path' => $data['image_path'] ?? null,
+        ]);
     }
 
     /**
@@ -27,7 +33,7 @@ class NewsService
     {
         if ($image) {
             $this->deleteImage($news->image_path);
-            $data['image_path'] = $this->storeImage($image);
+            $data['image_path'] = $this->storeImage($image, $news);
         }
 
         $news->update($data);
@@ -46,9 +52,14 @@ class NewsService
     /**
      * Store news image to disk
      */
-    protected function storeImage(UploadedFile $image): string
+    protected function storeImage(UploadedFile $image, News|array $news): string
     {
-        return $image->store('news/images', 'public');
+        $name = is_array($news) ? $news['title']['es'] : $news->title['es'];
+        $slug = Str::slug($name);
+        $extension = $image->getClientOriginalExtension();
+        $filename = "{$slug}.{$extension}";
+
+        return $image->storeAs('news/images', $filename, 'public');
     }
 
     /**
