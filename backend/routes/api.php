@@ -1,11 +1,13 @@
 <?php
 
+use App\Http\Controllers\AboutUsController;
 use App\Http\Controllers\ArtistController;
 use App\Http\Controllers\ArtworkController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\SkillController;
 use App\Http\Controllers\WorkshopController;
+use App\Models\AboutUs;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -27,6 +29,9 @@ Route::middleware('api')->group(function () {
     Route::apiResource('artworks', ArtworkController::class)->only(['index', 'show']);
     Route::apiResource('news', NewsController::class)->only(['index', 'show']);
     Route::apiResource('workshops', WorkshopController::class)->only(['index', 'show']);
+    Route::apiResource('aboutUs', AboutUsController::class)
+        ->only(['index', 'show'])
+        ->parameters(['aboutUs' => 'aboutUs']);
 });
 
 // Authentication routes
@@ -64,4 +69,7 @@ Route::middleware(['auth:sanctum', 'admin', 'throttle:api'])->group(function () 
     Route::apiResource('news', NewsController::class)->except(['index', 'show']);
     Route::apiResource('workshops', WorkshopController::class)->except(['index', 'show']);
     Route::apiResource('skills', SkillController::class)->except(['index', 'show']);
+    Route::apiResource('aboutUs', AboutUsController::class)
+        ->except(['index', 'show'])
+        ->parameters(['aboutUs' => 'aboutUs']);
 });
