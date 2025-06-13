@@ -20,6 +20,7 @@ import WorkshopsAdminController from '@/admin/Controllers/Workshop/WorkshopsAdmi
 import WorkshopForm from '@/admin/views/pages/WorkshopForm.vue'
 import NewsAdminController from '@/admin/Controllers/News/NewsAdminController.vue'
 import NewsForm from '@/admin/views/pages/NewsForm.vue'
+import AboutUsForm from '@/admin/views/pages/AboutUsForm.vue'
 
 const routes = [
   {
@@ -140,6 +141,11 @@ const routes = [
         path: '/admin/news/create',
         name: 'adminNewsCreate',
         component: NewsForm,
+      },
+      {
+        path: '/admin/about-us',
+        name: 'adminAboutUs',
+        component: AboutUsForm,
       },
     ],
   },
