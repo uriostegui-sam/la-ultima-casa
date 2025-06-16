@@ -23,13 +23,11 @@ async function handleLogin() {
     error.value = ''
     
     const response = await authStore.login(credentials.value)    
-    
     // Redirect based on role
     if (response.data.user.role === 'admin') {
       router.push('/admin')
     } else {
-        // WIP REDIRECT A LA PÁGINA PERSONAL DEL ARTISTA Y SOLO PERMITIR QUE VAYA A SUS OBRAS
-    //   router.push('/dashboard')
+      router.push('/admin/artists/edit/' + response.data.user.artist_id)
     }
     
   } catch (err: any) {

@@ -21,7 +21,12 @@ function logout() {
 }
 
 function goToProfile() {
-  router.push('/admin/profile')
+  const artistId = authStore.user?.artist?.id
+  if (artistId) {
+    router.push(`/admin/artists/edit/${artistId}`)
+  } else {
+    router.push('/admin/artists')
+  }
 }
 </script>
 
