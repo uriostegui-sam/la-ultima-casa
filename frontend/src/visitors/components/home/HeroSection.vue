@@ -8,6 +8,7 @@ import { capitalizeFirstLetter } from '@/shared/services/Helpers'
 import { useAdminAboutUsStore } from '@/admin/stores/AboutUsAdminStore'
 import type { AboutUs } from '@/shared/Interfaces/AboutUs'
 import { Languages, locale } from '@/shared/services/Translation'
+import LoadingComponent from '@/shared/components/LoadingComponent.vue'
 
 const { t } = useI18n()
 const props = defineProps<{
@@ -86,8 +87,13 @@ onMounted(async () => {
       "
     >
       <!-- Image -->
-      <div class="flex-1 pt-5" :class="!props.first && 'hidden lg:flex'">
-        <img :src="imageSrc" alt="" class="w-full h-auto object-cover rounded-xl" />
+      <div class="flex-1 pt-5 flex items-center justify-center" :class="!props.first && 'hidden lg:flex'">
+        <div v-if="aboutUs">
+          <img :src="imageSrc" alt="" class="w-full h-auto object-cover rounded-xl" />
+        </div>
+        <div v-else>
+          <LoadingComponent />
+        </div>
       </div>
 
       <!-- Content -->
