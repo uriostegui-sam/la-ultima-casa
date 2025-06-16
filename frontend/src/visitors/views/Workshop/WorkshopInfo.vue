@@ -41,10 +41,15 @@ onMounted(async () => {
 })
 
 function updateFormattedDate() {
-  if (currentWorkshop.value && currentWorkshop.value.type !== 'permanent') {
+  if (
+    currentWorkshop.value &&
+    currentWorkshop.value.type !== 'permanent' &&
+    currentWorkshop.value.start_date &&
+    currentWorkshop.value.end_date
+  ) {
     formattedDate.value = formatDateRange(
-      currentWorkshop.value.start_date,
-      currentWorkshop.value.end_date,
+      currentWorkshop.value.start_date.toISOString(),
+      currentWorkshop.value.end_date.toISOString(),
       currentLang.value === Languages.English ? 'en' : 'es',
     )
   } else {
