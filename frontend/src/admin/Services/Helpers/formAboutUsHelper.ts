@@ -7,7 +7,7 @@ export function buildAboutUsFormData(
   const formData = new FormData()
 
   if (payload.number) {
-    formData.append('number', payload.number.toString())
+    formData.append('number', payload.number)
   }
   if (payload.mail) {
     formData.append('mail', payload.mail)
@@ -17,6 +17,12 @@ export function buildAboutUsFormData(
   }
   if (payload.address?.map) {
     formData.append('address[map]', payload.address.map)
+  }
+   if (payload.description?.en) {
+    formData.append('description[en]', payload.description.en)
+  }
+  if (payload.description?.es) {
+    formData.append('description[es]', payload.description.es)
   }
 
   // File uploads

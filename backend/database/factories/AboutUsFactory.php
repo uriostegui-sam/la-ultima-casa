@@ -24,6 +24,10 @@ class AboutUsFactory extends Factory
                 'text' => fake()->paragraph(1),
                 'map' => fake()->paragraph(1),
             ],
+            'description' => [
+                'en' => fake()->paragraph(1),
+                'es' => fake()->paragraph(1),
+            ],
         ];
     }
 }

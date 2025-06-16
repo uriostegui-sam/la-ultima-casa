@@ -23,6 +23,10 @@ class AboutUsResource extends JsonResource
                 'text' => $this->address['text'] ?? null,
                 'map' => $this->address['map'] ?? null,
             ],
+            'description' => [
+                'es' => $this->description['es'] ?? null,
+                'en' => $this->description['en'] ?? null,
+            ],
         ];
     }
 }

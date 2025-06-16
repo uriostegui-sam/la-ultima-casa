@@ -21,7 +21,6 @@
     "children": "children",
     "join": "join the creativity",
     "explore": "explore the workshops",
-    "presentation": "It is an art workshop focused on providing <strong>enriching artistic experiences</strong> for people of all ages and skill levels. It offers an inspiring environment surrounded by art and enthusiastic students, where <strong>participants can learn painting techniques in a friendly, judgment-free setting</strong>. The studio provides professional materials so attendees can focus on the creative process and <strong>take home vibrant, colorful artworks</strong>.",
     "ourTechniques": "our techniques",
     "workshops": "workshops",
     "knowMore": "know more",
@@ -156,6 +155,8 @@
     "aboutUsSavedSuccessfully": "about us saved successfully.",
     "errorSavingAboutUs": "there was an error saving the about us.",
     "aboutUsDeletedSuccessfully": "about us deleted successfully.",
-    "aboutUsDeleted": "about us deleted"
+    "aboutUsDeleted": "about us deleted",
+    "unauthorized": "unauthorized",
+    "map": "map"
   }
   

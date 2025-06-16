@@ -56,9 +56,10 @@ onMounted(async () => {
     currentAboutUs.value = {
       id: 0,
       address: { text: '', map: '' },
+      description: { es: '', en: '' },
       cover_image: '',
       mail: '',
-      number: 0,
+      number: '',
     }
   }
 })
@@ -69,6 +70,7 @@ const handleSubmit = async () => {
   try {
     const payload: AboutUsCreatePayload | AboutUsUpdatePayload = {
       address: currentAboutUs.value.address,
+      description: currentAboutUs.value.description,
       cover_image: profileImageFile.value ?? undefined,
       mail: currentAboutUs.value.mail,
       number: currentAboutUs.value.number,
@@ -141,9 +143,10 @@ const handleSubmit = async () => {
           <label class="block font-semibold mb-1">{{
             capitalizeFirstLetter(t('phoneNumber'))
           }}</label>
-          <InputNumber
+          <InputMask
             v-model="currentAboutUs.number"
             placeholder="044 312 000 00 00"
+            mask="999 999 999 9999"
             class="w-full"
           />
         </div>
@@ -165,6 +168,22 @@ const handleSubmit = async () => {
         </div>
       </div>
 
+      <!-- Description -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <label class="block font-semibold mb-1">{{
+            `${capitalizeFirstLetter(t('description'))} ${capitalizeFirstLetter(t('spanish'))}`
+          }}</label>
+          <Textarea v-model="currentAboutUs.description.es" rows="2" class="w-full" />
+        </div>
+        <div>
+          <label class="block font-semibold mb-1">{{
+            `${capitalizeFirstLetter(t('description'))} ${capitalizeFirstLetter(t('english'))}`
+          }}</label>
+          <Textarea v-model="currentAboutUs.description.en" rows="2" class="w-full" />
+        </div>
+      </div>
+
       <!-- Submit -->
       <Button
         :label="capitalizeFirstLetter(t('saveAboutUs'))"
@@ -173,5 +192,5 @@ const handleSubmit = async () => {
       />
     </form>
   </div>
-  <div v-else>Loading...</div>
+  <div v-else><LoadingComponent /></div>
 </template>

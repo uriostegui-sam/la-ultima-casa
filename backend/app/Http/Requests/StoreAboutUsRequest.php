@@ -22,12 +22,14 @@ class StoreAboutUsRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'number' => 'required|numeric',
+            'number' => 'required|string|regex:/^\d[\d\s]*$/|max:16',
             'cover_image' => 'required|image|max:2048',
             'mail' => 'required|email',
             // 'address' => 'required|array',
             'address.text' => 'required|string',
-            'address.map' => 'required|string'
+            'address.map' => 'required|string',
+            'description.es' => 'required|string',
+            'description.en' => 'required|string',
         ];
     }
 }
