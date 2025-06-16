@@ -190,8 +190,8 @@ router.beforeEach(async (to) => {
     return '/admin/auth/login'
   }
 
-  if (to.meta.requiresAdmin && !authStore.isAdmin) {
-    return '/'
+if (to.meta.requiresAdmin && !(authStore.isAdmin || authStore.isArtist)) {
+      return '/'
   }
 })
 
