@@ -26,6 +26,7 @@ class AboutUsService
             'address' => $data['address'],
             'number' => $data['number'],
             'mail' => $data['mail'],
+            'description' => $data['description']
         ]);
 
         return $aboutUs;
