@@ -62,7 +62,7 @@ onMounted(async() => {
       <ArtworkGallery :artist="currentArtist.name" :artworks="currentArtist.artworks" />
     </div>
   </div>
-  <div v-else>Loading...</div>
+  <div v-else><LoadingComponent /></div>
   <NewsCarousel />
   <Footer />
 </template>

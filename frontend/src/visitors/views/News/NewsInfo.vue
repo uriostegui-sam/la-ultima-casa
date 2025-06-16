@@ -41,7 +41,7 @@ onMounted(async () => {
       "
     />
   </div>
-  <div v-else>Loading...</div>
+  <div v-else><LoadingComponent /></div>
    <NewsCarousel />
   <Footer />
 </template>
