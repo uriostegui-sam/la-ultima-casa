@@ -23,13 +23,11 @@ async function handleLogin() {
     error.value = ''
     
     const response = await authStore.login(credentials.value)    
-    
     // Redirect based on role
     if (response.data.user.role === 'admin') {
       router.push('/admin')
     } else {
-        // WIP REDIRECT A LA PÁGINA PERSONAL DEL ARTISTA Y SOLO PERMITIR QUE VAYA A SUS OBRAS
-    //   router.push('/dashboard')
+      router.push('/admin/artists/edit/' + response.data.user.artist_id)
     }
     
   } catch (err: any) {
@@ -41,7 +39,6 @@ async function handleLogin() {
 </script>
 
 <template>
-    <FloatingConfigurator />
     <div class="flex items-center justify-center min-h-screen min-w-[100vw] overflow-hidden">
         <div class="flex flex-col items-center justify-center">
             <div class="bg-(--color-light-salmon) rounded-4xl">

@@ -6,13 +6,19 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateArtistRequest extends FormRequest
 {
+
+    public function artist()
+    {
+        return $this->route('artist');
+    }
+
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return $this->user()->isAdmin() || 
-               $this->user()->id === $this->artist->user_id;
+        $artist = $this->artist();
+        return $this->user()->isAdmin() || $this->user()->id === $artist->user_id;
     }
 
     /**
@@ -39,7 +45,7 @@ class UpdateArtistRequest extends FormRequest
             'skills.*' => 'exists:skills,id'
         ];
     }
-    
+
     public function messages()
     {
         return [
