@@ -60,21 +60,19 @@ Route::prefix('auth')->middleware('throttle:api')->group(function () {
 
 // Authenticated user routes (both artists and admins)
 Route::middleware(['auth:sanctum', 'throttle:api'])->group(function () {
-    Route::put('/artists/{artist}', [ArtistController::class, 'update'])
-        ->middleware('can:update,artist');
-    Route::delete('/artworks/{artwork}/images/{image}', [ArtworkController::class, 'destroyImage'])
-        ->middleware('can:update,artwork');
+    Route::delete('/artworks/{artwork}/images/{image}', [ArtworkController::class, 'destroyImage']);
     Route::apiResource('artworks', ArtworkController::class)->except(['index', 'show']);
     Route::patch('artworks/{artwork}/images/{image}/set-primary', [ArtworkController::class, 'setPrimaryImage']);
     Route::patch('artworks/{artwork}/reorder-images', [ArtworkController::class, 'reorderImages']);
     Route::delete('artworks/{artwork}/images/{image}', [ArtworkController::class, 'deleteImage']);
+    Route::apiResource('artists', ArtistController::class)->except(['index', 'show']);
+    Route::apiResource('workshops', WorkshopController::class)->except(['index', 'show']);
+
 });
 
 // Admin-only routes
 Route::middleware(['auth:sanctum', 'admin', 'throttle:api'])->group(function () {
-    Route::apiResource('artists', ArtistController::class)->except(['index', 'show']);
     Route::apiResource('news', NewsController::class)->except(['index', 'show']);
-    Route::apiResource('workshops', WorkshopController::class)->except(['index', 'show']);
     Route::apiResource('skills', SkillController::class)->except(['index', 'show']);
     Route::apiResource('aboutUs', AboutUsController::class)
         ->except(['index', 'show'])
