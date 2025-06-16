@@ -47,7 +47,14 @@ Route::prefix('auth')->middleware('throttle:api')->group(function () {
     // Authenticated routes
     Route::middleware('auth:sanctum')->group(function () {
         Route::post('/logout', [AuthController::class, 'logout']);
-        Route::get('/user', fn () => response()->json(auth()->user()));
+        Route::get('/user', function () {
+            $user = auth()->user()->load('artist');
+
+            return response()->json([
+                ...$user->toArray(),
+                'artist_id' => $user->artist?->id,
+            ]);
+        });
     });
 });
 
