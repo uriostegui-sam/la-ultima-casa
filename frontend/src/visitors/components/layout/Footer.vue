@@ -3,77 +3,107 @@ import { capitalizeFirstLetter } from '@/shared/services/Helpers'
 import LanguageToggle from '../LanguageToggle.vue'
 import Logo from '../Logo.vue'
 import { useI18n } from 'vue-i18n'
+import { computed, onMounted, ref } from 'vue'
+import { useAdminAboutUsStore } from '@/admin/stores/AboutUsAdminStore'
+import type { AboutUs } from '@/shared/Interfaces/AboutUs'
+import LoadingComponent from '@/shared/components/LoadingComponent.vue'
 const { t } = useI18n()
 
+const aboutUsStore = useAdminAboutUsStore()
+const existingId = computed(() => {
+  return Number(aboutUsStore.aboutUs.length > 0 ? aboutUsStore.aboutUs[0].id : null)
+})
+const aboutUs = ref<AboutUs | null>(null)
+
+onMounted(async () => {
+  await aboutUsStore.getAboutUs()
+
+  if (existingId.value) {
+    await aboutUsStore.getAboutUsById(existingId.value)
+
+    aboutUs.value = aboutUsStore.selectedAboutUs
+  }
+})
+
+const formattedAddress = computed(() => {
+  return aboutUs.value?.address?.text?.replace(/\r\n/g, '<br>') ?? ''
+})
+
 const aboutKeys = [
-  { key: 'whoWeAre', href: '/artistas' },
-  { key: 'courses', href: '/cursos' },
+  { key: 'whoWeAre', href: '/' },
+  { key: 'courses', href: '/workshops' },
 ]
 
-const contactKeys = [
-  { key: 'hola@laultimacasa.com', href: '/mail' },
-  { key: '044 312 119 5692', href: '/phone' },
-]
+const contactKeys = computed(() => [
+  { key: aboutUs.value?.mail ?? '' },
+  { key: aboutUs.value?.number ?? '' },
+])
 </script>
 
 <template>
-  <footer class="bg-(--color-salmon)">
-    <div class="mx-auto w-full max-w-screen-xl text-white px-6 lg:px-8">
-      <div class="grid grid-cols-1 gap-8 py-6 md:grid-cols-3">
-        <div class="flex lg:flex-col items-center justify-between gap-4">
-          <Logo />
-          <div>
-            <div class="flex justify-around mb-4">
-              <a href="https://www.facebook.com/estudiolaultimacasa/" target="_blank" rel="noopener">
-                <div class="facebook"></div>
-              </a>
-              <a href="https://www.instagram.com/estudiolaultimacasa/" target="_blank" rel="noopener">
-                <div class="insta"></div>
-              </a>
+  <div v-if="aboutUs">
+    <footer class="bg-(--color-salmon)">
+      <div class="mx-auto w-full max-w-screen-xl text-white px-6 lg:px-8">
+        <div class="grid grid-cols-1 gap-8 py-6 md:grid-cols-3">
+          <div class="flex lg:flex-col items-center justify-between gap-4">
+            <Logo />
+            <div>
+              <div class="flex justify-around mb-4">
+                <a
+                  href="https://www.facebook.com/estudiolaultimacasa/"
+                  target="_blank"
+                  rel="noopener"
+                >
+                  <div class="facebook"></div>
+                </a>
+                <a
+                  href="https://www.instagram.com/estudiolaultimacasa/"
+                  target="_blank"
+                  rel="noopener"
+                >
+                  <div class="insta"></div>
+                </a>
+              </div>
+              <LanguageToggle />
             </div>
-            <LanguageToggle />
+          </div>
+          <div>
+            <h2 class="mb-2 uppercase font-bold">{{ capitalizeFirstLetter($t('aboutUs')) }}</h2>
+            <ul>
+              <template v-for="item in aboutKeys" :key="item.key">
+                <li>
+                  <a :href="item.href" class="hover:underline">{{
+                    capitalizeFirstLetter(t(item.key))
+                  }}</a>
+                </li>
+              </template>
+            </ul>
+            <h2 class="mb-2 mt-8 uppercase font-bold">
+              {{ capitalizeFirstLetter($t('contactUs')) }}
+            </h2>
+            <ul>
+              <template v-for="item in contactKeys" :key="item.key">
+                <li>
+                  <p class="hover:underline">{{ item.key }}</p>
+                </li>
+              </template>
+            </ul>
+          </div>
+          <div class="flex flex-col justify-between">
+            <h2 class="mb-2 uppercase font-bold">{{ capitalizeFirstLetter($t('comeMeetUs')) }}</h2>
+            <p v-html="formattedAddress"></p>
+            <div v-html="aboutUs.address.map" class="pt-6 box-content w-3xl"></div>
           </div>
         </div>
-        <div>
-          <h2 class="mb-2 uppercase font-bold">{{ capitalizeFirstLetter($t('aboutUs')) }}</h2>
-          <ul>
-            <template v-for="item in aboutKeys" :key="item.key">
-              <li>
-                <a :href="item.href" class="hover:underline">{{ capitalizeFirstLetter(t(item.key)) }}</a>
-              </li>
-            </template>
-          </ul>
-          <h2 class="mb-2 mt-8 uppercase font-bold">{{ capitalizeFirstLetter($t('contactUs')) }}</h2>
-          <ul>
-            <template v-for="item in contactKeys" :key="item.key">
-              <li>
-                <a :href="item.href" class="hover:underline">{{ item.key }}</a>
-              </li>
-            </template>
-          </ul>
-        </div>
-        <div class="flex flex-col justify-between">
-          <h2 class="mb-2 uppercase font-bold">{{ capitalizeFirstLetter($t('comeMeetUs')) }}</h2>
-          <p>
-            Palma Kerpis 152 <br />
-            Colinas de Santa Barbara <br />
-            28017 Colima, Col., Mexico
-          </p>
-          <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3766.4391631193075!2d-103.7204535232921!3d19.263259146064232!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x84255b09965e0ce3%3A0xc086d17bda474fa2!2sEstudio%20La%20%C3%9Altima%20Casa!5e0!3m2!1sen!2sfr!4v1747160062015!5m2!1sen!2sfr"
-            width="220"
-            height="170"
-            style="border: 0"
-            loading="lazy"
-            referrerpolicy="no-referrer-when-downgrade"
-          ></iframe>
+        <div class="px-2 py-6 text-center">
+          <span class=""><a href="#">SamyyUV ©</a> - 2025 </span>
         </div>
       </div>
-      <div class="px-2 py-6 text-center">
-        <span class=""><a href="#">SamyyUV ©</a> - 2025 </span>
-      </div>
-    </div>
-  </footer>
+    </footer>
+  </div>
+  <div v-else>
+    <LoadingComponent />
+  </div>
 </template>
 
 <style scoped>

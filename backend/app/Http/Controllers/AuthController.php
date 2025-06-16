@@ -25,11 +25,17 @@ class AuthController extends Controller
         $user = $this->authService->registerUser($request->validated());
         $token = $this->authService->createAuthToken($user);
 
+        $artist = $user->artist()->first();
+
         return response()->json([
-            'user' => $user,
+            'user' => [
+                ...$user->toArray(),
+                'artist_id' => $artist?->id,
+            ],
             'token' => $token->plainTextToken
         ], 201);
     }
+
 
     public function login(LoginRequest $request)
     {
@@ -37,10 +43,16 @@ class AuthController extends Controller
             return response()->json(['message' => 'Invalid credentials'], 401);
         }
 
-        $token = $this->authService->createAuthToken($request->user());
+        $user = $request->user();
+        $token = $this->authService->createAuthToken($user);
+
+        $artist = $user->artist()->first();
 
         return response()->json([
-            'user' => $request->user(),
+            'user' => [
+                ...$user->toArray(),
+                'artist_id' => $artist?->id,
+            ],
             'token' => $token->plainTextToken
         ]);
     }
@@ -62,15 +74,19 @@ class AuthController extends Controller
     {
         try {
             $googleUser = Socialite::driver('google')->stateless()->user();
-    
+
             $user = $this->userService->findOrCreateFromGoogle($googleUser);
             $token = $this->authService->createAuthToken($user);
 
+            $artist = $user->artist()->first();
+
             return response()->json([
-                'user' => $user,
+                'user' => [
+                    ...$user->toArray(),
+                    'artist_id' => $artist?->id,
+                ],
                 'token' => $token->plainTextToken
             ]);
-    
         } catch (\Exception $e) {
             return response()->json([
                 'error' => 'Google authentication failed',
@@ -83,7 +99,7 @@ class AuthController extends Controller
     public function logout()
     {
         $this->authService->logoutUser(auth()->user());
-        
+
         return response()->json(['message' => 'Logged out successfully']);
     }
 }

@@ -1,0 +1,196 @@
+<script setup lang="ts">
+import { ref, computed, onMounted } from 'vue'
+import { useAdminAboutUsStore } from '@/admin/stores/AboutUsAdminStore'
+import type {
+  AboutUs,
+  AboutUsCreatePayload,
+  AboutUsUpdatePayload,
+} from '@/shared/Interfaces/AboutUs'
+import { useI18n } from 'vue-i18n'
+import { capitalizeFirstLetter } from '@/shared/services/Helpers'
+import { useToast } from 'primevue/usetoast'
+import { showErrorToast, showSuccessToast } from '@/admin/Services/Helpers'
+
+const emit = defineEmits<{
+  (e: 'success', aboutUs: AboutUs): void
+}>()
+
+const existingId = computed(() => {
+  return Number(aboutUsAdminStore.aboutUs.length > 0 ? aboutUsAdminStore.aboutUs[0].id : null)
+})
+
+const profileImageFile = ref<File | null>(null)
+const profileImagePreview = ref<string | null>(null)
+const toast = useToast()
+const { t } = useI18n()
+const aboutUsAdminStore = useAdminAboutUsStore()
+const isEditMode = computed(() => !!existingId.value)
+const currentAboutUs = ref<AboutUs | null>(null)
+const aboutUs = ref<AboutUs | null>(null)
+
+const onProfileImageSelect = (event: any) => {
+  const file = event.files?.[0]
+  if (file) {
+    profileImageFile.value = file
+    profileImagePreview.value = URL.createObjectURL(file)
+  }
+}
+
+const removeProfileImage = () => {
+  profileImageFile.value = null
+  profileImagePreview.value = null
+}
+
+onMounted(async () => {
+  await aboutUsAdminStore.getAboutUs()
+
+  if (existingId.value) {
+    await aboutUsAdminStore.getAboutUsById(existingId.value)
+
+    aboutUs.value = aboutUsAdminStore.selectedAboutUs
+    profileImagePreview.value = aboutUs.value?.cover_image
+      ? `http://localhost/storage/${aboutUs.value?.cover_image}`
+      : null
+    currentAboutUs.value = JSON.parse(JSON.stringify(aboutUs.value))
+  } else {
+    currentAboutUs.value = {
+      id: 0,
+      address: { text: '', map: '' },
+      description: { es: '', en: '' },
+      cover_image: '',
+      mail: '',
+      number: '',
+    }
+  }
+})
+
+const handleSubmit = async () => {
+  if (!currentAboutUs.value) return
+
+  try {
+    const payload: AboutUsCreatePayload | AboutUsUpdatePayload = {
+      address: currentAboutUs.value.address,
+      description: currentAboutUs.value.description,
+      cover_image: profileImageFile.value ?? undefined,
+      mail: currentAboutUs.value.mail,
+      number: currentAboutUs.value.number,
+    }
+
+    let result: AboutUs
+    if (isEditMode.value && existingId.value) {
+      const updatePayload: AboutUsUpdatePayload = {
+        ...payload,
+        id: existingId.value,
+      }
+      result = await aboutUsAdminStore.updateAboutUs(existingId.value, updatePayload)
+    } else {
+      result = await aboutUsAdminStore.createAboutUs(payload as AboutUsCreatePayload)
+    }
+
+    emit('success', result)
+    showSuccessToast(toast, t, 'aboutUsSavedSuccessfully', 3000)
+  } catch (err: unknown) {
+    showErrorToast(toast, t, err, 'errorSavingAboutUs')
+  }
+}
+</script>
+
+<template>
+  <div v-if="currentAboutUs">
+    <form @submit.prevent="handleSubmit" class="space-y-6">
+      <!-- Profile Image Upload -->
+      <div class="flex flex-wrap justify-center flex-col">
+        <label class="block font-semibold mb-1 text-center">{{
+          capitalizeFirstLetter(t('coverImage'))
+        }}</label>
+        <div v-if="profileImagePreview" class="my-4 mb-10 relative w-32 h-32 m-auto">
+          <img :src="`${profileImagePreview}`" class="w-full h-full object-cover rounded-full" />
+          <Button
+            icon="pi pi-trash"
+            outlined
+            severity="danger"
+            rounded
+            @click="removeProfileImage"
+          />
+        </div>
+        <div v-if="!profileImagePreview" class="">
+          <FileUpload
+            name="profile"
+            accept="image/*"
+            :maxFileSize="5000000"
+            @uploader="onProfileImageSelect"
+            mode="advanced"
+            :auto="false"
+            customUpload
+          >
+            <template #empty>
+              <p>{{ capitalizeFirstLetter(t('dragDrop')) }}</p>
+            </template>
+          </FileUpload>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label class="block font-semibold mb-1">Email</label>
+          <InputText
+            v-model="currentAboutUs.mail"
+            :placeholder="capitalizeFirstLetter(t('email'))"
+            class="w-full"
+          />
+        </div>
+        <div>
+          <label class="block font-semibold mb-1">{{
+            capitalizeFirstLetter(t('phoneNumber'))
+          }}</label>
+          <InputMask
+            v-model="currentAboutUs.number"
+            placeholder="044 312 000 00 00"
+            mask="999 999 999 9999"
+            class="w-full"
+          />
+        </div>
+      </div>
+
+      <!-- Address -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <label class="block font-semibold mb-1">{{
+            `${capitalizeFirstLetter(t('address'))}`
+          }}</label>
+          <Textarea v-model="currentAboutUs.address.text" rows="2" class="w-full" />
+        </div>
+        <div>
+          <label class="block font-semibold mb-1">{{
+            `${capitalizeFirstLetter(t('address'))} ${capitalizeFirstLetter(t('map'))}`
+          }}</label>
+          <Textarea v-model="currentAboutUs.address.map" rows="2" class="w-full" />
+        </div>
+      </div>
+
+      <!-- Description -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <label class="block font-semibold mb-1">{{
+            `${capitalizeFirstLetter(t('description'))} ${capitalizeFirstLetter(t('spanish'))}`
+          }}</label>
+          <Textarea v-model="currentAboutUs.description.es" rows="2" class="w-full" />
+        </div>
+        <div>
+          <label class="block font-semibold mb-1">{{
+            `${capitalizeFirstLetter(t('description'))} ${capitalizeFirstLetter(t('english'))}`
+          }}</label>
+          <Textarea v-model="currentAboutUs.description.en" rows="2" class="w-full" />
+        </div>
+      </div>
+
+      <!-- Submit -->
+      <Button
+        :label="capitalizeFirstLetter(t('saveAboutUs'))"
+        type="submit"
+        class="w-full md:w-auto"
+      />
+    </form>
+  </div>
+  <div v-else><LoadingComponent /></div>
+</template>

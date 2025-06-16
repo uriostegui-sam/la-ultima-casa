@@ -21,7 +21,6 @@
     "children": "niños",
     "join": "únete a la creatividad",
     "explore": "explora los talleres",
-    "presentation": "Es un taller de arte enfocado en brindar <strong>experiencias artísticas enriquecedoras</strong> para personas de todas las edades y niveles de experiencia. Ofrece un ambiente inspirador rodeado de arte y estudiantes entusiastas, donde <strong   >los participantes pueden aprender técnicas de pintura en un entorno amigable y sin   juicios</strong >. El estudio proporciona materiales profesionales para que los asistentes puedan concentrarse en el proceso creativo y <strong>llevarse a casa obras llenas de vida y color</strong>.",
     "ourTechniques": "nuestras técnicas",
     "workshops": "cursos",
     "knowMore": "saber más",
@@ -148,6 +147,15 @@
     "errorDeletingNews": "hubo un error al eliminar las noticias.",
     "sureDeleteSelectedNews": "¿Estás seguro que quieres eliminar las noticias seleccionadas?",
     "manageNews": "gestionar noticias",
-    "showingNews": "showing {first} to {last} of {totalRecords} news"
+    "showingNews": "mostrando del {first} al {last} de {totalRecords} noticias",
+    "phoneNumber": "número de teléfono",
+    "address": "dirección",
+    "addressMap": "dirección en el mapa",
+    "saveAboutUs": "guardar acerca de nosotros",
+    "aboutUsSavedSuccessfully": "acerca de nosotros guardado correctamente.",
+    "errorSavingAboutUs": "hubo un error al guardar acerca de nosotros.",
+    "aboutUsDeletedSuccessfully": "acerca de nosotros eliminado correctamente.",
+    "aboutUsDeleted": "acerca de nosotros eliminado",
+    "unauthorized": "no autorizado",
+    "map": "mapa"
   }
-  

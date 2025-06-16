@@ -369,5 +369,5 @@ const handleSubmit = async () => {
       </div>
     </div>
   </div>
-  <div v-else>Loading...</div>
+  <div v-else><LoadingComponent /></div>
 </template>
