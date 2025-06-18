@@ -98,6 +98,8 @@
     "bioMin": "la biografía debe tener al menos :min caracteres",
     "selectRequired": "debe seleccionar al menos una técnica",
     "profileImage": "imagen de perfil",
+    "referenceImage": "imagen de referencia",
+    "selectReferenceImage": "selecciona una imagen de referencia",
     "confirmation": "confirmación",
     "cannotArtistWArtwork": "no se puede eliminar un artista con obras de arte existentes",
     "selectImages": "selecciona imágenes",
@@ -157,5 +159,18 @@
     "aboutUsDeletedSuccessfully": "acerca de nosotros eliminado correctamente.",
     "aboutUsDeleted": "acerca de nosotros eliminado",
     "unauthorized": "no autorizado",
-    "map": "mapa"
+    "map": "mapa",
+    "imageDeletedSuccessfully": "imagen eliminada correctamente.",
+    "errorDeletingImage": "hubo un error al eliminar la imagen.",
+    "sureDeleteSelectedImages": "¿Estás seguro que quieres eliminar las imágenes seleccionadas?",
+    "addArtwork": "añadir obra de arte",
+    "edit": "edición",
+    "create": "creación",
+    "manageWorkshop": "gestionar talleres",
+    "showingWorkshops": "mostrando del {first} al {last} de {totalRecords} talleres",
+    "workshop": "taller",
+    "status": "status",
+    "upcoming": "próximo",
+    "ongoing": "en curso",
+    "ended": "finalizado"
   }
