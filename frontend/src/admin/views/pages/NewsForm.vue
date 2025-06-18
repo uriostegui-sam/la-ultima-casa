@@ -20,7 +20,7 @@ const toast = useToast()
 const route = useRoute()
 const router = useRouter()
 const { t } = useI18n()
-const id = Number(route.params.id)
+const id = computed(() => Number(route.params.id))
 const newsAdminStore = useAdminNewsStore()
 const isEditMode = computed(() => !!id)
 const currentNews = ref<News | null>(null)
@@ -40,8 +40,8 @@ const removeProfileImage = () => {
 }
 
 onMounted(async () => {
-  if (id) {
-    await newsAdminStore.getNewsById(id)
+  if (id.value) {
+    await newsAdminStore.getNewsById(id.value)
     
     news.value = newsAdminStore.selectedNews
     profileImagePreview.value = news.value?.image_url ? `${news.value?.image_url}`  : null
@@ -69,7 +69,7 @@ const handleSubmit = async () => {
 
     let result: News
     if (isEditMode.value) {
-      result = await newsAdminStore.updateNews(id, { ...payload, id } as NewsUpdatePayload)
+      result = await newsAdminStore.updateNews(id.value, { ...payload, id: id.value } as NewsUpdatePayload)
     } else {
       result = await newsAdminStore.createNews(payload as NewsCreatePayload)
 

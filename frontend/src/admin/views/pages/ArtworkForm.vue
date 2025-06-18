@@ -24,7 +24,7 @@ const emit = defineEmits<{
 const { t } = useI18n()
 const route = useRoute()
 const router = useRouter()
-const id = Number(route.params.idArtwork)
+const id = computed(() => Number(route.params.idArtwork))
 const toast = useToast()
 const artistAdminStore = useAdminArtistStore()
 const artworkAdminStore = useAdminArtworkStore()
@@ -127,8 +127,8 @@ const confirmDeleteImage = async () => {
 onMounted(async () => {
   await artistAdminStore.getArtists()
 
-  if (id) {
-    await artworkAdminStore.getArtwork(id)
+  if (id.value) {
+    await artworkAdminStore.getArtwork(id.value)
 
     artwork.value = artworkAdminStore.selectedArtwork
     currentArtwork.value = JSON.parse(JSON.stringify(artwork.value))
@@ -167,11 +167,11 @@ const handleSubmit = async () => {
     if (isEditMode.value) {
       const updatePayload: ArtworkUpdatePayload = {
         ...basePayload,
-        id,
+        id: id.value,
         images_to_delete: imagesToDelete.value,
         new_images: newImages.value,
       }
-      result = await artworkAdminStore.updateArtwork(id, updatePayload)
+      result = await artworkAdminStore.updateArtwork(id.value, updatePayload)
 
       artwork.value = result
       currentArtwork.value = JSON.parse(JSON.stringify(result))

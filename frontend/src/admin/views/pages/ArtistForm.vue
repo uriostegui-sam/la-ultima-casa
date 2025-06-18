@@ -12,6 +12,7 @@ import { useAdminArtworkStore } from '@/admin/stores/ArtworkAdminStore'
 import { showErrorToast, showSuccessToast } from '@/admin/Services/Helpers'
 import type { Artwork } from '@/shared/Interfaces/Artwork'
 import TitleForm from '@/admin/components/TitleForm.vue'
+import LoadingComponent from '@/shared/components/LoadingComponent.vue'
 
 const emit = defineEmits<{
   (e: 'success', artist: Artist): void
@@ -23,7 +24,7 @@ const toast = useToast()
 const route = useRoute()
 const router = useRouter()
 const { t } = useI18n()
-const id = Number(route.params.id)
+const id = computed(() => Number(route.params.id))
 const currentLang = locale
 const artistAdminStore = useAdminArtistStore()
 const artworkAdminStore = useAdminArtworkStore()
@@ -88,8 +89,8 @@ const getPrimaryImage = (artwork: Artwork) =>
 onMounted(async () => {
   await skillAdminStore.getSkills()
 
-  if (route.params.id) {
-    await artistAdminStore.getArtist(id)
+  if (id.value) {
+    await artistAdminStore.getArtist(id.value)
 
     artist.value = artistAdminStore.selectedArtist
     profileImagePreview.value = artist.value?.profile_image_url ?? null
@@ -134,7 +135,7 @@ const handleSubmit = async () => {
 
     let result: Artist
     if (isEditMode.value) {
-      result = await artistAdminStore.updateArtist(id, { ...payload, id } as ArtistUpdatePayload)
+      result = await artistAdminStore.updateArtist(id.value, { ...payload, id: id.value } as ArtistUpdatePayload)
     } else {
       result = await artistAdminStore.createArtist(payload as ArtistCreatePayload)
 

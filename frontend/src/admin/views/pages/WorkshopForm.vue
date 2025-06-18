@@ -27,7 +27,7 @@ const toast = useToast()
 const route = useRoute()
 const router = useRouter()
 const { t } = useI18n()
-const id = Number(route.params.id)
+const id = computed(() => Number(route.params.id))
 const currentLang = locale
 const workshopAdminStore = useAdminWorkshopStore()
 const skillAdminStore = useAdminSkillStore()
@@ -79,8 +79,8 @@ onMounted(async () => {
   await artistAdminStore.getArtists()
   await skillAdminStore.getSkills()
 
-  if (route.params.id) {
-    await workshopAdminStore.getWorkshop(id)
+  if (id.value) {
+    await workshopAdminStore.getWorkshop(id.value)
 
     workshop.value = workshopAdminStore.selectedWorkshop
     profileImagePreview.value = workshop.value?.cover_image_path
@@ -133,7 +133,7 @@ const handleSubmit = async () => {
         ...basePayload,
         id: currentWorkshop.value.id,
       }
-      result = await workshopAdminStore.updateWorkshop(id, updatePayload)
+      result = await workshopAdminStore.updateWorkshop(id.value, updatePayload)
 
       workshop.value = result
       currentWorkshop.value = JSON.parse(JSON.stringify(result))
