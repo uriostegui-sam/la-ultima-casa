@@ -48,6 +48,13 @@ class ArtistService
             $this->deleteOldImage($artist->profile_image);
             $data['profile_image'] = $this->storeProfileImage($data['profile_image'], $artist);
         }
+        if (isset($data['user'])) {
+            $artist->user->update([
+                'first_name' => $data['user']['name'],
+                'last_name' => $data['user']['lastname'],
+                'email' => $data['user']['email'] ?? $artist->user->email,
+            ]);
+        }
 
         $artist->update($data);
 
