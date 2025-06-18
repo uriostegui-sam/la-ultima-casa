@@ -30,7 +30,7 @@ const workshopTransformed = computed(() => {
 })
 
 onMounted(async () => {
-  await workshopStore.getWorkshops()
+  await workshopStore.getWorkshops({active:1})
 })
 </script>
 
