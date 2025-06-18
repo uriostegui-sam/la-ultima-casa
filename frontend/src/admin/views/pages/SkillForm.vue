@@ -20,7 +20,7 @@ const toast = useToast()
 const route = useRoute()
 const router = useRouter()
 const { t } = useI18n()
-const id = Number(route.params.id)
+const id = computed(() => Number(route.params.id))
 const skillAdminStore = useAdminSkillStore()
 const isEditMode = computed(() => !!id)
 const currentSkill = ref<Skill | null>(null)
@@ -40,8 +40,8 @@ const removeProfileImage = () => {
 }
 
 onMounted(async () => {
-  if (id) {
-    await skillAdminStore.getSkill(id)
+  if (id.value) {
+    await skillAdminStore.getSkill(id.value)
 
     skill.value = skillAdminStore.selectedSkill
     profileImagePreview.value = skill.value?.profile_image ? `http://localhost/storage/${skill.value?.profile_image}`  : null
@@ -67,7 +67,7 @@ const handleSubmit = async () => {
 
     let result: Skill
     if (isEditMode.value) {
-      result = await skillAdminStore.updateSkill(id, { ...payload, id } as SkillUpdatePayload)
+      result = await skillAdminStore.updateSkill(id.value, { ...payload, id: id.value } as SkillUpdatePayload)
     } else {
       result = await skillAdminStore.createSkill(payload as SkillCreatePayload)
 
