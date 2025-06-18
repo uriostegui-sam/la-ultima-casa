@@ -14,6 +14,8 @@ import type {
   WorkshopUpdatePayload,
 } from '@/shared/Interfaces/Workshop'
 import { useAdminArtistStore } from '@/admin/stores/ArtistAdminStore'
+import LoadingComponent from '@/shared/components/LoadingComponent.vue'
+import TitleForm from '@/admin/components/TitleForm.vue'
 
 const emit = defineEmits<{
   (e: 'success', workshop: Workshop): void
@@ -156,7 +158,8 @@ const handleSubmit = async () => {
 </script>
 
 <template>
-  <div v-if="currentWorkshop">
+  <TitleForm title="workshop" :isCreateMode="!isEditMode" />
+  <div v-if="currentWorkshop" class="card">
     <form @submit.prevent="handleSubmit" class="space-y-6">
       <!-- Profile Image Upload -->
       <div class="flex flex-wrap justify-center flex-col">
@@ -182,6 +185,9 @@ const handleSubmit = async () => {
             mode="advanced"
             :auto="false"
             customUpload
+            :chooseLabel="capitalizeFirstLetter(t('selectImages'))"
+            :uploadLabel="capitalizeFirstLetter(t('upload'))"
+            :cancelLabel="capitalizeFirstLetter(t('cancel'))"
           >
             <template #empty>
               <p>{{ capitalizeFirstLetter(t('dragDrop')) }}</p>

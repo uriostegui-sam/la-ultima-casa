@@ -10,6 +10,8 @@ import { useRoute, useRouter } from 'vue-router'
 import { useToast } from 'primevue/usetoast'
 import { useAdminArtworkStore } from '@/admin/stores/ArtworkAdminStore'
 import { showErrorToast, showSuccessToast } from '@/admin/Services/Helpers'
+import type { Artwork } from '@/shared/Interfaces/Artwork'
+import TitleForm from '@/admin/components/TitleForm.vue'
 
 const emit = defineEmits<{
   (e: 'success', artist: Artist): void
@@ -80,6 +82,9 @@ const removeArtwork = (id: string | number) => {
   }
 }
 
+const getPrimaryImage = (artwork: Artwork) =>
+  artwork.images.find((img) => img.is_primary)?.path ?? ''
+
 onMounted(async () => {
   await skillAdminStore.getSkills()
 
@@ -89,7 +94,7 @@ onMounted(async () => {
     artist.value = artistAdminStore.selectedArtist
     profileImagePreview.value = artist.value?.profile_image_url ?? null
     currentArtist.value = JSON.parse(JSON.stringify(artist.value))
-
+console.log(currentArtist.value)
     currentArtistSkills.value = artist.value?.skills
       ? artist.value.skills.map((skill) => skill.id)
       : []
@@ -147,7 +152,8 @@ const handleSubmit = async () => {
 </script>
 
 <template>
-  <div v-if="currentArtist">
+  <TitleForm title="artist" :isCreateMode="!isEditMode" />
+  <div v-if="currentArtist" class="card">
     <form @submit.prevent="handleSubmit" class="space-y-6">
       <!-- Profile Image Upload -->
       <div class="flex flex-wrap justify-center flex-col">
@@ -173,6 +179,9 @@ const handleSubmit = async () => {
             mode="advanced"
             :auto="false"
             customUpload
+            :chooseLabel="capitalizeFirstLetter(t('selectImages'))"
+            :uploadLabel="capitalizeFirstLetter(t('upload'))"
+            :cancelLabel="capitalizeFirstLetter(t('cancel'))"
           >
             <template #empty>
               <p>{{ capitalizeFirstLetter(t('dragDrop')) }}</p>
@@ -316,13 +325,21 @@ const handleSubmit = async () => {
     </form>
 
     <div class="pt-5 mt-10 ">
-      <label class="block font-semibold mb-1">{{ capitalizeFirstLetter(t('artworks')) }}</label>
+      <div class="flex justify-between mb-5">
+        <label class="block font-semibold mb-1">{{ capitalizeFirstLetter(t('artworks')) }}</label>
+        <RouterLink :to="`/admin/artists/${currentArtist.id}/artwork/create`">
+          <Button
+          icon="pi pi-plus"
+          label="Add Artwork"
+          class="w-full md:w-auto"
+          />
+        </RouterLink>
+      </div>
       <div class="flex flex-wrap gap-3 justify-around">
         <div v-for="(artwork, index) in currentArtist.artworks" :key="index" class="">
           <p>{{ artwork.title }}</p>
-          <!-- :src="getPrimaryImage(artwork)"  -->
           <Image
-            src="https://primefaces.org/cdn/primevue/images/galleria/galleria10.jpg"
+            :src="'http://localhost/storage/' + (getPrimaryImage(artwork) || artwork.images[0]?.path)" 
             :alt="artwork.title"
             width="250"
           />

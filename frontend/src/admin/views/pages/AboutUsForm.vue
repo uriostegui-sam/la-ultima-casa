@@ -10,6 +10,8 @@ import { useI18n } from 'vue-i18n'
 import { capitalizeFirstLetter } from '@/shared/services/Helpers'
 import { useToast } from 'primevue/usetoast'
 import { showErrorToast, showSuccessToast } from '@/admin/Services/Helpers'
+import LoadingComponent from '@/shared/components/LoadingComponent.vue'
+import TitleForm from '@/admin/components/TitleForm.vue'
 
 const emit = defineEmits<{
   (e: 'success', aboutUs: AboutUs): void
@@ -96,7 +98,8 @@ const handleSubmit = async () => {
 </script>
 
 <template>
-  <div v-if="currentAboutUs">
+  <TitleForm title="aboutUs" :isCreateMode="!existingId" />
+  <div v-if="currentAboutUs" class="card">
     <form @submit.prevent="handleSubmit" class="space-y-6">
       <!-- Profile Image Upload -->
       <div class="flex flex-wrap justify-center flex-col">
@@ -122,6 +125,9 @@ const handleSubmit = async () => {
             mode="advanced"
             :auto="false"
             customUpload
+            :chooseLabel="capitalizeFirstLetter(t('selectImages'))"
+            :uploadLabel="capitalizeFirstLetter(t('upload'))"
+            :cancelLabel="capitalizeFirstLetter(t('cancel'))"
           >
             <template #empty>
               <p>{{ capitalizeFirstLetter(t('dragDrop')) }}</p>
