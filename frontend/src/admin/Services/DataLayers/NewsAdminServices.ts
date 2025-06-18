@@ -5,7 +5,7 @@ import axiosInstance from '@/shared/services/DataLayers/AxiosInstance'
 import { buildNewsFormData } from '../Helpers/formNewsHelper'
 import axios from 'axios'
 
-class NewsService extends BaseService {
+class NewsAdminService extends BaseService {
   constructor() {
     super('/news')
   }
@@ -41,4 +41,4 @@ class NewsService extends BaseService {
   }
 }
 
-export default new NewsService()
+export default new NewsAdminService()
