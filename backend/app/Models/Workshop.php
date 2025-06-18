@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
@@ -45,5 +47,14 @@ class Workshop extends Model
         return $this->cover_image_path
             ? Storage::disk('public')->url($this->cover_image_path)
             : null;
+    }
+
+    public function scopeActiveTemporary(Builder $query): Builder
+    {
+        return $query->where('type', 'temporary')
+            ->where(function ($q) {
+                $q->whereNull('end_date')
+                    ->orWhere('end_date', '>=', Carbon::today());
+            });
     }
 }
