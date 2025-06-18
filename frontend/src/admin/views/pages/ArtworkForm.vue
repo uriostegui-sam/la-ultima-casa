@@ -13,6 +13,9 @@ import { useI18n } from 'vue-i18n'
 import { useToast } from 'primevue/usetoast'
 import { showErrorToast, showSuccessToast } from '@/admin/Services/Helpers'
 import ArtworkAdminServices from '@/admin/Services/DataLayers/ArtworkAdminServices'
+import LoadingComponent from '@/shared/components/LoadingComponent.vue'
+import type FileUpload from 'primevue/fileupload'
+import TitleForm from '@/admin/components/TitleForm.vue'
 
 const emit = defineEmits<{
   (e: 'success', artwork: Artwork): void
@@ -21,7 +24,7 @@ const emit = defineEmits<{
 const { t } = useI18n()
 const route = useRoute()
 const router = useRouter()
-const id = Number(route.params.id)
+const id = Number(route.params.idArtwork)
 const toast = useToast()
 const artistAdminStore = useAdminArtistStore()
 const artworkAdminStore = useAdminArtworkStore()
@@ -31,6 +34,7 @@ const artists = computed(() => artistAdminStore.artists)
 const imageToDelete = ref<number | string | null>(null)
 const displayConfirmation = ref(false)
 const artwork = ref<Artwork | null>(null)
+const uploader = ref<InstanceType<typeof FileUpload> | null>(null)
 
 const newImages = ref<File[]>([])
 const imagesToDelete = ref<number[]>([])
@@ -180,10 +184,11 @@ const handleSubmit = async () => {
       result = await artworkAdminStore.createArtwork(createPayload)
 
       if (result?.id) {
-        router.push({ name: 'adminArworkEdit', params: { id: result.id } })
+        router.push({ name: 'adminArtistArtworkEdit', params: { idArtwork: result.id, id: result.artist_id } })
       }
     }
-
+    
+    uploader.value?.clear()
     newImages.value = []
     imagesToDelete.value = []
 
@@ -196,7 +201,8 @@ const handleSubmit = async () => {
 </script>
 
 <template>
-  <div v-if="currentArtwork">
+  <TitleForm title="artwork" :isCreateMode="!isEditMode" />
+  <div v-if="currentArtwork" class="card">
     <form @submit.prevent="handleSubmit" class="space-y-6">
       <!-- Basic Info -->
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -273,6 +279,7 @@ const handleSubmit = async () => {
           :maxFileSize="10000000"
           @select="onImageSelect"
           mode="advanced"
+          ref="uploader"
           :auto="false"
           :chooseLabel="capitalizeFirstLetter(t('selectImages'))"
           :uploadLabel="capitalizeFirstLetter(t('upload'))"
@@ -331,7 +338,7 @@ const handleSubmit = async () => {
               v-if="image.is_primary"
               class="absolute top-2 left-2 bg-yellow-500 text-white text-xs px-2 py-1 rounded"
             >
-              Primary
+              {{ capitalizeFirstLetter(t('primaryImage')) }}
             </span>
           </div>
         </div>
