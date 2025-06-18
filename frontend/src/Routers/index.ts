@@ -93,8 +93,13 @@ const routes = [
         component: ArtistForm,
       },
       {
-        path: '/admin/artists/:id/artwork/edit/:id',
+        path: '/admin/artists/:id/artwork/edit/:idArtwork',
         name: 'adminArtistArtworkEdit',
+        component: ArtworkForm,
+      },
+      {
+        path: '/admin/artists/:id/artwork/create',
+        name: 'adminArtistArtworkCreate',
         component: ArtworkForm,
       },
       {
