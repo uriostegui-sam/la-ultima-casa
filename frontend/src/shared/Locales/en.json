@@ -98,6 +98,8 @@
     "bioMin" :"the biography has to have at least :min characters",
     "selectRequired" :"you have to select at least one skill",
     "profileImage": "profile picture",
+    "referenceImage": "reference image",
+    "selectReferenceImage": "select reference image",
     "confirmation": "confirmation",
     "cannotArtistWArtwork": "cannot delete artist with existing artworks",
     "selectImages": "select Images",
@@ -157,6 +159,19 @@
     "aboutUsDeletedSuccessfully": "about us deleted successfully.",
     "aboutUsDeleted": "about us deleted",
     "unauthorized": "unauthorized",
-    "map": "map"
+    "map": "map",
+    "imageDeletedSuccessfully": "image deleted successfully.",
+    "errorDeletingImage": "there was an error deleting the image.",
+    "sureDeleteSelectedImages": "are you sure you want to delete the selected images?",
+    "addArtwork": "add artwork",
+    "edit": "edit",
+    "create": "create",
+    "manageWorkshop": "manage workshops",
+    "showingWorkshops": "showing {first} to {last} of {totalRecords} workshops",
+    "workshop": "workshop",
+    "status": "status",
+    "upcoming": "upcoming",
+    "ongoing": "ongoing",
+    "ended": "ended"
   }
   
