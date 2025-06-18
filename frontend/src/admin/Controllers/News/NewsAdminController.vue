@@ -182,7 +182,7 @@ async function deleteSelectedNewss() {
     </Dialog>
 
     <Dialog
-      v-model:visible="deleteNewsDialog"
+      v-model:visible="deleteNewssDialog"
       :style="{ width: '450px' }"
       :header="capitalizeFirstLetter(t('confirm'))"
       :modal="true"
