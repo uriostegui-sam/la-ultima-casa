@@ -8,6 +8,7 @@ use App\Http\Resources\WorkshopCollection;
 use App\Http\Resources\WorkshopResource;
 use App\Models\Workshop;
 use App\Services\WorkshopService;
+use Illuminate\Http\Request;
 
 /**
  * @OA\Tag(
@@ -89,11 +90,32 @@ class WorkshopController extends Controller
      *     )
      * )
      */
-    public function index()
+    public function index(Request $request)
     {
-        return new WorkshopCollection(
-            Workshop::with(['artist', 'skills'])->get()
-        );    
+        $query = Workshop::with(['artist', 'skills']);
+
+
+        if ($request->filled('type')) {
+            $query->where('type', $request->get('type'));
+        }
+
+        if ($request->boolean('active')) {
+            if ($request->get('type') === 'temporary') {
+                $query->activeTemporary();
+            } else {
+                $query->where(function ($q) {
+                    $q->where('type', 'permanent')
+                        ->orWhere(fn($t) => $t->activeTemporary());
+                });
+            }
+        }
+
+        $query->orderBy(
+            $request->get('type') === 'temporary' ? 'start_date' : 'created_at',
+            $request->get('type') === 'temporary' ? 'asc' : 'desc'
+        );
+
+        return new WorkshopCollection($query->get());
     }
 
     /**
@@ -129,7 +151,6 @@ class WorkshopController extends Controller
         );
 
         return new WorkshopResource($workshop);
-        
     }
 
     /**
