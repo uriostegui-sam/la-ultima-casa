@@ -11,6 +11,7 @@ import type { TranslatedSkill } from '@/shared/Interfaces/Skill'
 import NewsCarousel from '../News/NewsCarousel.vue'
 import Footer from '@/visitors/components/layout/Footer.vue'
 import Header from '@/visitors/components/layout/Header.vue'
+import LoadingComponent from '@/shared/components/LoadingComponent.vue'
 
 const currentLang = ref(locale)
 const route = useRoute()
