@@ -9,13 +9,13 @@ export interface News {
     es?: string
   }
   image_url?: string
-  published_at?: string
+  published?: boolean
 }
 
 export interface NewsCreatePayload {
   title: Record<string, string>
   content: Record<string, string>
-  published_at?: string
+  published?: boolean
   cover_image?: File
 }
 
