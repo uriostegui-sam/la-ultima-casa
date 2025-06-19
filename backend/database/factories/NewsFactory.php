@@ -26,7 +26,7 @@ class NewsFactory extends Factory
                 'es' => fake()->paragraph(1),
             ],
             'image_path' => 'news/images/'.$this->faker->uuid().'.jpg',
-            'published_at' => fake()->date(),
+            'published' => fake()->boolean(50),
         ];
     }
 }
