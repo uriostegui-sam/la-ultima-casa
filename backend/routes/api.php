@@ -27,6 +27,7 @@ Route::middleware('api')->group(function () {
     Route::apiResource('artists', ArtistController::class)->only(['index', 'show']);
     Route::apiResource('skills', SkillController::class)->only(['index', 'show']);
     Route::apiResource('artworks', ArtworkController::class)->only(['index', 'show']);
+    Route::get('news/published', [NewsController::class, 'getPublishedNews']);
     Route::apiResource('news', NewsController::class)->only(['index', 'show']);
     Route::apiResource('workshops', WorkshopController::class)->only(['index', 'show']);
     Route::apiResource('aboutUs', AboutUsController::class)
