@@ -15,7 +15,7 @@ export interface Artwork {
     depth?: number;
   }
   creation_date: Date;
-  artist: Artist;
+  artist: Artist | null;
   primary_image?: ArtworkImage | null;
   images: ArtworkImage[];
 }
