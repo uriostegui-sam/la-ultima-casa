@@ -17,6 +17,10 @@ import LoadingComponent from '@/shared/components/LoadingComponent.vue'
 import type FileUpload from 'primevue/fileupload'
 import TitleForm from '@/admin/components/TitleForm.vue'
 
+interface ExtendedFileUpload extends InstanceType<typeof FileUpload> {
+  clear: () => void
+}
+
 const emit = defineEmits<{
   (e: 'success', artwork: Artwork): void
 }>()
@@ -34,7 +38,7 @@ const artists = computed(() => artistAdminStore.artists)
 const imageToDelete = ref<number | string | null>(null)
 const displayConfirmation = ref(false)
 const artwork = ref<Artwork | null>(null)
-const uploader = ref<InstanceType<typeof FileUpload> | null>(null)
+const uploader = ref<ExtendedFileUpload | null>(null)
 
 const newImages = ref<File[]>([])
 const imagesToDelete = ref<number[]>([])
@@ -55,7 +59,7 @@ const allImages = computed(() => {
     currentArtwork.value?.images?.filter((img) => !imagesToDelete.value.includes(img.id)) || []
   const newPreviews = newImages.value.map((file, index) => ({
     id: `new-${index}`,
-    url: URL.createObjectURL(file),
+    path: URL.createObjectURL(file),
     is_primary: false,
     isNew: true,
     file,
