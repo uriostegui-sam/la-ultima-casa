@@ -21,7 +21,7 @@ class NewsService
         return News::create([
             'title' => $data['title'],
             'content' => $data['content'],
-            'published_at' => $data['published_at'] ?? null,
+            'published' => $data['published'] ?? false,
             'image_path' => $data['image_path'] ?? null,
         ]);
     }
@@ -78,14 +78,6 @@ class NewsService
     public function getPaginatedNews()
     {
         $query = News::query();
-
-        if (request()->has('published_from')) {
-            $query->whereDate('published_at', '>=', request('published_from'));
-        }
-
-        if (request()->has('published_to')) {
-            $query->whereDate('published_at', '<=', request('published_to'));
-        }
 
         return $query->latest()->paginate(10);
     }
