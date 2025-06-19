@@ -101,7 +101,7 @@ onMounted(() => {
               :title="current === Languages.English ? newsItem.title['en'] : newsItem.title['es']"
               :description="current === Languages.English ? newsItem.content['en'] : newsItem.content['es']"
               :image="newsItem.image_url"
-              :date="newsItem.published_at"
+              :date="newsItem.created_at"
             />
           </div>
         </div>
