@@ -18,7 +18,6 @@ class NewsAdminService extends BaseService {
 
   async updateNews(id: number, payload: NewsUpdatePayload): Promise<News> {
     const formData = buildNewsFormData(payload, false)
-
     return await this.update<News>(id, formData)
   }
 
@@ -34,8 +33,6 @@ class NewsAdminService extends BaseService {
   }
 
   async getNews(params?: {
-    published_from?: string
-    published_to?: string
   }): Promise<ApiResponse<News[]>> {
     return this.getPaginated<ApiResponse<News[]>>(params)
   }
