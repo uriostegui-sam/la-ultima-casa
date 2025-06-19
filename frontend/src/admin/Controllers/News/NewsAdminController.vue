@@ -128,6 +128,7 @@ async function deleteSelectedNewss() {
 
         <Column selectionMode="multiple" style="width: 3rem" :exportable="false"></Column>
         <Column field="id" header="ID" sortable style="min-width: 2rem"></Column>
+        <Column field="published" :header="capitalizeFirstLetter(t('published'))" sortable style="min-width: 2rem"></Column>
         <Column field="titleTrans" :header="capitalizeFirstLetter(t('title'))" sortable style="min-width: 12rem"></Column>
         <Column :header="capitalizeFirstLetter(t('image'))">
           <template #body="slotProps">

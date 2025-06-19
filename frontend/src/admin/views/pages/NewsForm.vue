@@ -26,6 +26,22 @@ const isEditMode = computed(() => !!id)
 const currentNews = ref<News | null>(null)
 const news = ref<News | null>(null)
 
+const selectButtonValue = computed({
+  get() {
+    return currentNews.value?.published ?? false
+  },
+  set(value: boolean) {
+    if (currentNews.value) {
+      currentNews.value.published = value
+    }
+  },
+})
+
+const selectButtonValues = computed(() => [
+  { name: capitalizeFirstLetter(t('published')), value: true },
+  { name: capitalizeFirstLetter(t('hide')), value: false },
+])
+
 const onProfileImageSelect = (event: any) => {
   const file = event.files?.[0]
   if (file) {
@@ -53,6 +69,7 @@ onMounted(async () => {
       title: { en: '', es: '' },
       content: { en: '', es: '' },
       image_url: '',
+      published: false,
     }
   }
 })
@@ -65,6 +82,7 @@ const handleSubmit = async () => {
       title: currentNews.value.title,
       content: currentNews.value.content,
       cover_image: profileImageFile.value ?? undefined,
+      published: currentNews.value.published,
     }
 
     let result: News
@@ -126,6 +144,17 @@ const handleSubmit = async () => {
         </div>
       </div>
 
+       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <label class="block font-semibold mb-1">{{ `${capitalizeFirstLetter(t('type'))}` }}</label>
+          <SelectButton
+            v-model="selectButtonValue"
+            :options="selectButtonValues"
+            optionLabel="name"
+            optionValue="value"
+          />
+        </div>
+       </div>
       <!-- Title -->
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
