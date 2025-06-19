@@ -137,7 +137,7 @@ onMounted(async () => {
       id: 0,
       artist_id: 0,
       title: '',
-      artist: undefined,
+      artist: null,
       description: {
         en: '',
         es: '',
