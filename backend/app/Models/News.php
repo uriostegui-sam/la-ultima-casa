@@ -14,7 +14,7 @@ class News extends Model
         'title',
         'content',
         'image_path',
-        'published_at',
+        'published',
     ];
 
     protected $appends = ['image_url'];
@@ -22,6 +22,7 @@ class News extends Model
     protected $casts = [
         'title' => 'array',
         'content' => 'array',
+        'published' => 'boolean',
     ];
 
     public function getImageUrlAttribute(): ?string
