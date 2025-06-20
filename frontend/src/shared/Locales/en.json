@@ -172,6 +172,12 @@
     "status": "status",
     "upcoming": "upcoming",
     "ongoing": "ongoing",
-    "ended": "ended"
+    "ended": "ended",
+    "spotAlreadyTaken": "there is already a workshop in that position",
+    "notFound": "not found",
+    "requestedNotAvailable": "requested resource is not available",
+    "goToArtists": "go to the artists menu",
+    "goToNews": "go to the news menu",
+    "goToWorkshops": "go to the workshops menu"
   }
   
