@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, watchEffect, onMounted } from 'vue'
+import { ref, computed, watchEffect, onMounted, watch } from 'vue'
 import { useAdminWorkshopStore } from '@/admin/stores/WorkshopAdminStore'
 import { useAdminSkillStore } from '@/admin/stores/SkillAdminStore'
 import { Languages, locale } from '@/shared/services/Translation'
@@ -16,6 +16,7 @@ import type {
 import { useAdminArtistStore } from '@/admin/stores/ArtistAdminStore'
 import LoadingComponent from '@/shared/components/LoadingComponent.vue'
 import TitleForm from '@/admin/components/TitleForm.vue'
+import { useAuthStore } from '@/shared/stores/AuthStore'
 
 const emit = defineEmits<{
   (e: 'success', workshop: Workshop): void
@@ -32,6 +33,8 @@ const currentLang = locale
 const workshopAdminStore = useAdminWorkshopStore()
 const skillAdminStore = useAdminSkillStore()
 const artistAdminStore = useAdminArtistStore()
+const authStore = useAuthStore()
+const isAdmin = ref(false)
 const artists = computed(() => artistAdminStore.artists)
 const isEditMode = computed(() => !!id)
 const currentWorkshop = ref<Workshop | null>(null)
@@ -70,12 +73,29 @@ const selectButtonValue = computed({
   set(value: string) {
     if (currentWorkshop.value) {
       currentWorkshop.value.type = value as Workshop['type']
-      currentWorkshop.value.end_date = value === 'permanent' ? null : new Date().toISOString().split('T')[0] as unknown as Date
+      currentWorkshop.value.end_date =
+        value === 'permanent' ? null : (new Date().toISOString().split('T')[0] as unknown as Date)
     }
   },
 })
 
+const isFeatured = ref(false)
+const featuredPosition = ref<number | false>(false)
+
+watch(isFeatured, (val) => {
+  if (!val) {
+    featuredPosition.value = false
+  }
+})
+
+const isFeaturedButtonValues = computed(() => [
+  { name: capitalizeFirstLetter(t('yes')), value: true },
+  { name: capitalizeFirstLetter(t('no')), value: false },
+])
+
+
 onMounted(async () => {
+  isAdmin.value = authStore.user?.role === 'admin' ? true : false
   await artistAdminStore.getArtists()
   await skillAdminStore.getSkills()
 
@@ -83,6 +103,8 @@ onMounted(async () => {
     await workshopAdminStore.getWorkshop(id.value)
 
     workshop.value = workshopAdminStore.selectedWorkshop
+    isFeatured.value = typeof workshop.value?.featured_position === 'number'
+    featuredPosition.value = workshop.value?.featured_position ?? false
     profileImagePreview.value = workshop.value?.cover_image_path
       ? `http://localhost/storage/${workshop.value?.cover_image_path}`
       : null
@@ -91,7 +113,6 @@ onMounted(async () => {
     currentWorkshopSkills.value = workshop.value?.skills
       ? workshop.value.skills.map((skill) => skill.id)
       : []
-
   } else {
     currentWorkshop.value = {
       id: 0,
@@ -106,6 +127,7 @@ onMounted(async () => {
       cover_image_path: '',
       skills: [],
       max_students: 0,
+      featured_position: false
     }
   }
 })
@@ -125,6 +147,7 @@ const handleSubmit = async () => {
       max_students: currentWorkshop.value.max_students,
       skills: currentWorkshopSkills.value,
       cover_image: profileImageFile.value ?? undefined,
+      featured_position: featuredPosition.value,
     }
 
     let result: Workshop
@@ -134,7 +157,6 @@ const handleSubmit = async () => {
         id: currentWorkshop.value.id,
       }
       result = await workshopAdminStore.updateWorkshop(id.value, updatePayload)
-
       workshop.value = result
       currentWorkshop.value = JSON.parse(JSON.stringify(result))
     } else {
@@ -196,6 +218,28 @@ const handleSubmit = async () => {
         </div>
       </div>
 
+      <div v-if="isAdmin"
+        class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <label class="block font-semibold mb-1">{{ `${capitalizeFirstLetter(t('en portada'))}` }}</label>
+          <SelectButton
+            v-model="isFeatured"
+            :options="isFeaturedButtonValues"
+            optionLabel="name"
+            optionValue="value"
+          />
+        </div>
+
+        <div v-if="isFeatured" class="mt-2">
+          <label class="block font-semibold mb-1">{{ `${capitalizeFirstLetter(t('position en portada'))}` }}</label>
+          <Select
+            v-model="featuredPosition"
+            :options="[1, 2]"
+            class="w-full"
+          />
+        </div>
+      </div>
+
       <!-- Title -->
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
@@ -239,7 +283,9 @@ const handleSubmit = async () => {
       <!-- Type -->
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
-          <label class="block font-semibold mb-1">{{ `${capitalizeFirstLetter(t('type'))}` }}</label>
+          <label class="block font-semibold mb-1">{{
+            `${capitalizeFirstLetter(t('type'))}`
+          }}</label>
           <SelectButton
             v-model="selectButtonValue"
             :options="selectButtonValues"
@@ -250,7 +296,7 @@ const handleSubmit = async () => {
         <!-- Artist Selection -->
         <div>
           <label class="block mb-2 font-medium">{{ capitalizeFirstLetter(t('artist')) }}</label>
-          <Dropdown
+          <Select
             v-model="currentWorkshop.artist_id"
             :options="artists"
             optionLabel="name"

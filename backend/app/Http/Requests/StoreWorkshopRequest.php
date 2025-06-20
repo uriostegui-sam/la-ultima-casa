@@ -34,7 +34,8 @@ class StoreWorkshopRequest extends FormRequest
             'max_students' => 'required|string|max:255',
             'cover_image' => 'required|image|max:2048',
             'skills' => 'required|array',
-            'skills.*' => 'exists:skills,id'
+            'skills.*' => 'exists:skills,id',
+            'featured_position' => 'nullable|in:1,2',
         ];
     }
 }

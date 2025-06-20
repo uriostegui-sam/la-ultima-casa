@@ -42,6 +42,9 @@ export function buildWorkshopFormData(
   if (payload.price) {
     formData.append('price', payload.price.toString())
   }
+  if (payload.featured_position) {
+    formData.append('featured_position', payload.featured_position.toString())
+  }
   if (payload.max_students) {
     formData.append('max_students', payload.max_students.toString())
   }

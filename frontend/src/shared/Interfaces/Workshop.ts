@@ -23,6 +23,7 @@ export interface Workshop {
   cover_image_path?: string
   cover_image_url?: string
   skills?: Skill[]
+  featured_position?: number | false
 }
 
 export interface WorkshopCreatePayload {
@@ -35,7 +36,8 @@ export interface WorkshopCreatePayload {
   price: number
   max_students: number
   cover_image?: File
-  skills?: number[]
+  skills?: number[],
+  featured_position?: number | false
 }
 
 export interface WorkshopUpdatePayload extends Partial<WorkshopCreatePayload> {
