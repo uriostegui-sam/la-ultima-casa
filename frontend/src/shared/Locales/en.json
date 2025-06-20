@@ -178,6 +178,7 @@
     "requestedNotAvailable": "requested resource is not available",
     "goToArtists": "go to the artists menu",
     "goToNews": "go to the news menu",
-    "goToWorkshops": "go to the workshops menu"
+    "goToWorkshops": "go to the workshops menu",
+    "selectSkillsWorkshop": "select the skills that will be use in the workshop"
   }
   
