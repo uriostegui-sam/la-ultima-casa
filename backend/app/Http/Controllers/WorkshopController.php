@@ -258,4 +258,25 @@ class WorkshopController extends Controller
             'message' => 'Workshop deleted successfully'
         ]);
     }
+
+    public function getFeaturedWorkshops()
+    {
+        $featured = Workshop::with(['artist', 'skills'])
+            ->whereNotNull('featured_position')
+            ->orderBy('featured_position')
+            ->take(2)
+            ->get();
+
+        if ($featured->count() < 2) {
+            $needed = 2 - $featured->count();
+            $fallback = Workshop::with(['artist', 'skills'])
+                ->whereNull('featured_position')
+                ->orderByDesc('created_at')
+                ->take($needed)
+                ->get();
+            $featured = $featured->merge($fallback);
+        }
+
+        return new WorkshopCollection($featured->take(2));
+    }
 }
