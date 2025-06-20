@@ -9,6 +9,7 @@ import { useAdminAboutUsStore } from '@/admin/stores/AboutUsAdminStore'
 import type { AboutUs } from '@/shared/Interfaces/AboutUs'
 import { Languages, locale } from '@/shared/services/Translation'
 import LoadingComponent from '@/shared/components/LoadingComponent.vue'
+import { useWorkshopStore } from '@/shared/stores/WorkshopStore'
 
 const { t } = useI18n()
 const props = defineProps<{
@@ -17,38 +18,72 @@ const props = defineProps<{
   color?: string
 }>()
 
-const current = locale
+const currentLang = locale
 const aboutUsStore = useAdminAboutUsStore()
+const workshopsStore = useWorkshopStore()
 const headerHeight = ref('4rem')
-const descriptions = {
-  adults:
-    'Adults Pellentesque faucibus facilisis luctus. Quisque vel lacus vitae felis volutpat efficitur. Nunc porta, est ac semper dictum, erat diam dignissim arcu, a lobortis velit tellus vitae dui. Pellentesque quis nisi sed augue dignissim hendrerit. Ut dictum enim et magna dapibus, eget tincidunt orci pellentesque. Suspendisse dictum vel lacus eleifend consequat. Ut dapibus ornare nisl suscipit dapibus. Aliquam erat volutpat. Sed venenatis eget erat vitae tincidunt. Sed non luctus nibh.',
-  kids: 'Kids Pellentesque faucibus facilisis luctus. Quisque vel lacus vitae felis volutpat efficitur. Nunc porta, est ac semper dictum, erat diam dignissim arcu, a lobortis velit tellus vitae dui. Pellentesque quis nisi sed augue dignissim hendrerit. Ut dictum enim et magna dapibus, eget tincidunt orci pellentesque. Suspendisse dictum vel lacus eleifend consequat. Ut dapibus ornare nisl suscipit dapibus. Aliquam erat volutpat. Sed venenatis eget erat vitae tincidunt. Sed non luctus nibh.',
-}
 const existingId = computed(() => {
   return Number(aboutUsStore.aboutUs.length > 0 ? aboutUsStore.aboutUs[0].id : null)
 })
 const aboutUs = ref<AboutUs | null>(null)
+const workshopTransformed = computed(() => {
+  return workshopsStore.workshops.map((workshop) => ({
+    ...workshop,
+  }))
+})
+const firstWorkshop = computed(
+  () => workshopTransformed.value.find((w) => w.featured_position === 1) || null,
+)
+const secondWorkshop = computed(
+  () => workshopTransformed.value.find((w) => w.featured_position === 2) || null,
+)
 
 const photos = {
-  adults: 'https://picsum.photos/300',
-  kids: 'https://picsum.photos/301',
+  first: `http://localhost/storage/${firstWorkshop.value?.cover_image_path}`,
+  second: `http://localhost/storage/${secondWorkshop.value?.cover_image_path}`,
 }
 
 const imageSrc = computed(() => {
-  if (props.first) return aboutUs.value ? `http://localhost/storage/${aboutUs.value.cover_image}` :'https://picsum.photos/301';
-  return props.reverse ? photos.adults : photos.kids
+  if (props.first)
+    return aboutUs.value
+      ? `http://localhost/storage/${aboutUs.value.cover_image}`
+      : 'https://picsum.photos/301'
+  return props.reverse ? photos.first : photos.second
 })
 
+const firstTitle = computed(() =>
+  currentLang.value === Languages.English
+    ? firstWorkshop.value?.title?.en
+    : firstWorkshop.value?.title?.es,
+)
+
+const secondTitle = computed(() =>
+  currentLang.value === Languages.English
+    ? secondWorkshop.value?.title?.en
+    : secondWorkshop.value?.title?.es,
+)
+
+const firstDescription = computed(() =>
+  currentLang.value === Languages.English
+    ? firstWorkshop.value?.description?.en
+    : firstWorkshop.value?.description?.es,
+)
+
+const secondDescription = computed(() =>
+  currentLang.value === Languages.English
+    ? secondWorkshop.value?.title?.en
+    : secondWorkshop.value?.title?.es,
+)
+
 const aboutUsDescription = computed(() => {
-  return current.value === Languages.English
-    ? aboutUs.value?.description?.en ?? null
-    : aboutUs.value?.description?.es ?? null
+  return currentLang.value === Languages.English
+    ? (aboutUs.value?.description?.en ?? null)
+    : (aboutUs.value?.description?.es ?? null)
 })
 
 const description = computed(() => {
   if (props.first) return aboutUsDescription.value
-  return props.reverse ? descriptions.adults : descriptions.kids
+  return props.reverse ? firstDescription.value : secondDescription.value
 })
 
 const buttonColor = computed(() => (props.reverse ? '--color-salmon' : '--color-teal'))
@@ -58,13 +93,14 @@ const buttonText = computed(() =>
 
 onMounted(async () => {
   await aboutUsStore.getAboutUs()
+  await workshopsStore.getFeaturedWorkshops()
 
   if (existingId.value) {
     await aboutUsStore.getAboutUsById(existingId.value)
-    
+
     aboutUs.value = aboutUsStore.selectedAboutUs
     const header = document.querySelector('header')
-    
+
     if (header) {
       headerHeight.value = `${header.offsetHeight}px`
     }
@@ -87,7 +123,10 @@ onMounted(async () => {
       "
     >
       <!-- Image -->
-      <div class="flex-1 pt-5 flex items-center justify-center" :class="!props.first && 'hidden lg:flex'">
+      <div
+        class="flex-1 pt-5 flex items-center justify-center"
+        :class="!props.first && 'hidden lg:flex'"
+      >
         <div v-if="aboutUs">
           <img :src="imageSrc" alt="" class="w-full h-auto object-cover rounded-xl" />
         </div>
@@ -107,14 +146,11 @@ onMounted(async () => {
 
         <!-- Main heading for non-first -->
         <h2
-          v-else
-          class="font-title md:text-6xl text-4xl"
+          v-if="!props.first"
           :class="props.reverse ? 'text-(--color-salmon)' : 'text-(--color-teal)'"
+          class="font-title md:text-6xl text-4xl"
         >
-          {{ capitalizeFirstLetter($t('coursesFor')) }}
-          <span class="font-title-alt">
-            {{ props.reverse ? $t('adults') : $t('children') }}
-          </span>
+          {{ props.reverse ? firstTitle : secondTitle }}
         </h2>
 
         <!-- Mobile image for non-first -->
