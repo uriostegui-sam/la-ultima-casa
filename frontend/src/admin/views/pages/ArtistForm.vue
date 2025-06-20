@@ -29,7 +29,7 @@ const currentLang = locale
 const artistAdminStore = useAdminArtistStore()
 const artworkAdminStore = useAdminArtworkStore()
 const skillAdminStore = useAdminSkillStore()
-const isEditMode = computed(() => !!id)
+const isEditMode = computed(() => !Number.isNaN(id.value))
 const currentArtist = ref<Artist | null>(null)
 const currentArtistSkills = ref<number[]>([])
 const artist = ref<Artist | null>(null)

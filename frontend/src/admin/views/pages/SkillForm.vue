@@ -22,7 +22,7 @@ const router = useRouter()
 const { t } = useI18n()
 const id = computed(() => Number(route.params.id))
 const skillAdminStore = useAdminSkillStore()
-const isEditMode = computed(() => !!id)
+const isEditMode = computed(() => !Number.isNaN(id.value))
 const currentSkill = ref<Skill | null>(null)
 const skill = ref<Skill | null>(null)
 
@@ -75,7 +75,6 @@ const handleSubmit = async () => {
         router.push({ name: 'adminSkillEdit', params: { id: result.id } })
       }
     }
-
 
     emit('success', result)
     showSuccessToast(toast, t, 'skillSavedSuccessfully', 3000)
