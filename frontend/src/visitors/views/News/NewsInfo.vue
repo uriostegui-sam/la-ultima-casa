@@ -9,6 +9,7 @@ import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
 import NewsCarousel from './NewsCarousel.vue';
 import Header from '@/visitors/components/layout/Header.vue';
+import LoadingComponent from '@/shared/components/LoadingComponent.vue';
 
 const currentLang = locale
 const route = useRoute()

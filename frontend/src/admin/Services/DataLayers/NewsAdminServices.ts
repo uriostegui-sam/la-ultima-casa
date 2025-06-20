@@ -5,7 +5,7 @@ import axiosInstance from '@/shared/services/DataLayers/AxiosInstance'
 import { buildNewsFormData } from '../Helpers/formNewsHelper'
 import axios from 'axios'
 
-class NewsService extends BaseService {
+class NewsAdminService extends BaseService {
   constructor() {
     super('/news')
   }
@@ -18,7 +18,6 @@ class NewsService extends BaseService {
 
   async updateNews(id: number, payload: NewsUpdatePayload): Promise<News> {
     const formData = buildNewsFormData(payload, false)
-
     return await this.update<News>(id, formData)
   }
 
@@ -34,11 +33,9 @@ class NewsService extends BaseService {
   }
 
   async getNews(params?: {
-    published_from?: string
-    published_to?: string
   }): Promise<ApiResponse<News[]>> {
     return this.getPaginated<ApiResponse<News[]>>(params)
   }
 }
 
-export default new NewsService()
+export default new NewsAdminService()

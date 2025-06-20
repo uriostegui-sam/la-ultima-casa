@@ -31,7 +31,7 @@ class NewsTest extends TestCase
                     'en' => 'We are thrilled to announce a new exhibition!',
                     'es' => '¡Estamos emocionados de anunciar una nueva exposición!',
                 ],
-                'published_at' => now()->toDateString(),
+                'published' => true,
                 'image' => UploadedFile::fake()->image('news.jpg')
             ]);
 

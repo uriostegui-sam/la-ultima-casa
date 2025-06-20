@@ -38,9 +38,17 @@ export function buildWorkshopFormData(
     formData.append('end_date', '')
   }
 
-  
+
   if (payload.price) {
     formData.append('price', payload.price.toString())
+  }
+
+  if (payload.featured_position !== undefined) {
+    if (typeof payload.featured_position === 'number') {
+      formData.append('featured_position', String(payload.featured_position))
+    } else {
+      formData.append('featured_position', '')
+    }
   }
   if (payload.max_students) {
     formData.append('max_students', payload.max_students.toString())

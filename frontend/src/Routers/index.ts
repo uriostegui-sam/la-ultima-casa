@@ -21,6 +21,7 @@ import WorkshopForm from '@/admin/views/pages/WorkshopForm.vue'
 import NewsAdminController from '@/admin/Controllers/News/NewsAdminController.vue'
 import NewsForm from '@/admin/views/pages/NewsForm.vue'
 import AboutUsForm from '@/admin/views/pages/AboutUsForm.vue'
+import NotFound from '@/admin/views/pages/NotFound.vue'
 
 const routes = [
   {
@@ -93,8 +94,13 @@ const routes = [
         component: ArtistForm,
       },
       {
-        path: '/admin/artists/:id/artwork/edit/:id',
+        path: '/admin/artists/:id/artwork/edit/:idArtwork',
         name: 'adminArtistArtworkEdit',
+        component: ArtworkForm,
+      },
+      {
+        path: '/admin/artists/:id/artwork/create',
+        name: 'adminArtistArtworkCreate',
         component: ArtworkForm,
       },
       {
@@ -163,7 +169,7 @@ const routes = [
   {
     path: '/:pathMatch(.*)*',
     name: 'NotFound',
-    component: Logo,
+    component: NotFound,
   },
 ]
 

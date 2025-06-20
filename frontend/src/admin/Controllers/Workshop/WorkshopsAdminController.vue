@@ -12,17 +12,35 @@ const { t } = useI18n()
 const workshopAdminStore = useAdminWorkshopStore()
 const currentLang = locale
 
-const workshopTransformed = computed(() => {
-  return workshopAdminStore.workshops.map((workshop) => ({
-    ...workshop,
-    titleTranslated: currentLang.value === Languages.English
-      ? workshop.title.en : workshop.title.es,
-    dateTranslated: {
-      start: new Date(workshop.start_date).toLocaleDateString(),
-      end: workshop.type === 'permanent' ? capitalizeFirstLetter(t('permanentSingular')) : new Date(workshop.end_date).toLocaleDateString(),
-    },
-  }))
-})
+const workshopTransformed = computed(() =>
+  workshopAdminStore.workshops.map((workshop) => {
+    const today = new Date()
+    let status
+
+    if (workshop.type === 'permanent') {
+      status = capitalizeFirstLetter(t('ongoing'))
+    } else if (workshop.start_date && new Date(workshop.start_date) > today) {
+      status = capitalizeFirstLetter(t('upcoming'))
+    } else if (workshop.end_date && new Date(workshop.end_date) < today) {
+      status = capitalizeFirstLetter(t('ended'))
+    } else {
+      status = capitalizeFirstLetter(t('ongoing'))
+    }
+    return {
+      ...workshop,
+      titleTranslated:
+        currentLang.value === Languages.English ? workshop.title.en : workshop.title.es,
+      dateTranslated: {
+        start: new Date(workshop.start_date).toLocaleDateString(),
+        end:
+          workshop.type === 'permanent'
+            ? capitalizeFirstLetter(t('permanentSingular'))
+            : new Date(workshop.end_date).toLocaleDateString(),
+      },
+      status,
+    }
+  }),
+)
 
 onMounted(async () => {
   await workshopAdminStore.getWorkshops()
@@ -45,7 +63,7 @@ function confirmDeleteWorkshop(art) {
 
 async function deleteWorkshop(id) {
   deleteWorkshopDialog.value = false
-    try {
+  try {
     await workshopAdminStore.deleteWorkshop(id)
 
     showSuccessToast(toast, t, 'workshopDeletedSuccessfully', 3000)
@@ -62,20 +80,20 @@ function confirmDeleteSelected() {
 
 async function deleteSelectedWorkshops() {
   try {
-    const deletePromises = selectedWorkshops.value.map(workshop => 
-      workshopAdminStore.deleteWorkshop(workshop.id)
-    );
-    
-    await Promise.all(deletePromises);
-    
-    await workshopAdminStore.getWorkshops();
-    
-    selectedWorkshops.value = [];
-    deleteWorkshopsDialog.value = false;
-    
-    showSuccessToast(toast, t, 'workshopsDeleted', 3000);
+    const deletePromises = selectedWorkshops.value.map((workshop) =>
+      workshopAdminStore.deleteWorkshop(workshop.id),
+    )
+
+    await Promise.all(deletePromises)
+
+    await workshopAdminStore.getWorkshops()
+
+    selectedWorkshops.value = []
+    deleteWorkshopsDialog.value = false
+
+    showSuccessToast(toast, t, 'workshopsDeleted', 3000)
   } catch (err) {
-    showErrorToast(toast, t, err, 'errorDeletingWorkshops');
+    showErrorToast(toast, t, err, 'errorDeletingWorkshops')
   }
 }
 </script>
@@ -85,15 +103,14 @@ async function deleteSelectedWorkshops() {
     <div class="card">
       <Toolbar class="mb-6">
         <template #start>
-          <RouterLink 
-                :to="{ name: 'adminWorkshopCreate'}">
-          <Button
-            :label="capitalizeFirstLetter(t('new'))"
-            icon="pi pi-plus"
-            severity="secondary"
-            class="mr-2"
-            @click="openNew"
-          />
+          <RouterLink :to="{ name: 'adminWorkshopCreate' }">
+            <Button
+              :label="capitalizeFirstLetter(t('new'))"
+              icon="pi pi-plus"
+              severity="secondary"
+              class="mr-2"
+              @click="openNew"
+            />
           </RouterLink>
           <Button
             :label="capitalizeFirstLetter(t('delete'))"
@@ -124,14 +141,28 @@ async function deleteSelectedWorkshops() {
               <InputIcon>
                 <i class="pi pi-search" />
               </InputIcon>
-              <InputText v-model="filters['global'].value" :placeholder="`${capitalizeFirstLetter(t('search'))} ...`" />
+              <InputText
+                v-model="filters['global'].value"
+                :placeholder="`${capitalizeFirstLetter(t('search'))} ...`"
+              />
             </IconField>
           </div>
         </template>
 
         <Column selectionMode="multiple" style="width: 3rem" :exportable="false"></Column>
         <Column field="id" header="ID" sortable style="min-width: 2rem"></Column>
-        <Column field="titleTranslated" :header="capitalizeFirstLetter(t('title'))" sortable style="min-width: 16rem"></Column>
+        <Column
+          field="status"
+          :header="capitalizeFirstLetter(t('status'))"
+          sortable
+          style="min-width: 2rem"
+        ></Column>
+        <Column
+          field="titleTranslated"
+          :header="capitalizeFirstLetter(t('title'))"
+          sortable
+          style="min-width: 16rem"
+        ></Column>
         <Column :header="capitalizeFirstLetter(t('image'))">
           <template #body="slotProps">
             <img
@@ -142,20 +173,37 @@ async function deleteSelectedWorkshops() {
             />
           </template>
         </Column>
-        <Column field="dateTranslated.start" :header="capitalizeFirstLetter(t('startDate'))" style="min-width: 8rem"></Column>
-        <Column field="dateTranslated.end" :header="capitalizeFirstLetter(t('endDate'))" sortable style="min-width: 8rem"></Column>
-        <Column field="price" :header="capitalizeFirstLetter(t('price'))" sortable style="min-width: 6rem"></Column>
-        <Column field="artist.name" :header="capitalizeFirstLetter(t('artist'))" sortable style="min-width: 12rem"></Column>
-        <Column :header="capitalizeFirstLetter(t('actions'))" :exportable="false" style="min-width: 12rem">
+        <Column
+          field="dateTranslated.start"
+          :header="capitalizeFirstLetter(t('startDate'))"
+          style="min-width: 8rem"
+        ></Column>
+        <Column
+          field="dateTranslated.end"
+          :header="capitalizeFirstLetter(t('endDate'))"
+          sortable
+          style="min-width: 8rem"
+        ></Column>
+        <Column
+          field="price"
+          :header="capitalizeFirstLetter(t('price'))"
+          sortable
+          style="min-width: 6rem"
+        ></Column>
+        <Column
+          field="artist.name"
+          :header="capitalizeFirstLetter(t('artist'))"
+          sortable
+          style="min-width: 12rem"
+        ></Column>
+        <Column
+          :header="capitalizeFirstLetter(t('actions'))"
+          :exportable="false"
+          style="min-width: 12rem"
+        >
           <template #body="slotProps">
-            <RouterLink 
-                :to="{ name: 'adminWorkshopEdit', params: { id: slotProps.data.id } }">
-                <Button
-                icon="pi pi-pencil"
-                outlined
-                rounded
-                class="mr-2"
-                />
+            <RouterLink :to="{ name: 'adminWorkshopEdit', params: { id: slotProps.data.id } }">
+              <Button icon="pi pi-pencil" outlined rounded class="mr-2" />
             </RouterLink>
             <Button
               icon="pi pi-trash"
@@ -183,8 +231,17 @@ async function deleteSelectedWorkshops() {
         >
       </div>
       <template #footer>
-        <Button :label="capitalizeFirstLetter(t('no'))" icon="pi pi-times" text @click="deleteWorkshopDialog = false" />
-        <Button :label="capitalizeFirstLetter(t('yes'))" icon="pi pi-check" @click="deleteWorkshop(workshop.id)" />
+        <Button
+          :label="capitalizeFirstLetter(t('no'))"
+          icon="pi pi-times"
+          text
+          @click="deleteWorkshopDialog = false"
+        />
+        <Button
+          :label="capitalizeFirstLetter(t('yes'))"
+          icon="pi pi-check"
+          @click="deleteWorkshop(workshop.id)"
+        />
       </template>
     </Dialog>
 
@@ -199,8 +256,17 @@ async function deleteSelectedWorkshops() {
         <span v-if="workshop">{{ capitalizeFirstLetter(t('sureDeleteSelectedWorkshops')) }}</span>
       </div>
       <template #footer>
-        <Button :label="capitalizeFirstLetter(t('no'))" icon="pi pi-times" text @click="deleteWorkshopsDialog = false" />
-        <Button :label="capitalizeFirstLetter(t('yes'))" icon="pi pi-check" @click="deleteSelectedWorkshops" />
+        <Button
+          :label="capitalizeFirstLetter(t('no'))"
+          icon="pi pi-times"
+          text
+          @click="deleteWorkshopsDialog = false"
+        />
+        <Button
+          :label="capitalizeFirstLetter(t('yes'))"
+          icon="pi pi-check"
+          @click="deleteSelectedWorkshops"
+        />
       </template>
     </Dialog>
   </div>

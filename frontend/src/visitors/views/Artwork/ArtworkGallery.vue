@@ -20,7 +20,7 @@ const modalOpen = ref(false)
 const selectedIndex = ref(0)
 
 const getPrimaryImage = (artwork: Artwork) =>
-  artwork.images.find((img) => img.is_primary)?.url ?? ''
+  artwork.images.find((img) => img.is_primary)?.path ?? ''
 
 const [emblaRef, emblaApi] = emblaCarouselVue({
   loop: false,
@@ -80,9 +80,9 @@ onBeforeUnmount(() => {
           @click="openModal(index)"
         >
           <img
-            :src="getPrimaryImage(artwork)"
+            :src="'http://localhost/storage/' + (getPrimaryImage(artwork) || artwork.images[0]?.path)"
             class="w-full h-full object-cover"
-            :alt="artwork.title"
+            :alt="capitalizeFirstLetter(artwork.title)"
           />
           <div
             class="absolute inset-0 bg-(--color-light-salmon) opacity-0 group-hover:opacity-100 transition duration-300 flex items-center justify-center"
@@ -108,13 +108,13 @@ onBeforeUnmount(() => {
                 <div class="flex-1">
                     <InnerCarouselArtwork
                         :artwork="artwork"
-                        :title="artwork.title"
+                        :title="capitalizeFirstLetter(artwork.title)"
                         :modal="modalOpen"
                     />
                 </div>
                 <div class="flex-1">
                   <p class="text-(--color-salmon) md:text-xl text-lg">{{ props.artist }}</p>
-                  <h3 class="font-title md:text-5xl text-2xl py-2">{{ artwork.title }}</h3>
+                  <h3 class="font-title md:text-5xl text-2xl py-2">{{ capitalizeFirstLetter(artwork.title) }}</h3>
                   <p class="pb-6">{{ current === Languages.English ? artwork.description['en'] : artwork.description['es'] }}</p>
                   <a class="font-bold text-(--color-salmon)">{{ capitalizeFirstLetter($t('knowMoreOf')) }} {{ props.artist }}</a>
                 </div>

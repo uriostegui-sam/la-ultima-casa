@@ -19,10 +19,9 @@ export function buildNewsFormData(
   if (payload.content?.en) {
     formData.append('content[en]', payload.content.en)
   }
-
-  if (payload.published_at) {
-    formData.append('published_at', payload.published_at)
-  }
+  if (typeof payload.published === 'boolean') {
+    formData.append('published', payload.published ? '1' : '0');
+  }  
   // File uploads
   if ('cover_image' in payload && payload.cover_image) {
     formData.append('cover_image', payload.cover_image)

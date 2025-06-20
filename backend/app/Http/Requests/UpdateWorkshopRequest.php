@@ -34,7 +34,8 @@ class UpdateWorkshopRequest extends FormRequest
             'max_students' => 'sometimes|string|max:255',
             'cover_image' => 'sometimes|image|max:2048',
             'skills' => 'required|array',
-            'skills.*' => 'exists:skills,id'
+            'skills.*' => 'exists:skills,id',
+            'featured_position' => 'nullable|in:1,2',
         ];
     }
 }

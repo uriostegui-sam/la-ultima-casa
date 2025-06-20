@@ -5,9 +5,7 @@ import type { Workshop, WorkshopCreatePayload, WorkshopUpdatePayload } from '@/s
 import axios from 'axios'
 import { buildWorkshopFormData } from '../Helpers/formWorkshopHelper'
 
-type WorkshopType = 'permanent' | 'temporary'
-
-class WorkshopService extends BaseService {
+class WorkshopAdminService extends BaseService {
   constructor() {
     super('/workshops')
   }
@@ -39,4 +37,4 @@ class WorkshopService extends BaseService {
   }
 }
 
-export default new WorkshopService()
+export default new WorkshopAdminService()

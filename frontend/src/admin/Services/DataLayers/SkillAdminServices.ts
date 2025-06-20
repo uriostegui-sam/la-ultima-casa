@@ -5,7 +5,7 @@ import { BaseService } from "@/shared/services/DataLayers/BaseService"
 import axios from "axios";
 import { buildSkillFormData } from "../Helpers/formSkillHelper";
 
-class SkillService extends BaseService {
+class SkillAdminService extends BaseService {
   constructor() {
     super('/skills')
   }
@@ -38,4 +38,4 @@ class SkillService extends BaseService {
   }
 }
 
-export default new SkillService()
+export default new SkillAdminService()
