@@ -1,6 +1,7 @@
 import type { News, NewsCreatePayload, NewsUpdatePayload } from '@/shared/Interfaces/News'
 import type { ApiResponse } from '@/shared/Interfaces/ApiResponse'
 import { BaseService } from '@/shared/services/DataLayers/BaseService'
+import axiosInstance from '@/shared/services/DataLayers/AxiosInstance'
 
 class NewsService extends BaseService {
   constructor() {
@@ -8,10 +9,11 @@ class NewsService extends BaseService {
   }
 
   async getNews(params?: {
-    published_from?: string
-    published_to?: string
-  }): Promise<ApiResponse<News[]>> {
-    return this.getPaginated<ApiResponse<News[]>>(params)
+  }): Promise<News[]> {
+    const response = await axiosInstance.get<News[]>(
+      `${this.baseUrl}/published`
+    )
+    return response.data
   }
 }
 

@@ -31,12 +31,12 @@ use App\Services\NewsService;
  *         @OA\Property(property="es", type="string")
  *     ),
  *     @OA\Property(property="image_url", type="string", format="url"),
- *     @OA\Property(property="published_at", type="string", format="date"),
+ *     @OA\Property(property="published", type="boolean"),
  * )
  * @OA\Schema(
  *     schema="NewsCreate",
  *     type="object",
- *     required={"title", "content", "published_at"},
+ *     required={"title", "content", "published"},
  *     @OA\Property(
  *         property="title",
  *         type="object",
@@ -50,7 +50,7 @@ use App\Services\NewsService;
  *         @OA\Property(property="es", type="string")
  *     ),
  *     @OA\Property(
- *         property="published_at",
+ *         property="published",
  *         type="string",
  *         format="date",
  *         example="2025-04-28"
@@ -218,42 +218,51 @@ class NewsController extends Controller
     }
 
     /**
-    * @OA\Delete(
-    *     path="/api/news/{id}",
-    *     tags={"News"},
-    *     summary="Delete an news",
-    *     description="Delete a specific news",
-    *     security={{"bearerAuth": {}}},
-    *     @OA\Parameter(
-    *         name="id",
-    *         in="path",
-    *         required=true,
-    *         description="News ID",
-    *         @OA\Schema(type="integer")
-    *     ),
-    *     @OA\Response(
-    *         response=204,
-    *         description="News deleted successfully"
-    *     ),
-    *     @OA\Response(
-    *         response=401,
-    *         description="Unauthorized"
-    *     ),
-    *     @OA\Response(
-    *         response=403,
-    *         description="Forbidden"
-    *     ),
-    *     @OA\Response(
-    *         response=404,
-    *         description="News not found"
-    *     )
-    * )
-    */
+     * @OA\Delete(
+     *     path="/api/news/{id}",
+     *     tags={"News"},
+     *     summary="Delete an news",
+     *     description="Delete a specific news",
+     *     security={{"bearerAuth": {}}},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="News ID",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=204,
+     *         description="News deleted successfully"
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Unauthorized"
+     *     ),
+     *     @OA\Response(
+     *         response=403,
+     *         description="Forbidden"
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="News not found"
+     *     )
+     * )
+     */
     public function destroy(News $news)
     {
         $this->authorize('delete', $news);
 
         $this->newsService->deleteNews($news);
         return response()->noContent();
+    }
+
+    public function getPublishedNews()
+    {
+        $news = News::where('published', true)
+            ->latest()
+            ->paginate(10);
+
+        return NewsResource::collection($news);
     }
 }

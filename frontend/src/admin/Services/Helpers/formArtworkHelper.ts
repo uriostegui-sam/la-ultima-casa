@@ -3,7 +3,7 @@ import { formatDateToYMD } from '.'
 
 export function buildArtworkFormData(
   payload: ArtworkCreatePayload | ArtworkUpdatePayload,
-  isCreate: boolean = true
+  isCreate: boolean = true,
 ): FormData {
   const formData = new FormData()
 
@@ -17,18 +17,16 @@ export function buildArtworkFormData(
   if (payload.description?.en) {
     formData.append('description[en]', payload.description.en)
   }
-  if (payload.description?.en) {
+  if (payload.description?.es) {
     formData.append('description[es]', payload.description.es)
   }
-  if (payload.dimensions?.width) {
-    formData.append('dimensions[width]', payload.dimensions.width.toString())
-  }
-  if (payload.dimensions?.height) {
-    formData.append('dimensions[height]', payload.dimensions.height.toString())
-  }
-  if (payload.dimensions?.depth) {
-    formData.append('dimensions[depth]', payload.dimensions.depth.toString())
-  }
+  ['width', 'height', 'depth'].forEach((k) => {
+    const v = (payload.dimensions as any)?.[k]
+    if (v !== undefined && v !== null) {
+      formData.append(`dimensions[${k}]`, String(v))
+    }
+  })
+
   if (payload.creation_date) {
     formData.append('creation_date', formatDateToYMD(payload.creation_date))
   }
@@ -36,13 +34,13 @@ export function buildArtworkFormData(
   // Handle new images
   if ('new_images' in payload && payload.new_images) {
     payload.new_images.forEach((file) => {
-      formData.append(`images[]`, file);
-    });
+      formData.append(`images[]`, file)
+    })
   }
 
   // Handle images to delete (for updates)
   if ('images_to_delete' in payload && payload.images_to_delete) {
-    formData.append('images_to_delete', JSON.stringify(payload.images_to_delete));
+    formData.append('images_to_delete', JSON.stringify(payload.images_to_delete))
   }
 
   if (!isCreate) {

@@ -78,7 +78,9 @@ onMounted(() => {
 </script>
 
 <template>
-  <section class="relative w-full max-w-7xl embla my-8 mx-auto ps-5">
+  <section 
+    v-if="newsTransformed.length > 3"
+    class="relative w-full max-w-7xl embla my-8 mx-auto ps-5">
     <div class="flex justify-between items-center py-3 xl:px-0 pe-5">
         <h1 class="text-(--color-teal)">{{ capitalizeFirstLetter($t('latestNews')) }}</h1>
         <ActionButton
@@ -99,7 +101,7 @@ onMounted(() => {
               :title="current === Languages.English ? newsItem.title['en'] : newsItem.title['es']"
               :description="current === Languages.English ? newsItem.content['en'] : newsItem.content['es']"
               :image="newsItem.image_url"
-              :date="newsItem.published_at"
+              :date="newsItem.created_at"
             />
           </div>
         </div>
@@ -121,6 +123,7 @@ onMounted(() => {
         />
       </div>
   </section>
+  <section v-else ></section>
 </template>
 
 <style scoped>

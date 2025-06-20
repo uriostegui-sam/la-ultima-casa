@@ -27,7 +27,7 @@ class StoreNewsRequest extends FormRequest
             'content.en' => 'required|string',
             'content.es' => 'required|string',
             'cover_image' => 'nullable|image|max:2048',
-            'published_at' => 'nullable|date',
+            'published' => 'nullable|boolean',
         ];
     }
 }

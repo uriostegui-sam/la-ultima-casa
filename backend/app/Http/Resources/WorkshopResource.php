@@ -30,6 +30,7 @@ class WorkshopResource extends JsonResource
             'price' => $this->price ?? 0,
             'max_students' => $this->max_students ?? 0,
             'cover_image_path' => $this->cover_image_path ?? '',
+            'featured_position' => $this->featured_position ?? false,
             'skills' => $this->whenLoaded('skills', fn() =>
                 $this->skills->map(fn($skill) => [
                     'id' => $skill->id ?? '',

@@ -9,16 +9,26 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Illuminate\Validation\ValidationException;
 
 class WorkshopService
 {
     public function createWorkshop(array $data, UploadedFile $image): Workshop
     {
+        $position = isset($data['featured_position'])
+            ? (int) $data['featured_position']
+            : null;
+
+        if ($position !== null && Workshop::where('featured_position', $position)->exists()) {
+            throw ValidationException::withMessages([
+                'featured_position' => 'spotAlreadyTaken',
+            ]);
+        }
+
         $data['cover_image_path'] = $this->storeImage($image, $data);
-        $artistId = $data['artist_id'] ?? null;
 
         $workshop = Workshop::create([
-            'artist_id' => $artistId,
+            'artist_id' => $data['artist_id'] ?? null,
             'title' => $data['title'],
             'description' => $data['description'] ?? null,
             'cover_image_path' => $data['cover_image_path'],
@@ -27,6 +37,7 @@ class WorkshopService
             'type' => $data['type'] ?? 'temporary',
             'price' => $data['price'] ?? 0.0,
             'max_students' => $data['max_students'] ?? 0,
+            'featured_position' => $position,
         ]);
 
         if (!empty($data['skills'])) {
@@ -38,6 +49,24 @@ class WorkshopService
 
     public function updateWorkshop(Workshop $workshop, array $data, ?UploadedFile $image = null): Workshop
     {
+        if (array_key_exists('featured_position', $data)) {
+            $position = $data['featured_position'] !== null
+                ? (int) $data['featured_position']
+                : null;
+
+            if ($position !== null &&
+                Workshop::where('featured_position', $position)
+                        ->where('id', '!=', $workshop->id)
+                        ->exists()) {
+
+                throw ValidationException::withMessages([
+                    'featured_position' => 'spotAlreadyTaken',
+                ]);
+            }
+
+            $data['featured_position'] = $position;
+        }
+
         if ($image) {
             $this->deleteImage($workshop->cover_image_path);
             $data['cover_image_path'] = $this->storeImage($image, $workshop);
@@ -79,5 +108,4 @@ class WorkshopService
     {
         return Workshop::with('artist', 'skills')->paginate($perPage);
     }
-    
 }

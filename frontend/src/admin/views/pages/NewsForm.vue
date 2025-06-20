@@ -7,6 +7,8 @@ import { capitalizeFirstLetter } from '@/shared/services/Helpers'
 import { useRoute, useRouter } from 'vue-router'
 import { useToast } from 'primevue/usetoast'
 import { showErrorToast, showSuccessToast } from '@/admin/Services/Helpers'
+import LoadingComponent from '@/shared/components/LoadingComponent.vue'
+import TitleForm from '@/admin/components/TitleForm.vue'
 
 const emit = defineEmits<{
   (e: 'success', news: News): void
@@ -18,11 +20,27 @@ const toast = useToast()
 const route = useRoute()
 const router = useRouter()
 const { t } = useI18n()
-const id = Number(route.params.id)
+const id = computed(() => Number(route.params.id))
 const newsAdminStore = useAdminNewsStore()
-const isEditMode = computed(() => !!id)
+const isEditMode = computed(() => !Number.isNaN(id.value))
 const currentNews = ref<News | null>(null)
 const news = ref<News | null>(null)
+
+const selectButtonValue = computed({
+  get() {
+    return currentNews.value?.published ?? false
+  },
+  set(value: boolean) {
+    if (currentNews.value) {
+      currentNews.value.published = value
+    }
+  },
+})
+
+const selectButtonValues = computed(() => [
+  { name: capitalizeFirstLetter(t('published')), value: true },
+  { name: capitalizeFirstLetter(t('hide')), value: false },
+])
 
 const onProfileImageSelect = (event: any) => {
   const file = event.files?.[0]
@@ -38,8 +56,8 @@ const removeProfileImage = () => {
 }
 
 onMounted(async () => {
-  if (id) {
-    await newsAdminStore.getNewsById(id)
+  if (id.value) {
+    await newsAdminStore.getNewsById(id.value)
     
     news.value = newsAdminStore.selectedNews
     profileImagePreview.value = news.value?.image_url ? `${news.value?.image_url}`  : null
@@ -51,6 +69,7 @@ onMounted(async () => {
       title: { en: '', es: '' },
       content: { en: '', es: '' },
       image_url: '',
+      published: false,
     }
   }
 })
@@ -63,11 +82,12 @@ const handleSubmit = async () => {
       title: currentNews.value.title,
       content: currentNews.value.content,
       cover_image: profileImageFile.value ?? undefined,
+      published: currentNews.value.published,
     }
 
     let result: News
     if (isEditMode.value) {
-      result = await newsAdminStore.updateNews(id, { ...payload, id } as NewsUpdatePayload)
+      result = await newsAdminStore.updateNews(id.value, { ...payload, id: id.value } as NewsUpdatePayload)
     } else {
       result = await newsAdminStore.createNews(payload as NewsCreatePayload)
 
@@ -86,12 +106,13 @@ const handleSubmit = async () => {
 </script>
 
 <template>
+  <TitleForm title="news" :isCreateMode="!isEditMode" />
   <div v-if="currentNews">
     <form @submit.prevent="handleSubmit" class="space-y-6">
       <!-- Profile Image Upload -->
       <div class="flex flex-wrap justify-center flex-col">
         <label class="block font-semibold mb-1 text-center">{{
-          capitalizeFirstLetter(t('profileImage'))
+          capitalizeFirstLetter(t('referenceImage'))
         }}</label>
         <div v-if="profileImagePreview" class="my-4 mb-10 relative w-32 h-32 m-auto">
           <img :src="`${profileImagePreview}`" class="w-full h-full object-cover rounded-full" />
@@ -112,6 +133,9 @@ const handleSubmit = async () => {
             mode="advanced"
             :auto="false"
             customUpload
+            :chooseLabel="capitalizeFirstLetter(t('selectImages'))"
+            :uploadLabel="capitalizeFirstLetter(t('upload'))"
+            :cancelLabel="capitalizeFirstLetter(t('cancel'))"
           >
             <template #empty>
               <p>{{ capitalizeFirstLetter(t('dragDrop')) }}</p>
@@ -120,6 +144,17 @@ const handleSubmit = async () => {
         </div>
       </div>
 
+       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <label class="block font-semibold mb-1">{{ `${capitalizeFirstLetter(t('type'))}` }}</label>
+          <SelectButton
+            v-model="selectButtonValue"
+            :options="selectButtonValues"
+            optionLabel="name"
+            optionValue="value"
+          />
+        </div>
+       </div>
       <!-- Title -->
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>

@@ -55,9 +55,8 @@ const noSocials = !props.facebook && !props.instagram && !props.website ? false 
     />
     <div class="flex gap-5 lg:gap-20 flex-col-reverse lg:flex-row">
       <div class="lg:flex-2/5 flex flex-col items-center">
-        <!-- :src="props.coverImage" -->
         <img
-          src="https://picsum.photos/200"
+          :src="props.coverImage"
           :alt="props.title"
           class="w-full h-full object-cover"
         />

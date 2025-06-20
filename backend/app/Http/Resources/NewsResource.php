@@ -25,7 +25,7 @@ class NewsResource extends JsonResource
                 'es' => $this->content['es'],
             ],
             'image_url' => $this->image_url,
-            'published_at' => $this->published_at,
+            'published' => $this->published,
         ];
     }
 }

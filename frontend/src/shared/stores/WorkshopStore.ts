@@ -37,6 +37,19 @@ export const useWorkshopStore = defineStore('workshop', {
       }
     },
 
+    async getFeaturedWorkshops() {
+      this.loading = true
+      this.error = null
+      try {
+        const response = await WorkshopService.getFeaturedWorkshops()
+        this.workshops = response
+      } catch (err: any) {
+        this.error = err.message || 'Failed to load workshop'
+      } finally {
+        this.loading = false
+      }
+    },
+
     clearError() {
       this.error = null
     },

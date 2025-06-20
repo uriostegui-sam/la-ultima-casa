@@ -3,6 +3,7 @@ import type { Artwork } from '@/shared/Interfaces/Artwork'
 import emblaCarouselVue from 'embla-carousel-vue'
 import { onMounted, ref, watch } from 'vue'
 import ChrevronSolid from '@/visitors/assets/Icons/chevron-solid.svg'
+import { capitalizeFirstLetter } from '@/shared/services/Helpers';
 
 const props = defineProps<{
   artwork: Artwork
@@ -49,10 +50,9 @@ watch(
     <div class="embla__viewport" ref="emblaRef">
       <div class="embla__container">
         <div v-for="(img, i) in props.artwork.images" :key="i" class="embla__slide">
-            <!-- :src="img.url" -->
           <img
-            src="https://picsum.photos/800"
-            :alt="props.title"
+            :src="img.url"
+            :alt="capitalizeFirstLetter(props.title)"
             class="w-full object-contain max-h-[500px] mx-auto"
           />
         </div>
