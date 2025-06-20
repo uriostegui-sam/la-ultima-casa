@@ -178,5 +178,6 @@
     "requestedNotAvailable": "el recurso solicitado no está disponible",
     "goToArtists": "ve al menú de artistas",
     "goToNews": "ve al menú de noticias",
-    "goToWorkshops": "ve al menú de talleres"
+    "goToWorkshops": "ve al menú de talleres",
+    "selectSkillsWorkshop": "selecciona las técnicas que serán utilizadas en el workshop"
   }

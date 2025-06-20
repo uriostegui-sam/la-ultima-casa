@@ -337,12 +337,12 @@ const handleSubmit = async () => {
       <!-- Skills -->
       <div>
         <label class="block font-semibold mb-1">{{
-          capitalizeFirstLetter(t('selectSkills'))
+          capitalizeFirstLetter(t('selectSkillsWorkshop'))
         }}</label>
         <MultiSelect
           v-model="currentWorkshopSkills"
           :options="skillOptions"
-          :placeholder="capitalizeFirstLetter(t('selectSkills'))"
+          :placeholder="capitalizeFirstLetter(t('selectSkillsWorkshop'))"
           class="w-full"
           option-label="label"
           option-value="value"
