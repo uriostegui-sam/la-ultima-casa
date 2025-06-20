@@ -22,6 +22,7 @@ class Workshop extends Model
         'price',
         'max_students',
         'cover_image_path',
+        'featured_position',
     ];
     protected $casts = [
         'title' => 'array',
@@ -56,5 +57,11 @@ class Workshop extends Model
                 $q->whereNull('end_date')
                     ->orWhere('end_date', '>=', Carbon::today());
             });
+    }
+
+    public function scopeFeatured(Builder $query): Builder
+    {
+        return $query->whereNotNull('featured_position')
+            ->orderBy('featured_position');
     }
 }
