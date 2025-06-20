@@ -22,7 +22,7 @@ const router = useRouter()
 const { t } = useI18n()
 const id = computed(() => Number(route.params.id))
 const newsAdminStore = useAdminNewsStore()
-const isEditMode = computed(() => !!id)
+const isEditMode = computed(() => !Number.isNaN(id.value))
 const currentNews = ref<News | null>(null)
 const news = ref<News | null>(null)
 
