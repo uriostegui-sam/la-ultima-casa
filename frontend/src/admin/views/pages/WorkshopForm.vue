@@ -36,7 +36,7 @@ const artistAdminStore = useAdminArtistStore()
 const authStore = useAuthStore()
 const isAdmin = ref(false)
 const artists = computed(() => artistAdminStore.artists)
-const isEditMode = computed(() => !!id)
+const isEditMode = computed(() => !Number.isNaN(id.value))
 const currentWorkshop = ref<Workshop | null>(null)
 const currentWorkshopSkills = ref<number[]>([])
 const workshop = ref<Workshop | null>(null)
@@ -156,6 +156,7 @@ const handleSubmit = async () => {
         ...basePayload,
         id: currentWorkshop.value.id,
       }
+      console.log(updatePayload)
       result = await workshopAdminStore.updateWorkshop(id.value, updatePayload)
       workshop.value = result
       currentWorkshop.value = JSON.parse(JSON.stringify(result))
@@ -163,7 +164,7 @@ const handleSubmit = async () => {
       const createPayload: WorkshopCreatePayload = {
         ...basePayload,
       }
-
+      console.log("create")
       result = await workshopAdminStore.createWorkshop(createPayload)
 
       if (result?.id) {
