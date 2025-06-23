@@ -5,7 +5,6 @@ services:
     image: nginx:alpine
     ports:
       - "80:80"
-      - "8080:8080"
     volumes:
       - ./backend:/var/www/backend
       - ./frontend:/var/www/frontend
@@ -46,6 +45,7 @@ services:
     build:
       context: .
       dockerfile: docker/php/Dockerfile
+      target: prod
     volumes:
       - ./backend:/var/www/backend
     env_file:
@@ -65,7 +65,7 @@ services:
       - /var/www/frontend/node_modules
     ports:
       - "5173:5173"
-    command: sh -c "npm install && npm run dev"
+    command: sh -c "npm run build"
     networks:
       - ultima-casa-network
 
