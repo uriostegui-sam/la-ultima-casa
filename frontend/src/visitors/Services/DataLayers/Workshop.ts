@@ -3,12 +3,7 @@ import axiosInstance from '@/shared/services/DataLayers/AxiosInstance'
 import { BaseService } from '@/shared/services/DataLayers/BaseService'
 import type {
   Workshop,
-  WorkshopCreatePayload,
-  WorkshopUpdatePayload,
 } from '@/shared/Interfaces/Workshop'
-import axios from 'axios'
-
-type WorkshopType = 'permanent' | 'temporary'
 
 class WorkshopService extends BaseService {
   constructor() {
@@ -20,8 +15,8 @@ class WorkshopService extends BaseService {
   }
   
   async getFeaturedWorkshops(): Promise<Workshop[]> {
-    const response = await axiosInstance.get<Workshop[]>(`${this.baseUrl}/featured`)
-    return response.data
+    const response = await axiosInstance.get<ApiResponse<Workshop[]>>(`${this.baseUrl}/featured`)
+    return response.data.data
   }
 }
 
