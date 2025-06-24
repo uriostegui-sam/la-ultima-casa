@@ -80,7 +80,7 @@ onBeforeUnmount(() => {
           @click="openModal(index)"
         >
           <img
-            :src="'http://localhost/storage/' + (getPrimaryImage(artwork) || artwork.images[0]?.path)"
+            :src="'https://estudiolaultimacasa/storage/' + (getPrimaryImage(artwork) || artwork.images[0]?.path)"
             class="w-full h-full object-cover"
             :alt="capitalizeFirstLetter(artwork.title)"
           />
