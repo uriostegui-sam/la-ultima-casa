@@ -22,11 +22,9 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 # Work directory
 WORKDIR /var/www/backend
 
-COPY backend/composer.* ./
-RUN composer install --no-dev --optimize-autoloader
+COPY backend/ ./
 
-# Copy the rest of the backend
-COPY backend/. .
+RUN composer install --no-dev --optimize-autoloader
 
 # Prepare Laravel for production
 RUN php artisan config:cache \
