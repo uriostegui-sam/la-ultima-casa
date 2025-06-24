@@ -45,7 +45,6 @@ services:
     build:
       context: .
       dockerfile: docker/php/Dockerfile
-      target: prod
     volumes:
       - ./backend:/var/www/backend
     env_file:
