@@ -106,7 +106,7 @@ onMounted(async () => {
     isFeatured.value = typeof workshop.value?.featured_position === 'number'
     featuredPosition.value = workshop.value?.featured_position ?? false
     profileImagePreview.value = workshop.value?.cover_image_path
-      ? `http://localhost/storage/${workshop.value?.cover_image_path}`
+      ? `https://estudiolaultimacasa/storage/${workshop.value?.cover_image_path}`
       : null
     currentWorkshop.value = JSON.parse(JSON.stringify(workshop.value))
 

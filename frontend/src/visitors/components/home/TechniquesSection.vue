@@ -29,7 +29,7 @@ onMounted(async () => {
             class="flex-1/4"
         >
             <div class="flex flex-col items-center">
-               <img class="lg:h-20 h-17 lg:w-20 w-17 rounded-full object-cover" :src="`http://localhost/storage/${skill.profile_image}`" :alt="current === Languages.English ? skill.name['en'] : skill.name['es']" />
+               <img class="lg:h-20 h-17 lg:w-20 w-17 rounded-full object-cover" :src="`https://estudiolaultimacasa/storage/${skill.profile_image}`" :alt="current === Languages.English ? skill.name['en'] : skill.name['es']" />
                <h3 class="text-center">{{ current === Languages.English ? capitalizeFirstLetter(skill.name['en']) : capitalizeFirstLetter(skill.name['es']) }}</h3>
             </div>
         </div>

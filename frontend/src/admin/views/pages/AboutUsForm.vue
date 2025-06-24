@@ -51,7 +51,7 @@ onMounted(async () => {
 
     aboutUs.value = aboutUsAdminStore.selectedAboutUs
     profileImagePreview.value = aboutUs.value?.cover_image
-      ? `http://localhost/storage/${aboutUs.value?.cover_image}`
+      ? `https://estudiolaultimacasa/storage/${aboutUs.value?.cover_image}`
       : null
     currentAboutUs.value = JSON.parse(JSON.stringify(aboutUs.value))
   } else {
