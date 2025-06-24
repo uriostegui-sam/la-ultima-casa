@@ -10,10 +10,10 @@ class NewsService extends BaseService {
 
   async getNews(params?: {
   }): Promise<News[]> {
-    const response = await axiosInstance.get<News[]>(
+    const response = await axiosInstance.get<ApiResponse<News[]>>(
       `${this.baseUrl}/published`
     )
-    return response.data
+    return response.data.data
   }
 }
 
