@@ -166,7 +166,7 @@ async function deleteSelectedWorkshops() {
         <Column :header="capitalizeFirstLetter(t('image'))">
           <template #body="slotProps">
             <img
-              :src="`http://localhost/storage/${slotProps.data.cover_image_path}`"
+              :src="`https://estudiolaultimacasa/storage/${slotProps.data.cover_image_path}`"
               :alt="slotProps.data.titleTranslated"
               class="rounded"
               style="width: 64px"

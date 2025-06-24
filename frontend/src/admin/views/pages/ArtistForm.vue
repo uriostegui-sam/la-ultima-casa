@@ -340,7 +340,7 @@ const handleSubmit = async () => {
         <div v-for="(artwork, index) in currentArtist.artworks" :key="index" class="">
           <p>{{ artwork.title }}</p>
           <Image
-            :src="'http://localhost/storage/' + (getPrimaryImage(artwork) || artwork.images[0]?.path)" 
+            :src="'https://estudiolaultimacasa/storage/' + (getPrimaryImage(artwork) || artwork.images[0]?.path)" 
             :alt="artwork.title"
             width="250"
           />
