@@ -132,7 +132,7 @@ async function deleteSelectedSkills() {
         <Column :header="capitalizeFirstLetter(t('image'))">
           <template #body="slotProps">
             <img
-              :src="`https://estudiolaultimacasa/storage/${slotProps.data.profile_image}`"
+              :src="`https://estudiolaultimacasa.com/storage/${slotProps.data.profile_image}`"
               :alt="slotProps.data.profile_image"
               class="rounded"
               style="width: 64px"

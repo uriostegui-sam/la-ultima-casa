@@ -39,14 +39,14 @@ const secondWorkshop = computed(
 )
 
 const photos = {
-  first: `https://estudiolaultimacasa/storage/${firstWorkshop.value?.cover_image_path}`,
-  second: `https://estudiolaultimacasa/storage/${secondWorkshop.value?.cover_image_path}`,
+  first: `https://estudiolaultimacasa.com/storage/${firstWorkshop.value?.cover_image_path}`,
+  second: `https://estudiolaultimacasa.com/storage/${secondWorkshop.value?.cover_image_path}`,
 }
 
 const imageSrc = computed(() => {
   if (props.first)
     return aboutUs.value
-      ? `https://estudiolaultimacasa/storage/${aboutUs.value.cover_image}`
+      ? `https://estudiolaultimacasa.com/storage/${aboutUs.value.cover_image}`
       : 'https://picsum.photos/301'
   return props.reverse ? photos.first : photos.second
 })

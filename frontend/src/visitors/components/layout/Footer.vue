@@ -50,14 +50,14 @@ const contactKeys = computed(() => [
             <div>
               <div class="flex justify-around mb-4">
                 <a
-                  href="https://www.facebook.com/estudiolaultimacasa/"
+                  href="https://www.facebook.com/estudiolaultimacasa.com/"
                   target="_blank"
                   rel="noopener"
                 >
                   <div class="facebook"></div>
                 </a>
                 <a
-                  href="https://www.instagram.com/estudiolaultimacasa/"
+                  href="https://www.instagram.com/estudiolaultimacasa.com/"
                   target="_blank"
                   rel="noopener"
                 >
