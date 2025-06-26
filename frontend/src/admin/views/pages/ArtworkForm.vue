@@ -303,7 +303,7 @@ const handleSubmit = async () => {
             :class="{ 'ring-2 ring-primary-500': image.is_primary }"
           >
             <img
-              :src="`https://estudiolaultimacasa/storage/${image.path}`"
+              :src="`https://estudiolaultimacasa.com/storage/${image.path}`"
               class="w-full h-40 object-cover"
               :alt="`Artwork image ${index + 1}`"
             />
