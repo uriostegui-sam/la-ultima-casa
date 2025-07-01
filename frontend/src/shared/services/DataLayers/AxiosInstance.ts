@@ -7,7 +7,7 @@ import type {
 } from 'axios'
 
 const axiosInstance: AxiosInstance = axios.create({
-  baseURL: '/api',
+  baseURL: import.meta.env.VITE_API_URL,
   withCredentials: true,
   headers: {
     'Accept': 'application/json',
@@ -33,7 +33,6 @@ axiosInstance.interceptors.request.use(
       config.headers.set('Content-Type', 'application/json');
     }
 
-    
     return config
   }
 )
