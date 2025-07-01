@@ -17,31 +17,32 @@ class ArtistSeeder extends Seeder
      */
     public function run(): void
     {
-        $carlos = User::factory()->create([
+	$carlos = User::create([
             'first_name' => 'Carlos',
             'last_name' => 'Pérez',
             'email' => 'carlos.perez@gmail.com',
             'email_verified_at' => now(),
             'password' => Hash::make('password'),
             'remember_token' => Str::random(10),
-            'role' => 'artist',
+            'role' => 'admin',
         ]);
 
-        Artist::factory()
-            ->for($carlos)
-            ->withSkills()
-            ->withArtworks(3)
-            ->create();
+        $artist = Artist::create([
+            'user_id' => $carlos->id,
+            'profile_image' => 'artists/images/carlos-profile.jpg',
+            'minibio' => [
+                'en' => 'Mexican visual artist and painter.',
+                'es' => 'Artista visual y pintor mexicano.',
+            ],
+            'bio' => [
+                'en' => 'Carlos has participated in numerous exhibitions...',
+                'es' => 'Carlos ha participado en numerosas exposiciones...',
+            ],
+            'social_links' => [
+                'instagram' => 'carlos_perez_art',
+            ],
+        ]);
 
-
-        Artist::factory()
-            ->count(9)
-            ->has(
-                Artwork::factory()
-                    ->count(3)
-                    ->withImages()
-            )
-            ->withSkills()
-            ->create();
+        $artist->skills()->attach([1, 2, 3]);
     }
 }
