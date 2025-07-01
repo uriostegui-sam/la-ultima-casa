@@ -24,10 +24,6 @@ class DatabaseSeeder extends Seeder
         $this->call([
             SkillSeeder::class,
             ArtistSeeder::class,
-            UserSeeder::class,
-            ArtworkSeeder::class,
-            NewsSeeder::class,
-            WorkshopSeeder::class,
             AboutUsSeeder::class,
         ]);
     }
