@@ -18,6 +18,7 @@ const emit = defineEmits<{
   (e: 'success', artist: Artist): void
 }>()
 
+const baseUrl = import.meta.env.VITE_STORAGE_URL
 const profileImageFile = ref<File | null>(null)
 const profileImagePreview = ref<string | null>(null)
 const toast = useToast()
@@ -340,7 +341,7 @@ const handleSubmit = async () => {
         <div v-for="(artwork, index) in currentArtist.artworks" :key="index" class="">
           <p>{{ artwork.title }}</p>
           <Image
-            :src="'http://localhost/storage/' + (getPrimaryImage(artwork) || artwork.images[0]?.path)" 
+            :src="`${baseUrl}/` + (getPrimaryImage(artwork) || artwork.images[0]?.path)" 
             :alt="artwork.title"
             width="250"
           />

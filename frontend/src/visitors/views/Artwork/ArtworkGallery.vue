@@ -9,6 +9,7 @@ import { useI18n } from 'vue-i18n'
 import { Languages, locale } from '@/shared/services/Translation';
 import InnerCarouselArtwork from './InnerCarouselArtwork.vue'
 
+const baseUrl = import.meta.env.VITE_STORAGE_URL
 const { t } = useI18n()
 const props = defineProps<{
   artist: string
@@ -80,7 +81,7 @@ onBeforeUnmount(() => {
           @click="openModal(index)"
         >
           <img
-            :src="'http://localhost/storage/' + (getPrimaryImage(artwork) || artwork.images[0]?.path)"
+            :src="`${baseUrl}/` + (getPrimaryImage(artwork) || artwork.images[0]?.path)"
             class="w-full h-full object-cover"
             :alt="capitalizeFirstLetter(artwork.title)"
           />

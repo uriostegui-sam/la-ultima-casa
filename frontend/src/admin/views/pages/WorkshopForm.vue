@@ -22,6 +22,7 @@ const emit = defineEmits<{
   (e: 'success', workshop: Workshop): void
 }>()
 
+const baseUrl = import.meta.env.VITE_STORAGE_URL
 const profileImageFile = ref<File | null>(null)
 const profileImagePreview = ref<string | null>(null)
 const toast = useToast()
@@ -106,7 +107,7 @@ onMounted(async () => {
     isFeatured.value = typeof workshop.value?.featured_position === 'number'
     featuredPosition.value = workshop.value?.featured_position ?? false
     profileImagePreview.value = workshop.value?.cover_image_path
-      ? `http://localhost/storage/${workshop.value?.cover_image_path}`
+      ? `${baseUrl}/${workshop.value?.cover_image_path}`
       : null
     currentWorkshop.value = JSON.parse(JSON.stringify(workshop.value))
 

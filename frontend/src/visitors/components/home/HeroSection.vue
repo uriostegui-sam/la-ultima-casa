@@ -18,6 +18,7 @@ const props = defineProps<{
   color?: string
 }>()
 
+const baseUrl = import.meta.env.VITE_STORAGE_URL
 const currentLang = locale
 const aboutUsStore = useAdminAboutUsStore()
 const workshopsStore = useWorkshopStore()
@@ -39,14 +40,14 @@ const secondWorkshop = computed(
 )
 
 const photos = {
-  first: `http://localhost/storage/${firstWorkshop.value?.cover_image_path}`,
-  second: `http://localhost/storage/${secondWorkshop.value?.cover_image_path}`,
+  first: `${baseUrl}/${firstWorkshop.value?.cover_image_path}`,
+  second: `${baseUrl}/${secondWorkshop.value?.cover_image_path}`,
 }
 
 const imageSrc = computed(() => {
   if (props.first)
     return aboutUs.value
-      ? `http://localhost/storage/${aboutUs.value.cover_image}`
+      ? `${baseUrl}/${aboutUs.value.cover_image}`
       : 'https://picsum.photos/301'
   return props.reverse ? photos.first : photos.second
 })

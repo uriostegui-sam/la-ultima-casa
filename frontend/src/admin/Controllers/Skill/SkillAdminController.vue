@@ -8,6 +8,7 @@ import { capitalizeFirstLetter } from '@/shared/services/Helpers'
 import { useI18n } from 'vue-i18n'
 import { Languages, locale } from '@/shared/services/Translation'
 
+const baseUrl = import.meta.env.VITE_STORAGE_URL
 const { t } = useI18n()
 const skillAdminStore = useAdminSkillStore()
 const currentLang = locale
@@ -132,7 +133,7 @@ async function deleteSelectedSkills() {
         <Column :header="capitalizeFirstLetter(t('image'))">
           <template #body="slotProps">
             <img
-              :src="`http://localhost/storage/${slotProps.data.profile_image}`"
+              :src="`${baseUrl}/${slotProps.data.profile_image}`"
               :alt="slotProps.data.profile_image"
               class="rounded"
               style="width: 64px"
