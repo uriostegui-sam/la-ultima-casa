@@ -15,6 +15,7 @@ const { t } = useI18n()
 const current = locale
 const workshopStore = useWorkshopStore()
 const activeFilter = ref('all')
+const baseUrl = import.meta.env.VITE_STORAGE_URL
 
 const workshopTransformed = computed(() => {
   if (activeFilter.value === 'all') {
@@ -45,7 +46,7 @@ onMounted(async () => {
         :key="index"
         :title="current === Languages.English ? workshop.title['en'] : workshop.title['es']"
         :description="current === Languages.English ? workshop.description['en'] : workshop.description['es']"
-        :image="workshop.cover_image_url"
+        :image="`${baseUrl}/${workshop.cover_image_path}`"
         :type="workshop.type"
         :id="`/workshops/${workshop.id}`"
       />

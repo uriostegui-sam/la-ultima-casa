@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import ActionButton from '@/visitors/components/ActionButton.vue'
-import { defineProps } from 'vue'
+import { computed, defineProps } from 'vue'
 
 const props = defineProps<{
   title?: string
@@ -9,6 +9,14 @@ const props = defineProps<{
   type?: string
   id?: string
 }>()
+
+const truncatedDescription = computed(() => {
+  if (!props.description) return ''
+
+  return props.description.length > 100 
+    ? props.description.substring(0, 100) + '...' 
+    : props.description
+});
 </script>
 
 <template>
@@ -22,18 +30,23 @@ const props = defineProps<{
           :alt="props.title"
           class="rounded-full w-full h-full object-cover"
         />
-        <div
-          class="absolute inset-0 bg-(--color-light-salmon) bg-opacity-30 opacity-0 group-hover:opacity-100 transition duration-300 flex items-center justify-center"
+        <router-link
+          v-if="props.id"
+          :to="props.id"
         >
-          <div class="img-hover"></div>
-        </div>
+          <div
+          class="absolute inset-0 bg-(--color-light-salmon) bg-opacity-30 opacity-0 group-hover:opacity-100 transition duration-300 flex items-center justify-center"
+          >
+            <div class="img-hover"></div>
+          </div>
+        </router-link>
       </div>
       <div class="flex-2/3 lg:flex-none">
         <h3 class="text-center font-bold md:text-lg/6 lg:py-3">
           {{ props.title }}
         </h3>
         <p class="text-center lg:pb-3 hidden lg:block">
-          {{ props.description }}
+          {{ truncatedDescription }}
         </p>
       </div>
       <ActionButton

@@ -19,6 +19,7 @@ const workshopStore = useWorkshopStore()
 const currentWorkshop = ref<Workshop | null>(null)
 const { t } = useI18n()
 const formattedDate = ref('')
+const baseUrl = import.meta.env.VITE_STORAGE_URL
 
 const skillsTransformed = computed(() => {
   if (!currentWorkshop.value?.skills) return ''
@@ -76,11 +77,11 @@ watch(locale, () => {
       :has-subtitle="true"
       :subtitle="skillsTransformed"
       :type="
-        currentWorkshop.cover_image_url === 'permanent'
+        currentWorkshop.type === 'permanent'
           ? 'typeOfWorkshopPerm'
           : 'typeOfWorkshopTemp'
       "
-      :cover-image="currentWorkshop.cover_image_url"
+      :cover-image="`${baseUrl}/${currentWorkshop.cover_image_path}`"
       :artist="capitalizeFirstLetter(currentWorkshop.artist?.name)"
       :date="capitalizeFirstLetter(formattedDate)"
       :price="currentWorkshop.price"

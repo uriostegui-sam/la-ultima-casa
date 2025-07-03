@@ -3,6 +3,11 @@ import type { Skill } from './Skill'
 
 type WorkshopType = 'permanent' | 'temporary'
 
+export type WorkshopPhotos = {
+  first: string | null;
+  second: string | null;
+}
+
 export interface Workshop {
   id: number
   artist_id: number
