@@ -14,6 +14,7 @@ const emit = defineEmits<{
   (e: 'success', skill: Skill): void
 }>()
 
+const baseUrl = import.meta.env.VITE_STORAGE_URL
 const profileImageFile = ref<File | null>(null)
 const profileImagePreview = ref<string | null>(null)
 const toast = useToast()
@@ -44,7 +45,7 @@ onMounted(async () => {
     await skillAdminStore.getSkill(id.value)
 
     skill.value = skillAdminStore.selectedSkill
-    profileImagePreview.value = skill.value?.profile_image ? `https://estudiolaultimacasa.com/storage/${skill.value?.profile_image}`  : null
+    profileImagePreview.value = skill.value?.profile_image ? `${baseUrl}/${skill.value?.profile_image}`  : null
     currentSkill.value = JSON.parse(JSON.stringify(skill.value))
 
   } else {

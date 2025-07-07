@@ -79,12 +79,12 @@ const noSocials = !props.facebook && !props.instagram && !props.website ? false 
           {{ props.date }}
         </p>
         <p>${{ props.price }} MXN</p>
-        <p>
+        <p class="whitespace-pre-line">
           {{ props.description }}
         </p>
       </div>
       <div v-if="!props.isWorkshop" class="lg:flex-3/5">
-        <p>
+        <p class="whitespace-pre-line">
           {{ props.description }}
         </p>
       </div>

@@ -33,6 +33,7 @@ axiosInstance.interceptors.request.use(
       config.headers.set('Content-Type', 'application/json');
     }
 
+    
     return config
   }
 )
@@ -51,4 +52,8 @@ axiosInstance.interceptors.response.use(
   }
 )
 
+<<<<<<< HEAD
 export default axiosInstance
+=======
+export default axiosInstance
+>>>>>>> develop

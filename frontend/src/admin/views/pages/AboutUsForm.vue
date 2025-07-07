@@ -21,6 +21,7 @@ const existingId = computed(() => {
   return Number(aboutUsAdminStore.aboutUs.length > 0 ? aboutUsAdminStore.aboutUs[0].id : null)
 })
 
+const baseUrl = import.meta.env.VITE_STORAGE_URL
 const profileImageFile = ref<File | null>(null)
 const profileImagePreview = ref<string | null>(null)
 const toast = useToast()
@@ -51,7 +52,7 @@ onMounted(async () => {
 
     aboutUs.value = aboutUsAdminStore.selectedAboutUs
     profileImagePreview.value = aboutUs.value?.cover_image
-      ? `https://estudiolaultimacasa.com/storage/${aboutUs.value?.cover_image}`
+      ? `${baseUrl}/${aboutUs.value?.cover_image}`
       : null
     currentAboutUs.value = JSON.parse(JSON.stringify(aboutUs.value))
   } else {

@@ -10,6 +10,7 @@ import type { AboutUs } from '@/shared/Interfaces/AboutUs'
 import { Languages, locale } from '@/shared/services/Translation'
 import LoadingComponent from '@/shared/components/LoadingComponent.vue'
 import { useWorkshopStore } from '@/shared/stores/WorkshopStore'
+import type { WorkshopPhotos } from '@/shared/Interfaces/Workshop'
 
 const { t } = useI18n()
 const props = defineProps<{
@@ -18,6 +19,7 @@ const props = defineProps<{
   color?: string
 }>()
 
+const baseUrl = import.meta.env.VITE_STORAGE_URL
 const currentLang = locale
 const aboutUsStore = useAdminAboutUsStore()
 const workshopsStore = useWorkshopStore()
@@ -38,17 +40,23 @@ const secondWorkshop = computed(
   () => workshopTransformed.value.find((w) => w.featured_position === 2) || null,
 )
 
-const photos = {
-  first: `https://estudiolaultimacasa.com/storage/${firstWorkshop.value?.cover_image_path}`,
-  second: `https://estudiolaultimacasa.com/storage/${secondWorkshop.value?.cover_image_path}`,
-}
+const photos = computed<WorkshopPhotos>(() => {
+  return {
+    first: firstWorkshop.value?.cover_image_path
+      ? `${baseUrl}/${firstWorkshop.value.cover_image_path}`
+      : 'https://picsum.photos/300',
+    second: secondWorkshop.value?.cover_image_path
+      ? `${baseUrl}/${secondWorkshop.value.cover_image_path}`
+      : 'https://picsum.photos/299',
+  };
+});
 
 const imageSrc = computed(() => {
   if (props.first)
     return aboutUs.value
-      ? `https://estudiolaultimacasa.com/storage/${aboutUs.value.cover_image}`
+      ? `${baseUrl}/${aboutUs.value.cover_image}`
       : 'https://picsum.photos/301'
-  return props.reverse ? photos.first : photos.second
+  return props.reverse ? photos.value.first : photos.value.second
 })
 
 const firstTitle = computed(() =>
@@ -128,7 +136,7 @@ onMounted(async () => {
         :class="!props.first && 'hidden lg:flex'"
       >
         <div v-if="aboutUs">
-          <img :src="imageSrc" alt="" class="w-full h-auto object-cover rounded-xl" />
+          <img v-if="imageSrc" :src="imageSrc" alt="" class="w-full h-auto object-cover rounded-xl" />
         </div>
         <div v-else>
           <LoadingComponent />
@@ -155,10 +163,10 @@ onMounted(async () => {
 
         <!-- Mobile image for non-first -->
         <div v-if="!props.first" class="flex-1 pt-5 lg:hidden">
-          <img :src="imageSrc" alt="" class="w-full h-auto object-cover rounded-xl" />
+          <img v-if="imageSrc" :src="imageSrc" alt="" class="w-full h-auto object-cover rounded-xl" />
         </div>
 
-        <p class="py-6 text-lg" v-html="description" />
+        <p class="py-6 text-lg whitespace-pre-line" v-html="description" />
 
         <div class="flex justify-end">
           <ActionButton :color="buttonColor" href="/workshops">

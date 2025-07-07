@@ -5,7 +5,7 @@ import { useSkillStore } from '@/shared/stores/SkillStore'
 import { onMounted, computed } from 'vue'
 
 const current = locale
-
+const baseUrl = import.meta.env.VITE_STORAGE_URLß
 const skillStore = useSkillStore()
 const skillTransformed = computed(() => {
   return skillStore.skills.map((skill) => ({
@@ -29,7 +29,7 @@ onMounted(async () => {
             class="flex-1/4"
         >
             <div class="flex flex-col items-center">
-               <img class="lg:h-20 h-17 lg:w-20 w-17 rounded-full object-cover" :src="`https://estudiolaultimacasa.com/storage/${skill.profile_image}`" :alt="current === Languages.English ? skill.name['en'] : skill.name['es']" />
+               <img class="lg:h-20 h-17 lg:w-20 w-17 rounded-full object-cover" :src="`${baseUrl}/${skill.profile_image}`" :alt="current === Languages.English ? skill.name['en'] : skill.name['es']" />
                <h3 class="text-center">{{ current === Languages.English ? capitalizeFirstLetter(skill.name['en']) : capitalizeFirstLetter(skill.name['es']) }}</h3>
             </div>
         </div>

@@ -8,6 +8,7 @@ import { capitalizeFirstLetter } from '@/shared/services/Helpers'
 import { useI18n } from 'vue-i18n'
 import { Languages, locale } from '@/shared/services/Translation'
 
+const baseUrl = import.meta.env.VITE_STORAGE_URL
 const { t } = useI18n()
 const workshopAdminStore = useAdminWorkshopStore()
 const currentLang = locale
@@ -166,7 +167,7 @@ async function deleteSelectedWorkshops() {
         <Column :header="capitalizeFirstLetter(t('image'))">
           <template #body="slotProps">
             <img
-              :src="`https://estudiolaultimacasa.com/storage/${slotProps.data.cover_image_path}`"
+              :src="`${baseUrl}/${slotProps.data.cover_image_path}`"
               :alt="slotProps.data.titleTranslated"
               class="rounded"
               style="width: 64px"
