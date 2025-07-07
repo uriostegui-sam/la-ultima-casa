@@ -52,8 +52,4 @@ axiosInstance.interceptors.response.use(
   }
 )
 
-<<<<<<< HEAD
 export default axiosInstance
-=======
-export default axiosInstance
->>>>>>> develop
