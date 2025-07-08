@@ -18,7 +18,7 @@ const props = defineProps<{
       {{ capitalizeFirstLetter($t(props.type)) }}
     </p>
     <h1
-      class="lg:text-4xl text-2xl font-bold text-(--color-salmon)"
+      class="md:text-4xl text-2xl font-bold text-(--color-salmon)"
     >
       {{ props.title }}
     </h1>

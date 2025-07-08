@@ -1,7 +1,5 @@
 <script setup lang="ts">
 import CourseCard from '@/visitors/components/CourseCard.vue'
-import Footer from '@/visitors/components/layout/Footer.vue'
-import Header from '@/visitors/components/layout/Header.vue'
 import Title from '@/visitors/components/Title.vue'
 import { capitalizeFirstLetter } from '@/shared/services/Helpers'
 import { Languages, locale } from '@/shared/services/Translation'
@@ -25,9 +23,8 @@ onMounted(async () => {
 </script>
 
 <template>
-  <Header />
   <Title :title="capitalizeFirstLetter($t('latestNews'))" />
-  <section class="lg:pb-15 lg:pt-5 px-10 mx-auto pb-8">
+  <section class="lg:pb-15 lg:pt-5 px-10 mx-auto pb-8 max-w-screen-2xl">
     <div class="flex flex-wrap gap-y-7 gap-x-20">
       <CourseCard
         v-for="(news, index) in newsTransformed"
@@ -39,7 +36,6 @@ onMounted(async () => {
       />
     </div>
   </section>
-  <Footer />
 </template>
 
 <style scoped></style>
