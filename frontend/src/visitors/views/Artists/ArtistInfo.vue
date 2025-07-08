@@ -8,8 +8,6 @@ import { capitalizeFirstLetter } from '@/shared/services/Helpers'
 import InfoComponent from '@/visitors/components/InfoComponent.vue'
 import type { TranslatedSkill } from '@/shared/Interfaces/Skill'
 import NewsCarousel from '../News/NewsCarousel.vue'
-import Footer from '@/visitors/components/layout/Footer.vue'
-import Header from '@/visitors/components/layout/Header.vue'
 import ArtworkGallery from '../Artwork/ArtworkGallery.vue'
 import LoadingComponent from '@/shared/components/LoadingComponent.vue'
 
@@ -40,7 +38,6 @@ onMounted(async() => {
 </script>
 
 <template>
-  <Header />
   <div v-if="currentArtist">
     <div>
       <InfoComponent
@@ -65,7 +62,6 @@ onMounted(async() => {
   </div>
   <div v-else><LoadingComponent /></div>
   <NewsCarousel />
-  <Footer />
 </template>
 
 <style scoped></style>

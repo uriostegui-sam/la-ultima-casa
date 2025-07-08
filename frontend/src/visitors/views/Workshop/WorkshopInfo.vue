@@ -9,8 +9,6 @@ import { capitalizeFirstLetter, formatDateRange } from '@/shared/services/Helper
 import InfoComponent from '@/visitors/components/InfoComponent.vue'
 import type { TranslatedSkill } from '@/shared/Interfaces/Skill'
 import NewsCarousel from '../News/NewsCarousel.vue'
-import Footer from '@/visitors/components/layout/Footer.vue'
-import Header from '@/visitors/components/layout/Header.vue'
 import LoadingComponent from '@/shared/components/LoadingComponent.vue'
 
 const currentLang = ref(locale)
@@ -65,7 +63,6 @@ watch(locale, () => {
 </script>
 
 <template>
-  <Header />
   <div v-if="currentWorkshop">
     <InfoComponent
       :is-workshop="true"
@@ -94,7 +91,6 @@ watch(locale, () => {
   </div>
   <div v-else><LoadingComponent /></div>
   <NewsCarousel />
-  <Footer />
 </template>
 
 <style scoped></style>

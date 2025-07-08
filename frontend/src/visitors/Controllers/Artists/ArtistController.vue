@@ -1,7 +1,5 @@
 <script setup lang="ts">
 import NewsCarousel from '@/visitors/views/News/NewsCarousel.vue'
-import Header from '@/visitors/components/layout/Header.vue'
-import Footer from '@/visitors/components/layout/Footer.vue'
 import { useI18n } from 'vue-i18n'
 import { Languages, locale } from '@/shared/services/Translation'
 import { useArtistStore } from '@/shared/stores/ArtistStore'
@@ -26,10 +24,9 @@ onMounted(async () => {
 </script>
 
 <template>
-  <Header />
   <Title :title="capitalizeFirstLetter($t('artists'))" />
-  <section class="lg:pb-15 lg:pt-5 px-10 mx-auto">
-    <div class="flex flex-wrap gap-y-7 lg:gap-x-20">
+  <section class="md:pb-15 md:pt-5 px-10 mx-auto max-w-screen-2xl">
+    <div class="flex flex-wrap gap-y-7 md:gap-x-20">
       <CourseCard
         v-for="(artist, index) in artistTransformed"
         :key="index"
@@ -41,7 +38,6 @@ onMounted(async () => {
     </div>
   </section>
   <NewsCarousel />
-  <Footer />
 </template>
 
 <style scoped></style>
