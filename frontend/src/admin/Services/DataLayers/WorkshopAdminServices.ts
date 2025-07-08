@@ -17,7 +17,6 @@ class WorkshopAdminService extends BaseService {
 
   async updateWorkshop(id: number, payload: WorkshopUpdatePayload): Promise<Workshop> {
     const formData = buildWorkshopFormData(payload, false);
-    console.log(formData)
     return await this.update<Workshop>(id, formData)
   }
 

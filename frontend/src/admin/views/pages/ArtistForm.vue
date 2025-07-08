@@ -96,7 +96,6 @@ onMounted(async () => {
     artist.value = artistAdminStore.selectedArtist
     profileImagePreview.value = artist.value?.profile_image_url ?? null
     currentArtist.value = JSON.parse(JSON.stringify(artist.value))
-console.log(currentArtist.value)
     currentArtistSkills.value = artist.value?.skills
       ? artist.value.skills.map((skill) => skill.id)
       : []
