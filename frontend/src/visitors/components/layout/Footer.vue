@@ -41,11 +41,11 @@ const contactKeys = computed(() => [
 </script>
 
 <template>
-  <div v-if="aboutUs">
+  <div v-if="aboutUs" class="mt-8">
     <footer class="bg-(--color-salmon)">
       <div class="mx-auto w-full max-w-screen-xl text-white px-6 lg:px-8">
         <div class="grid grid-cols-1 gap-8 py-6 md:grid-cols-3">
-          <div class="flex lg:flex-col items-center justify-between gap-4">
+          <div class="flex md:flex-col items-center gap-4 justify-between px-12 md:px-0">
             <Logo />
             <div>
               <div class="flex justify-around mb-4">
@@ -67,7 +67,7 @@ const contactKeys = computed(() => [
               <LanguageToggle />
             </div>
           </div>
-          <div>
+          <div class="px-12 md:px-0">
             <h2 class="mb-2 uppercase font-bold">{{ capitalizeFirstLetter($t('aboutUs')) }}</h2>
             <ul>
               <template v-for="item in aboutKeys" :key="item.key">
@@ -89,13 +89,13 @@ const contactKeys = computed(() => [
               </template>
             </ul>
           </div>
-          <div class="flex flex-col justify-between">
+          <div class="flex flex-col justify-between px-12 md:px-0">
             <h2 class="mb-2 uppercase font-bold">{{ capitalizeFirstLetter($t('comeMeetUs')) }}</h2>
             <p v-html="formattedAddress"></p>
-            <div v-html="aboutUs.address.map" class="pt-6 box-content w-3xl"></div>
+            <div v-html="aboutUs.address.map" class="pt-6 box-content"></div>
           </div>
         </div>
-        <div class="px-2 py-6 text-center">
+        <div class="px-2 pb-6 text-center">
           <span class=""><a href="#">SamyyUV ©</a> - 2025 </span>
         </div>
       </div>

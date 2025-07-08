@@ -15,7 +15,7 @@ defineProps<{
       <span class="sr-only">La Última Casa</span>
       <Logo_UC
         :class="[
-          header ? 'h-20 md:h-35' : 'h-35 md:h-45',
+          header ? 'h-20 md:h-25' : 'h-25 md:h-35',
           hero ? 'opacity-50' : '',
         ]"
       />

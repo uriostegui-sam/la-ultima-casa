@@ -157,7 +157,6 @@ const handleSubmit = async () => {
         ...basePayload,
         id: currentWorkshop.value.id,
       }
-      console.log(updatePayload)
       result = await workshopAdminStore.updateWorkshop(id.value, updatePayload)
       workshop.value = result
       currentWorkshop.value = JSON.parse(JSON.stringify(result))
@@ -165,7 +164,6 @@ const handleSubmit = async () => {
       const createPayload: WorkshopCreatePayload = {
         ...basePayload,
       }
-      console.log("create")
       result = await workshopAdminStore.createWorkshop(createPayload)
 
       if (result?.id) {

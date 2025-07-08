@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import Header from '@/visitors/components/layout/Header.vue'
-import Footer from '@/visitors/components/layout/Footer.vue'
 import Title from '@/visitors/components/Title.vue'
 import CourseCard from '@/visitors/components/CourseCard.vue'
 import MenuFilter from '@/visitors/components/MenuFilter.vue'
@@ -16,6 +14,8 @@ const current = locale
 const workshopStore = useWorkshopStore()
 const activeFilter = ref('all')
 const baseUrl = import.meta.env.VITE_STORAGE_URL
+const existsTemporary = ref(false)
+const existsPermanent = ref(false)
 
 const workshopTransformed = computed(() => {
   if (activeFilter.value === 'all') {
@@ -32,14 +32,22 @@ const workshopTransformed = computed(() => {
 
 onMounted(async () => {
   await workshopStore.getWorkshops({active:1})
+  
+  existsPermanent.value = workshopTransformed.value.some(
+    (workshop) => workshop.type === 'permanent'
+  )
+  existsTemporary.value = workshopTransformed.value.some(
+    (workshop) => workshop.type === 'temporary'
+  )
+
+  activeFilter.value = existsPermanent.value && existsTemporary.value ? 'all' : existsPermanent.value ? 'permanent' : existsTemporary.value ? 'temporary' : '';
 })
 </script>
 
-<template>
-  <Header />
+<template class="flex flex-col justify-between">
   <Title :title="capitalizeFirstLetter($t('workshops'))" />
-  <MenuFilter :active="activeFilter" @change="activeFilter = $event" class="mb-12" />
-  <section class="lg:pb-15 lg:pt-5 px-10 mx-auto">
+  <MenuFilter :active="activeFilter" :temporary="existsTemporary" :permanent="existsPermanent" @change="activeFilter = $event" class="mb-12" />
+  <section class="lg:pb-15 lg:pt-5 px-10 mx-auto max-w-screen-2xl">
     <div class="flex flex-wrap gap-y-7 gap-x-20">
       <CourseCard
         v-for="(workshop, index) in workshopTransformed"
@@ -53,7 +61,6 @@ onMounted(async () => {
     </div>
   </section>
   <NewsCarousel />
-  <Footer />
 </template>
 
 <style scoped></style>
