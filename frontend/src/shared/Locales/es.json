@@ -179,5 +179,22 @@
     "goToArtists": "ve al menú de artistas",
     "goToNews": "ve al menú de noticias",
     "goToWorkshops": "ve al menú de talleres",
-    "selectSkillsWorkshop": "selecciona las técnicas que serán utilizadas en el workshop"
+    "selectSkillsWorkshop": "selecciona las técnicas que serán utilizadas en el workshop",
+    "writeActualPassword": "escriba la contraseña contraseña",
+    "writeNewPassword": "escriba la nueva contraseña",
+    "writeNewPasswordAgain": "vuelva a escribir la nueva contraseña",
+    "actualPassword": "contraseña actual",
+    "newPassword": "nueva contraseña",
+    "newPasswordAgain": "nueva contraseña de nuevo",
+    "weakLabel": "débil",
+    "mediumLabel": "medio",
+    "strongLabel": "fuerte",
+    "modifyInArtistProfile": "para modificar el Nombre, Apellido o Email por favor dirígete a tu",
+    "profileArtist": "perfil de Artista",
+    "profileUser": "perfil de Usuario",
+    "modifyInUserProfile":  "para modificar su contraseña por favor dirígete a tu",
+    "saveUser": "guardar usuario",
+    "user": "usuarix",
+    "incorrectPassword": "la contraseña actual es incorrecta",
+    "successPassword": "contraseña actualizada correctamente"
   }

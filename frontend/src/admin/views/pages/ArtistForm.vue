@@ -13,6 +13,7 @@ import { showErrorToast, showSuccessToast } from '@/admin/Services/Helpers'
 import type { Artwork } from '@/shared/Interfaces/Artwork'
 import TitleForm from '@/admin/components/TitleForm.vue'
 import LoadingComponent from '@/shared/components/LoadingComponent.vue'
+import { useAuthStore } from '@/shared/stores/AuthStore'
 
 const emit = defineEmits<{
   (e: 'success', artist: Artist): void
@@ -25,6 +26,8 @@ const toast = useToast()
 const route = useRoute()
 const router = useRouter()
 const { t } = useI18n()
+const authStore = useAuthStore()
+const artistId = authStore.user?.artist?.id
 const id = computed(() => Number(route.params.id))
 const currentLang = locale
 const artistAdminStore = useAdminArtistStore()
@@ -36,7 +39,7 @@ const currentArtistSkills = ref<number[]>([])
 const artist = ref<Artist | null>(null)
 const displayConfirmation = ref(false)
 const artworkToDelete = ref<number | string | null>(null)
-
+const isOwnersProfile = computed(() => id.value === artistId)
 const skillOptions = computed(() =>
   skillAdminStore.skills.map((skill) => ({
     label: currentLang.value === Languages.English ? skill.name.en : skill.name.es,
@@ -268,14 +271,6 @@ const handleSubmit = async () => {
             class="w-full"
           />
         </div>
-        <div>
-          <label class="block font-semibold mb-1">{{ capitalizeFirstLetter(t('password')) }}</label>
-          <Password
-            v-model="currentArtist.user.password"
-            :placeholder="capitalizeFirstLetter(t('password'))"
-            class="w-full"
-          />
-        </div>
       </div>
 
       <!-- Social Links -->
@@ -314,8 +309,15 @@ const handleSubmit = async () => {
             class="w-full"
           />
         </div>
-      
       </div>
+
+      <template v-if="isOwnersProfile">
+        <label class="block font-semibold mb-3"> *{{ capitalizeFirstLetter(t('modifyInUserProfile')) }}
+          <router-link to="/admin/user" class="underline text-(--color-salmon) cursor-pointer">
+              <a href="">{{ capitalizeFirstLetter(t('profileUser')) }}</a>
+          </router-link>
+        </label>
+      </template>
 
       <!-- Submit -->
       <Button

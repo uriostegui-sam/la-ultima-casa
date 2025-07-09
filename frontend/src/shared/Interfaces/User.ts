@@ -14,3 +14,17 @@ export interface AuthState {
   user: User | null;
   token: string | null;
 }
+
+export interface UserPasswordUpdate {
+  id: number;
+  password: string;
+  newPassword: string;
+  newPassword_confirmation: string;
+}
+
+export interface UserPasswordUpdatePayload {
+  id: number;
+  password: string;
+  newPassword: string;
+  newPassword_confirmation: string;
+}

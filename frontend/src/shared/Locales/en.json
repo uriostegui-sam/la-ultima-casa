@@ -179,6 +179,23 @@
     "goToArtists": "go to the artists menu",
     "goToNews": "go to the news menu",
     "goToWorkshops": "go to the workshops menu",
-    "selectSkillsWorkshop": "select the skills that will be use in the workshop"
+    "selectSkillsWorkshop": "select the skills that will be use in the workshop",
+    "writeActualPassword": "enter your current password.",
+    "writeNewPassword": "enter your new password.",
+    "writeNewPasswordAgain": "please re-enter your new password.",
+    "actualPassword": "current password",
+    "newPassword": "new password",
+    "newPasswordAgain": "new password again",
+    "weakLabel": "weak",
+    "mediumLabel": "medium",
+    "strongLabel": "strong",
+    "modifyInArtistProfile": "to modify the Name, Last Name or Email please go to your",
+    "profileArtist": "artist Profile",
+    "profileUser": "user Profile",
+    "modifyInUserProfile": "to modify your password please go to your",
+    "saveUser": "save user",
+    "user": "user",
+    "incorrectPassword": "the current password is incorrect",
+    "successPassword": "password updated successfully"
   }
   
