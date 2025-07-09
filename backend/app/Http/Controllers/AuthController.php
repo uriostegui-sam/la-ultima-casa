@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
+use App\Http\Requests\UpdatePasswordRequest;
 use App\Models\User;
 use App\Services\AuthService;
 use App\Services\UserService;
@@ -12,6 +13,7 @@ use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
 {
@@ -55,6 +57,22 @@ class AuthController extends Controller
             ],
             'token' => $token->plainTextToken
         ]);
+    }
+
+    //update password
+    public function updatePassword(UpdatePasswordRequest $request){
+        $user = $request->user();
+
+        if(!Hash::check($request->password, $user->password)) {
+            throw ValidationException::withMessages([
+                'password' => ['incorrectPassword'],
+            ]);
+        }
+
+        $user->password = Hash::make($request->newPassword);
+        $user->save();
+
+        return response()->json(['message' => 'successPassword']);
     }
 
     // Google Auth
