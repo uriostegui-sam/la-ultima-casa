@@ -5,7 +5,7 @@ import { useSkillStore } from '@/shared/stores/SkillStore'
 import { onMounted, computed } from 'vue'
 
 const current = locale
-const baseUrl = import.meta.env.VITE_STORAGE_URLß
+const baseUrl = import.meta.env.VITE_STORAGE_URL
 const skillStore = useSkillStore()
 const skillTransformed = computed(() => {
   return skillStore.skills.map((skill) => ({
