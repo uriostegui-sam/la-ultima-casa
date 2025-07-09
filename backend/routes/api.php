@@ -57,6 +57,7 @@ Route::prefix('auth')->middleware('throttle:api')->group(function () {
                 'artist_id' => $user->artist?->id,
             ]);
         });
+        Route::post('/update-password', [AuthController::class, 'updatePassword']);
     });
 });
 
