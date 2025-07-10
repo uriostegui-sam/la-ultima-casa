@@ -75,6 +75,21 @@ class AuthController extends Controller
         return response()->json(['message' => 'successPassword']);
     }
 
+    //reset password
+    public function resetPassword(Request $request) {
+        $user = User::findOrFail($request->id);
+        
+        $temporaryPassword = explode("@",$user->email)[0] . date("Y");
+        $user->password = Hash::make($temporaryPassword);
+        // $user->must_change_password = true;
+        $user->save();
+
+        return response()->json([
+            'message' => 'resetPassword',
+            'temporary_password' => $temporaryPassword
+        ]);
+    }
+
     // Google Auth
     public function googleAuth()
     {
