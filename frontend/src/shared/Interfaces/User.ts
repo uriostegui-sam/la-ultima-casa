@@ -28,3 +28,8 @@ export interface UserPasswordUpdatePayload {
   newPassword: string;
   newPassword_confirmation: string;
 }
+
+export interface PasswordReset {
+  id: number;
+  role: 'artist' | 'admin' | undefined;
+}

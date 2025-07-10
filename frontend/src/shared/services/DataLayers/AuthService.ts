@@ -1,7 +1,8 @@
 import axios from 'axios';
-import type { UserPasswordUpdate } from '@/shared/Interfaces/User';
+import axiosInstance from './AxiosInstance'
+import type { PasswordReset, UserPasswordUpdate } from '@/shared/Interfaces/User';
 
-export default (axiosInstance = axios) => ({
+export default {
   async getCsrfCookie(): Promise<void> {
     await axios.get('/sanctum/csrf-cookie', {
       withCredentials: true
@@ -22,4 +23,13 @@ export default (axiosInstance = axios) => ({
       )
       return reponse.data
   },
-})
+
+    async resetPassword(payload: PasswordReset): Promise<PasswordReset> {
+    console.log("reset")
+    const reponse = await axiosInstance.post<PasswordReset>(
+      '/auth/reset-password',
+      payload
+    )
+    return reponse.data
+  }
+}

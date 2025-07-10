@@ -196,5 +196,8 @@
     "saveUser": "guardar usuario",
     "user": "usuarix",
     "incorrectPassword": "la contraseña actual es incorrecta",
-    "successPassword": "contraseña actualizada correctamente"
+    "successPassword": "contraseña actualizada correctamente",
+    "resetPassword":"restablecer contraseña",
+    "resetPasswordSuccess":"restablecimiento de contraseña exitoso",
+    "resetPasswordError":"hubo un error al restablecer de contraseña"
   }

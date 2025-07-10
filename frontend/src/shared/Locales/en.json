@@ -196,6 +196,10 @@
     "saveUser": "save user",
     "user": "user",
     "incorrectPassword": "the current password is incorrect",
-    "successPassword": "password updated successfully"
+    "successPassword": "password updated successfully",
+    "errorSavingPassword": "there was an error updating the password",
+    "resetPassword":"reset password",
+    "resetPasswordSuccess":"password reset successfully",
+    "resetPasswordError":"there was an error resetting the password"
   }
   

@@ -60,9 +60,9 @@ const handleSubmit = async () => {
     }
 
     emit('success', result)
-    showSuccessToast(toast, t, 'userSavedSuccessfully', 3000)
+    showSuccessToast(toast, t, 'successPassword', 3000)
   } catch (err: unknown) {
-    showErrorToast(toast, t, err, 'errorSavingUser')
+    showErrorToast(toast, t, err, 'errorSavingPassword')
   }
 }
 
