@@ -199,7 +199,15 @@
     "successPassword": "password updated successfully",
     "errorSavingPassword": "there was an error updating the password",
     "resetPassword":"reset password",
-    "resetPasswordSuccess":"password reset successfully",
-    "resetPasswordError":"there was an error resetting the password"
+    "resetPasswordSuccess":"password reset successful",
+    "resetPasswordError":"there was an error resetting the password",
+    "errorNotAuthorized": "you are not authorized to perform this action",
+    "resetTokenCreated": "password reset token created successfully",
+    "resetTokenError": "there was an error creating the password reset token",
+    "invalidToken": "invalid or expired token",
+    "sendToken": "send reset token to the artist to reset their password",
+    "writeToken": "write the token",
+    "iRememberPassword": "I remember my password",
+    "askToken": "forgot your password? Ask for a reset token"
   }
   

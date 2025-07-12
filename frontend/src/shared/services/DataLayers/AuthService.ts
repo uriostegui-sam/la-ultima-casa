@@ -1,6 +1,6 @@
 import axios from 'axios';
 import axiosInstance from './AxiosInstance'
-import type { PasswordReset, UserPasswordUpdate } from '@/shared/Interfaces/User';
+import type { PasswordReset, PasswordResetPayload, UserPasswordUpdate } from '@/shared/Interfaces/User';
 
 export default {
   async getCsrfCookie(): Promise<void> {
@@ -24,9 +24,16 @@ export default {
       return reponse.data
   },
 
-    async resetPassword(payload: PasswordReset): Promise<PasswordReset> {
-    console.log("reset")
+  async generateResetToken(payload: PasswordReset): Promise<PasswordReset> {
     const reponse = await axiosInstance.post<PasswordReset>(
+      '/auth/generate-reset-token',
+      payload
+    )
+    return reponse.data
+  },
+
+  async resetPasswordWToken(payload: PasswordResetPayload): Promise<PasswordResetPayload> {
+    const reponse = await axiosInstance.post<PasswordResetPayload>(
       '/auth/reset-password',
       payload
     )

@@ -31,5 +31,12 @@ export interface UserPasswordUpdatePayload {
 
 export interface PasswordReset {
   id: number;
-  role: 'artist' | 'admin' | undefined;
+  id_admin: number;
+  token: string;
+}
+
+export interface PasswordResetPayload {
+  token: string;
+  new_password: string;
+  new_password_confirmation: string;
 }

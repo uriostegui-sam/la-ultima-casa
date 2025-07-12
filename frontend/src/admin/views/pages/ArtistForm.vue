@@ -45,6 +45,7 @@ const artist = ref<Artist | null>(null)
 const displayConfirmation = ref(false)
 const artworkToDelete = ref<number | string | null>(null)
 const isOwnersProfile = computed(() => id.value === artistId)
+const token = ref<string | null>(null)
 const skillOptions = computed(() =>
   skillAdminStore.skills.map((skill) => ({
     label: currentLang.value === Languages.English ? skill.name.en : skill.name.es,
@@ -91,17 +92,23 @@ const removeArtwork = (id: string | number) => {
   }
 }
 
-const resetPassword = async () => {
+const generateResetToken = async () => {
   if (!currentArtist.value) return
-
+  if (!authStore.isAdmin) {
+    showErrorToast(toast, t, 'notAuthorized', 'errorNotAuthorized')
+    return
+  }
+  
   try {
     const payload: PasswordReset = {
       id: currentArtist.value.user_id,
-      role: authStore.user?.role,
+      id_admin: authStore.user?.id as number ?? 0,
+      token: '',
     }
     let result: PasswordReset
 
-    result = await AuthService.resetPassword(payload)
+    result = await AuthService.generateResetToken(payload)
+    token.value = result.token
 
     emit('success', result)
     showSuccessToast(toast, t, 'artistSavedSuccessfully', 3000)
@@ -184,14 +191,17 @@ const handleSubmit = async () => {
 <template>
   <TitleForm title="artist" :isCreateMode="!isEditMode" />
   <div v-if="currentArtist" class="card">
-    <div v-if="isAdmin">
+    <div v-if="isAdmin" class="mb-5">
       <Button
       :label="capitalizeFirstLetter(t('resetPassword'))"
-      @click="resetPassword"
+      @click="generateResetToken"
       class="w-full md:w-auto"
       severity="warn"
       variant="outlined"
       />
+      <div v-if="token" class="mt-2">
+        <p>{{ capitalizeFirstLetter(t('sendToken')) }}: <span class="font-bold">{{ token }}</span></p>
+      </div>
     </div>
     <form @submit.prevent="handleSubmit" class="space-y-6">
       <!-- Profile Image Upload -->

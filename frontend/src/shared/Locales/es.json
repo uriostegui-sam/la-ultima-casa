@@ -60,7 +60,7 @@
     "delete": "eliminar",
     "showingArtists": "mostrando del {first} al {last} de {totalRecords} artistas",
     "manageArtist": "gestionar artistas",
-    "welcomeTo": "welcome to",
+    "welcomeTo": "bienvenido a",
     "signInCont": "sign in to continue",
     "email": "email",
     "password": "password",
@@ -199,5 +199,11 @@
     "successPassword": "contraseña actualizada correctamente",
     "resetPassword":"restablecer contraseña",
     "resetPasswordSuccess":"restablecimiento de contraseña exitoso",
-    "resetPasswordError":"hubo un error al restablecer de contraseña"
+    "resetPasswordError":"hubo un error al restablecer de contraseña",
+    "errorNotAuthorized": "no estás autorizado para realizar esta acción",
+    "invalidToken": "token inválido o expirado",
+    "sendToken": "envía este token al artista para que pueda restablecer su contraseña",
+    "writeToken": "escribe el token",
+    "iRememberPassword": "recuerdo mi contraseña",
+    "askToken": "¿Olvidaste tu contraseña? Pide un token de restablecimiento"
   }
