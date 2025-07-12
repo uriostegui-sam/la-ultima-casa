@@ -58,7 +58,8 @@ Route::prefix('auth')->middleware('throttle:api')->group(function () {
             ]);
         });
         Route::post('/update-password', [AuthController::class, 'updatePassword']);
-        Route::post('/reset-password', [AuthController::class, 'resetPassword']);
+        Route::post('/reset-password', [AuthController::class, 'resetPasswordWithToken']);
+        Route::post('/generate-reset-token', [AuthController::class, 'generateResetToken']);
     });
 });
 
