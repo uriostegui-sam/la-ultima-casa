@@ -7,6 +7,12 @@ import { useI18n } from 'vue-i18n'
 import Logo from '@/visitors/components/Logo.vue'
 import AuthService from '@/shared/services/DataLayers/AuthService'
 import type { PasswordResetPayload } from '@/shared/Interfaces/User'
+import { useToast } from 'primevue/usetoast'
+import { showErrorToast, showSuccessToast } from '@/admin/Services/Helpers'
+
+const emit = defineEmits<{
+  (e: 'success', passwordReset: PasswordResetPayload): void
+}>()
 
 const { t } = useI18n()
 const router = useRouter()
@@ -15,6 +21,7 @@ const credentials = ref({
   password: '',
   rememberMe: false,
 })
+const toast = useToast()
 const authStore = useAuthStore()
 const loading = ref(false)
 const error = ref('')
@@ -36,17 +43,22 @@ async function handleResetPassword() {
       new_password: currentReset.value.new_password,
       new_password_confirmation: currentReset.value.new_password_confirmation,
     }
+    let result: PasswordResetPayload
+
     loading.value = true
     error.value = ''
 
-    await AuthService.resetPasswordWToken(payload)
-    error.value = t('passwordResetEmailSent')
+    result = await AuthService.resetPasswordWToken(payload)
+    emit('success', result)
+    showSuccessToast(toast, t, 'resetPasswordSuccess', 3000)
+    isPasswordForgotten.value = false
   } catch (err: any) {
-    error.value = err.message || t('errorSendingResetEmail')
+    showErrorToast(toast, t, err, 'resetPasswordError')
   } finally {
     loading.value = false
   }
 }
+
 async function handleLogin() {
   try {
     loading.value = true

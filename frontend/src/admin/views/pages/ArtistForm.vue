@@ -111,9 +111,9 @@ const generateResetToken = async () => {
     token.value = result.token
 
     emit('success', result)
-    showSuccessToast(toast, t, 'artistSavedSuccessfully', 3000)
+    showSuccessToast(toast, t, 'resetPasswordSuccess', 3000)
   } catch (err: unknown) {
-    showErrorToast(toast, t, err, 'errorSavingArtist')
+    showErrorToast(toast, t, err, 'resetPasswordError')
   }
 }
 

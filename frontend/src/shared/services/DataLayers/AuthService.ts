@@ -34,7 +34,7 @@ export default {
 
   async resetPasswordWToken(payload: PasswordResetPayload): Promise<PasswordResetPayload> {
     const reponse = await axiosInstance.post<PasswordResetPayload>(
-      '/auth/reset-password',
+      '/reset-password',
       payload
     )
     return reponse.data

@@ -208,6 +208,7 @@
     "sendToken": "send reset token to the artist to reset their password",
     "writeToken": "write the token",
     "iRememberPassword": "I remember my password",
-    "askToken": "forgot your password? Ask for a reset token"
+    "askToken": "forgot your password? Ask for a reset token",
+    "Unauthenticated": "Unauthenticated"
   }
   
