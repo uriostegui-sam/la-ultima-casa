@@ -79,8 +79,8 @@ const firstDescription = computed(() =>
 
 const secondDescription = computed(() =>
   currentLang.value === Languages.English
-    ? secondWorkshop.value?.title?.en
-    : secondWorkshop.value?.title?.es,
+    ? secondWorkshop.value?.description?.en
+    : secondWorkshop.value?.description?.es,
 )
 
 const aboutUsDescription = computed(() => {

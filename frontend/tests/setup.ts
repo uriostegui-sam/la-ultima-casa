@@ -3,7 +3,7 @@ import type { AxiosInstance } from 'axios'
 
 const setupTestEnvironment = () => {
   // Auth store mock
-  vi.mock('@/stores/AuthStore', () => ({
+  vi.mock('@/shared/stores/AuthStore', () => ({
     useAuthStore: () => ({
       token: 'test-token',
       logout: vi.fn(),
@@ -11,7 +11,7 @@ const setupTestEnvironment = () => {
   }))
 
   // Axios instance mock - return a fresh mock for each test
-  vi.mock('@/Services/DataLayers/AxiosInstance', () => {
+  vi.mock('@/shared/services/DataLayers/AxiosInstance', () => {
     const mockAxios: Partial<AxiosInstance> = {
       post: vi.fn(),
       get: vi.fn(),
@@ -30,6 +30,6 @@ const setupTestEnvironment = () => {
 setupTestEnvironment()
 
 export const getMockAxiosInstance = async () => {
-  const { default: axiosInstance } = await import('../src/Services/DataLayers/AxiosInstance')
+  const { default: axiosInstance } = await import('../src/shared/services/DataLayers/AxiosInstance')
   return axiosInstance
 }

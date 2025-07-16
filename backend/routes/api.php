@@ -34,6 +34,7 @@ Route::middleware('api')->group(function () {
     Route::apiResource('aboutUs', AboutUsController::class)
         ->only(['index', 'show'])
         ->parameters(['aboutUs' => 'aboutUs']);
+    Route::post('/reset-password', [AuthController::class, 'resetPasswordWithToken']);
 });
 
 // Authentication routes
@@ -57,6 +58,8 @@ Route::prefix('auth')->middleware('throttle:api')->group(function () {
                 'artist_id' => $user->artist?->id,
             ]);
         });
+        Route::post('/update-password', [AuthController::class, 'updatePassword']);
+        Route::post('/generate-reset-token', [AuthController::class, 'generateResetToken']);
     });
 });
 
