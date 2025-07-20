@@ -216,4 +216,11 @@ class SkillController extends Controller
         $this->skillService->deleteSkill($skill);
         return response()->noContent();
     }
+
+    public function getPublishedSkills()
+    {
+        $skills = Skill::where('published', true)->get();
+        
+        return SkillResource::collection($skills);
+    }
 }

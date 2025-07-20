@@ -23,6 +23,7 @@ class SkillService
         $skill = Skill::create([
             'profile_image' => $data['profile_image'] ?? null,
             'name' => $data['name'],
+            'published' => $data['published'] ?? false,
         ]);
 
         return $skill;
