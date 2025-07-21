@@ -15,6 +15,7 @@ const skillTransformed = computed(() => {
 
 onMounted(async () => {
   await skillStore.getSkills()
+  console.log('Skills loaded:', skillStore.skills)
 })
 </script>
 

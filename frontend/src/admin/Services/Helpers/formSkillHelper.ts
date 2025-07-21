@@ -18,6 +18,10 @@ export function buildSkillFormData(
     formData.append('profile_image', payload.profile_image);
   }
 
+  if (typeof payload.published === 'boolean') {
+    formData.append('published', payload.published ? '1' : '0');
+  }  
+
   if (!isCreate) {
     formData.append('_method', 'PUT')
   }
