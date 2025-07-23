@@ -62,6 +62,9 @@ jobs:
         run: |
           composer install --no-dev --optimize-autoloader
 
+      - name: Copy .env example
+        run: cp backend/.env.example backend/.env
+        
       - name: Setup Laravel cache & link
         working-directory: ./backend
         run: |
