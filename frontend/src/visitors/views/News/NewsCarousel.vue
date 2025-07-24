@@ -4,8 +4,8 @@ import ActionButton from '@/visitors/components/ActionButton.vue'
 import { ref, onMounted, computed } from 'vue'
 import { useNewsStore } from '@/shared/stores/NewsStore'
 import { useI18n } from 'vue-i18n'
-import { Languages, locale } from '@/shared/services/Translation'
-import { capitalizeFirstLetter } from '@/shared/services/Helpers'
+import { locale } from '@/shared/services/Translation'
+import { capitalizeFirstLetter, choseCurrentLanguage } from '@/shared/services/Helpers'
 import NewsCard from './NewsCard.vue'
 
 const { t } = useI18n()
@@ -98,8 +98,8 @@ onMounted(() => {
             :class="{ 'blurred-slide': index === peekedIndex }"
           >
             <NewsCard
-              :title="current === Languages.English ? newsItem.title['en'] : newsItem.title['es']"
-              :description="current === Languages.English ? newsItem.content['en'] : newsItem.content['es']"
+              :title="choseCurrentLanguage(news.title, current)"
+              :description="choseCurrentLanguage(news.content, current)"
               :image="newsItem.image_url"
               :date="newsItem.created_at"
             />

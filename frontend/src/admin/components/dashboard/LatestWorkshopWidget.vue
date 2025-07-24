@@ -1,8 +1,8 @@
 <script setup>
 import { useAdminWorkshopStore } from '@/admin/stores/WorkshopAdminStore';
-import { capitalizeFirstLetter } from '@/shared/services/Helpers';
-import { Languages, locale } from '@/shared/services/Translation';
-import { computed, onMounted, ref } from 'vue';
+import { capitalizeFirstLetter, choseCurrentLanguage } from '@/shared/services/Helpers';
+import { locale } from '@/shared/services/Translation';
+import { computed, onMounted } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n()
@@ -31,7 +31,7 @@ onMounted(async () => {
             </Column>
             <Column field="title" :header="capitalizeFirstLetter(t('title'))" :sortable="true" style="width: 35%">
                 <template #body="slotProps">
-                    {{ current === Languages.English ? slotProps.data.title['en'] : slotProps.data.title['es'] }}
+                    {{ choseCurrentLanguage(slotProps.data.title, current) }}
                 </template>
             </Column>
             <Column field="type" :header="capitalizeFirstLetter(t('type'))" :sortable="true" style="width: 35%">

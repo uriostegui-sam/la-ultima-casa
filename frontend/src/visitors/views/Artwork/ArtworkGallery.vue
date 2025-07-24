@@ -4,9 +4,9 @@ import emblaCarouselVue from 'embla-carousel-vue'
 import { nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import ChrevronSolid from '@/visitors/assets/Icons/chevron-solid.svg'
 import XSolid from '@/visitors/assets/Icons/xmark-solid.svg'
-import { capitalizeFirstLetter } from '@/shared/services/Helpers';
+import { capitalizeFirstLetter, choseCurrentLanguage } from '@/shared/services/Helpers';
 import { useI18n } from 'vue-i18n'
-import { Languages, locale } from '@/shared/services/Translation';
+import { locale } from '@/shared/services/Translation';
 import InnerCarouselArtwork from './InnerCarouselArtwork.vue'
 
 const baseUrl = import.meta.env.VITE_STORAGE_URL
@@ -116,7 +116,7 @@ onBeforeUnmount(() => {
                 <div class="flex-1">
                   <p class="text-(--color-salmon) md:text-xl text-lg">{{ props.artist }}</p>
                   <h3 class="font-title md:text-5xl text-2xl py-2">{{ capitalizeFirstLetter(artwork.title) }}</h3>
-                  <p class="pb-6">{{ current === Languages.English ? artwork.description['en'] : artwork.description['es'] }}</p>
+                  <p class="pb-6">{{ choseCurrentLanguage(artwork.description, current) }}</p>
                   <a class="font-bold text-(--color-salmon)">{{ capitalizeFirstLetter($t('knowMoreOf')) }} {{ props.artist }}</a>
                 </div>
               </div>

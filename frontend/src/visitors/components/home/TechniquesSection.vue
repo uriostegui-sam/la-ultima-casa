@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { capitalizeFirstLetter } from '@/shared/services/Helpers'
+import { capitalizeFirstLetter, choseCurrentLanguage } from '@/shared/services/Helpers'
 import { Languages, locale } from '@/shared/services/Translation'
 import { useSkillStore } from '@/shared/stores/SkillStore'
 import { onMounted, computed } from 'vue'
@@ -15,7 +15,6 @@ const skillTransformed = computed(() => {
 
 onMounted(async () => {
   await skillStore.getSkills()
-  console.log('Skills loaded:', skillStore.skills)
 })
 </script>
 
@@ -30,8 +29,8 @@ onMounted(async () => {
             class="flex-1/4"
         >
             <div class="flex flex-col items-center">
-               <img class="lg:h-30 h-17 lg:w-30 w-17 rounded-full object-cover" :src="`${baseUrl}/${skill.profile_image}`" :alt="current === Languages.English ? skill.name['en'] : skill.name['es']" />
-               <h3 class="text-center pt-2">{{ current === Languages.English ? capitalizeFirstLetter(skill.name['en']) : capitalizeFirstLetter(skill.name['es']) }}</h3>
+               <img class="lg:h-30 h-17 lg:w-30 w-17 rounded-full object-cover" :src="`${baseUrl}/${skill.profile_image}`" :alt="'image of ' + choseCurrentLanguage(skill.name, current)" />
+               <h3 class="text-center pt-2">{{ choseCurrentLanguage(skill.name, current) }}</h3>
             </div>
         </div>
       </div>

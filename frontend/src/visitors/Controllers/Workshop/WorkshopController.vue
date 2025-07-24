@@ -2,11 +2,11 @@
 import Title from '@/visitors/components/Title.vue'
 import CourseCard from '@/visitors/components/CourseCard.vue'
 import MenuFilter from '@/visitors/components/MenuFilter.vue'
-import { Languages, locale } from '@/shared/services/Translation'
+import { locale } from '@/shared/services/Translation'
 import { useWorkshopStore } from '@/shared/stores/WorkshopStore'
 import { onMounted, computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { capitalizeFirstLetter } from '@/shared/services/Helpers'
+import { capitalizeFirstLetter, choseCurrentLanguage } from '@/shared/services/Helpers'
 import NewsCarousel from '@/visitors/views/News/NewsCarousel.vue'
 
 const { t } = useI18n()
@@ -52,8 +52,8 @@ onMounted(async () => {
       <CourseCard
         v-for="(workshop, index) in workshopTransformed"
         :key="index"
-        :title="current === Languages.English ? workshop.title['en'] : workshop.title['es']"
-        :description="current === Languages.English ? workshop.description['en'] : workshop.description['es']"
+        :title="choseCurrentLanguage(workshop.title, current)"
+        :description="choseCurrentLanguage(workshop.description, current)"
         :image="`${baseUrl}/${workshop.cover_image_path}`"
         :type="workshop.type"
         :id="`/workshops/${workshop.id}`"
