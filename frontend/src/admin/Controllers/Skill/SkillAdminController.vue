@@ -129,6 +129,7 @@ async function deleteSelectedSkills() {
 
         <Column selectionMode="multiple" style="width: 3rem" :exportable="false"></Column>
         <Column field="id" header="ID" sortable style="min-width: 2rem"></Column>
+        <Column field="published" :header="capitalizeFirstLetter(t('published'))" sortable style="min-width: 2rem"></Column>
         <Column field="nameTrans" :header="capitalizeFirstLetter(t('name'))" sortable style="min-width: 16rem"></Column>
         <Column :header="capitalizeFirstLetter(t('image'))">
           <template #body="slotProps">

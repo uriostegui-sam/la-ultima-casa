@@ -4,14 +4,14 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateSkillRequest extends FormRequest
+class UpdatePasswordRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return $this->user() && $this->user()->isAdmin();
+        return true;
     }
 
     /**
@@ -22,10 +22,9 @@ class UpdateSkillRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name.en' => 'sometimes|string|max:255',
-            'name.es' => 'sometimes|string|max:255',
-            'profile_image' => 'sometimes|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'published' => 'sometimes|boolean',
+            'password' => 'required|string',
+            'newPassword' => 'required|string|min:8|confirmed',
+            'newPassword_confirmation' => 'required|string',
         ];
     }
 }

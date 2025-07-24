@@ -13,10 +13,15 @@ import { showErrorToast, showSuccessToast } from '@/admin/Services/Helpers'
 import type { Artwork } from '@/shared/Interfaces/Artwork'
 import TitleForm from '@/admin/components/TitleForm.vue'
 import LoadingComponent from '@/shared/components/LoadingComponent.vue'
+import { useAuthStore } from '@/shared/stores/AuthStore'
+import AuthService from '@/shared/services/DataLayers/AuthService'
+import type { PasswordReset } from '@/shared/Interfaces/User'
 
 const emit = defineEmits<{
   (e: 'success', artist: Artist): void
+  (e: 'success', passwordReset: PasswordReset): void
 }>()
+
 
 const baseUrl = import.meta.env.VITE_STORAGE_URL
 const profileImageFile = ref<File | null>(null)
@@ -25,6 +30,9 @@ const toast = useToast()
 const route = useRoute()
 const router = useRouter()
 const { t } = useI18n()
+const authStore = useAuthStore()
+const artistId = authStore.user?.artist?.id
+const isAdmin = computed(() => authStore.isAdmin)
 const id = computed(() => Number(route.params.id))
 const currentLang = locale
 const artistAdminStore = useAdminArtistStore()
@@ -36,7 +44,8 @@ const currentArtistSkills = ref<number[]>([])
 const artist = ref<Artist | null>(null)
 const displayConfirmation = ref(false)
 const artworkToDelete = ref<number | string | null>(null)
-
+const isOwnersProfile = computed(() => id.value === artistId)
+const token = ref<string | null>(null)
 const skillOptions = computed(() =>
   skillAdminStore.skills.map((skill) => ({
     label: currentLang.value === Languages.English ? skill.name.en : skill.name.es,
@@ -52,7 +61,6 @@ const openConfirmation = (id: number | string) => {
 function closeConfirmation() {
   displayConfirmation.value = false
   artworkToDelete.value = null
-
 }
 
 const onProfileImageSelect = (event: any) => {
@@ -81,6 +89,31 @@ const removeArtwork = (id: string | number) => {
     showSuccessToast(toast, t, 'artistSavedSuccessfully', 3000)
   } catch (err: unknown) {
     showErrorToast(toast, t, err, 'errorSavingArtist')
+  }
+}
+
+const generateResetToken = async () => {
+  if (!currentArtist.value) return
+  if (!authStore.isAdmin) {
+    showErrorToast(toast, t, 'notAuthorized', 'errorNotAuthorized')
+    return
+  }
+  
+  try {
+    const payload: PasswordReset = {
+      id: currentArtist.value.user_id,
+      id_admin: authStore.user?.id as number ?? 0,
+      token: '',
+    }
+    let result: PasswordReset
+
+    result = await AuthService.generateResetToken(payload)
+    token.value = result.token
+
+    emit('success', result)
+    showSuccessToast(toast, t, 'resetPasswordSuccess', 3000)
+  } catch (err: unknown) {
+    showErrorToast(toast, t, err, 'resetPasswordError')
   }
 }
 
@@ -135,7 +168,10 @@ const handleSubmit = async () => {
 
     let result: Artist
     if (isEditMode.value) {
-      result = await artistAdminStore.updateArtist(id.value, { ...payload, id: id.value } as ArtistUpdatePayload)
+      result = await artistAdminStore.updateArtist(id.value, {
+        ...payload,
+        id: id.value,
+      } as ArtistUpdatePayload)
     } else {
       result = await artistAdminStore.createArtist(payload as ArtistCreatePayload)
 
@@ -155,6 +191,18 @@ const handleSubmit = async () => {
 <template>
   <TitleForm title="artist" :isCreateMode="!isEditMode" />
   <div v-if="currentArtist" class="card">
+    <div v-if="isAdmin" class="mb-5">
+      <Button
+      :label="capitalizeFirstLetter(t('resetPassword'))"
+      @click="generateResetToken"
+      class="w-full md:w-auto"
+      severity="warn"
+      variant="outlined"
+      />
+      <div v-if="token" class="mt-2">
+        <p>{{ capitalizeFirstLetter(t('sendToken')) }}: <span class="font-bold">{{ token }}</span></p>
+      </div>
+    </div>
     <form @submit.prevent="handleSubmit" class="space-y-6">
       <!-- Profile Image Upload -->
       <div class="flex flex-wrap justify-center flex-col">
@@ -268,14 +316,6 @@ const handleSubmit = async () => {
             class="w-full"
           />
         </div>
-        <div>
-          <label class="block font-semibold mb-1">{{ capitalizeFirstLetter(t('password')) }}</label>
-          <Password
-            v-model="currentArtist.user.password"
-            :placeholder="capitalizeFirstLetter(t('password'))"
-            class="w-full"
-          />
-        </div>
       </div>
 
       <!-- Social Links -->
@@ -314,8 +354,16 @@ const handleSubmit = async () => {
             class="w-full"
           />
         </div>
-      
       </div>
+
+      <template v-if="isOwnersProfile">
+        <label class="block font-semibold mb-3">
+          *{{ capitalizeFirstLetter(t('modifyInUserProfile')) }}
+          <router-link to="/admin/user" class="underline text-(--color-salmon) cursor-pointer">
+            <a href="">{{ capitalizeFirstLetter(t('profileUser')) }}</a>
+          </router-link>
+        </label>
+      </template>
 
       <!-- Submit -->
       <Button
@@ -325,22 +373,18 @@ const handleSubmit = async () => {
       />
     </form>
 
-    <div class="pt-5 mt-10 ">
+    <div class="pt-5 mt-10">
       <div class="flex justify-between mb-5">
         <label class="block font-semibold mb-1">{{ capitalizeFirstLetter(t('artworks')) }}</label>
         <RouterLink :to="`/admin/artists/${currentArtist.id}/artwork/create`">
-          <Button
-          icon="pi pi-plus"
-          label="Add Artwork"
-          class="w-full md:w-auto"
-          />
+          <Button icon="pi pi-plus" label="Add Artwork" class="w-full md:w-auto" />
         </RouterLink>
       </div>
       <div class="flex flex-wrap gap-3 justify-around">
         <div v-for="(artwork, index) in currentArtist.artworks" :key="index" class="">
           <p>{{ artwork.title }}</p>
           <Image
-            :src="`${baseUrl}/` + (getPrimaryImage(artwork) || artwork.images[0]?.path)" 
+            :src="`${baseUrl}/` + (getPrimaryImage(artwork) || artwork.images[0]?.path)"
             :alt="artwork.title"
             width="250"
           />

@@ -22,6 +22,7 @@ import NewsAdminController from '@/admin/Controllers/News/NewsAdminController.vu
 import NewsForm from '@/admin/views/pages/NewsForm.vue'
 import AboutUsForm from '@/admin/views/pages/AboutUsForm.vue'
 import NotFound from '@/admin/views/pages/NotFound.vue'
+import UserForm from '@/admin/views/pages/UserForm.vue'
 
 const routes = [
   {
@@ -77,6 +78,11 @@ const routes = [
         path: '/admin',
         name: 'dashboard',
         component: () => import('@/admin/views/Dashboard.vue'),
+      },
+      {
+        path: '/admin/user',
+        name: 'User',
+        component: UserForm,
       },
       {
         path: '/admin/artists',

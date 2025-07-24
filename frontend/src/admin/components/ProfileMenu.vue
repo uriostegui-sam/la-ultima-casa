@@ -37,7 +37,10 @@ function goToProfile() {
 
     <OverlayPanel ref="profileMenu">
       <ul class="list-none p-2">
-        <li class="p-2 hover:bg-gray-100 cursor-pointer" @click="goToProfile">{{ capitalizeFirstLetter(t('profile')) }}</li>
+        <li class="p-2 hover:bg-gray-100 cursor-pointer" @click="goToProfile">{{ capitalizeFirstLetter(t('profileArtist')) }}</li>
+        <router-link to="/admin/user" class="layout-topbar-logo">
+          <li class="p-2 hover:bg-gray-100 cursor-pointer">{{ capitalizeFirstLetter(t('profileUser')) }}</li>
+        </router-link>
         <li class="p-2 hover:bg-gray-100 cursor-pointer" @click="logout">{{ capitalizeFirstLetter(t('logout')) }}</li>
       </ul>
     </OverlayPanel>

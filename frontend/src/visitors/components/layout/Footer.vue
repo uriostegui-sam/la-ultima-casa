@@ -43,38 +43,63 @@ const contactKeys = computed(() => [
 <template>
   <div v-if="aboutUs" class="mt-8">
     <footer class="bg-(--color-salmon)">
-      <div class="mx-auto w-full max-w-screen-xl text-white px-6 lg:px-8">
-        <div class="grid grid-cols-1 gap-8 py-6 md:grid-cols-3">
-          <div class="flex md:flex-col items-center gap-4 justify-between px-12 md:px-0">
-            <Logo />
-            <div>
-              <div class="flex justify-around mb-4">
-                <a
-                  href="https://www.facebook.com/estudiolaultimacasa/"
-                  target="_blank"
-                  rel="noopener"
-                >
-                  <div class="facebook"></div>
-                </a>
-                <a
-                  href="https://www.instagram.com/estudiolaultimacasa/"
-                  target="_blank"
-                  rel="noopener"
-                >
-                  <div class="insta"></div>
-                </a>
+      <div class="mx-auto w-full max-w-screen-xl text-white px-6 lg:px-8 text-sm">
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 py-6">
+          <div class="flex flex-col items-center md:items-start gap-4 px-4">
+            <div class="flex md:flex-col items-center justify-around w-full h-full">
+              <Logo class="justify-self-start" />
+              <div>
+                <div class="flex justify-around w-full md:h-full md:w-auto gap-4">
+                  <a
+                    href="https://www.facebook.com/estudiolaultimacasa/"
+                    target="_blank"
+                    rel="noopener"
+                  >
+                    <div class="facebook"></div>
+                  </a>
+                  <a
+                    href="https://www.instagram.com/estudiolaultimacasa/"
+                    target="_blank"
+                    rel="noopener"
+                  >
+                    <div class="insta"></div>
+                  </a>
+                </div>
+                <LanguageToggle />
               </div>
-              <LanguageToggle />
+            </div>
+            <div class="self-start md:hidden block">
+              <h2 class="mb-2 uppercase font-bold">{{ capitalizeFirstLetter($t('aboutUs')) }}</h2>
+              <ul>
+                <template v-for="item in aboutKeys" :key="item.key">
+                  <li>
+                    <a :href="item.href" class="hover:underline">
+                      {{ capitalizeFirstLetter(t(item.key)) }}
+                    </a>
+                  </li>
+                </template>
+              </ul>
+              <h2 class="mb-2 mt-8 uppercase font-bold">
+                {{ capitalizeFirstLetter($t('contactUs')) }}
+              </h2>
+              <ul>
+                <template v-for="item in contactKeys" :key="item.key">
+                  <li>
+                    <p class="hover:underline">{{ item.key }}</p>
+                  </li>
+                </template>
+              </ul>
             </div>
           </div>
-          <div class="px-12 md:px-0">
+
+          <div class="px-4 hidden md:block">
             <h2 class="mb-2 uppercase font-bold">{{ capitalizeFirstLetter($t('aboutUs')) }}</h2>
             <ul>
               <template v-for="item in aboutKeys" :key="item.key">
                 <li>
-                  <a :href="item.href" class="hover:underline">{{
-                    capitalizeFirstLetter(t(item.key))
-                  }}</a>
+                  <a :href="item.href" class="hover:underline">
+                    {{ capitalizeFirstLetter(t(item.key)) }}
+                  </a>
                 </li>
               </template>
             </ul>
@@ -89,14 +114,16 @@ const contactKeys = computed(() => [
               </template>
             </ul>
           </div>
-          <div class="flex flex-col justify-between px-12 md:px-0">
+
+          <div class="flex flex-col justify-between px-4">
             <h2 class="mb-2 uppercase font-bold">{{ capitalizeFirstLetter($t('comeMeetUs')) }}</h2>
             <p v-html="formattedAddress"></p>
             <div v-html="aboutUs.address.map" class="pt-6 box-content"></div>
           </div>
         </div>
+
         <div class="px-2 pb-6 text-center">
-          <span class=""><a href="#">SamyyUV ©</a> - 2025 </span>
+          <span><a href="#">SamyyUV ©</a> - 2025</span>
         </div>
       </div>
     </footer>

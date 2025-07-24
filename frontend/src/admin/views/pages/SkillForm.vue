@@ -27,6 +27,22 @@ const isEditMode = computed(() => !Number.isNaN(id.value))
 const currentSkill = ref<Skill | null>(null)
 const skill = ref<Skill | null>(null)
 
+const selectButtonValue = computed({
+  get() {
+    return currentSkill.value?.published ?? false
+  },
+  set(value: boolean) {
+    if (currentSkill.value) {
+      currentSkill.value.published = value
+    }
+  },
+})
+
+const selectButtonValues = computed(() => [
+  { name: capitalizeFirstLetter(t('published')), value: true },
+  { name: capitalizeFirstLetter(t('hide')), value: false },
+])
+
 const onProfileImageSelect = (event: any) => {
   const file = event.files?.[0]
   if (file) {
@@ -53,6 +69,7 @@ onMounted(async () => {
       id: 0,
       name: { en: '', es: '' },
       profile_image: undefined,
+      published: false,
     }
   }
 })
@@ -64,6 +81,7 @@ const handleSubmit = async () => {
     const payload: SkillCreatePayload | SkillUpdatePayload = {
       name: currentSkill.value.name,
       profile_image: profileImageFile.value ?? undefined,
+      published: currentSkill.value.published,
     }
 
     let result: Skill
@@ -124,6 +142,19 @@ const handleSubmit = async () => {
         </div>
       </div>
 
+      <!-- Published -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <label class="block font-semibold mb-1">{{ `${capitalizeFirstLetter(t('type'))}` }}</label>
+          <SelectButton
+            v-model="selectButtonValue"
+            :options="selectButtonValues"
+            optionLabel="name"
+            optionValue="value"
+          />
+        </div>
+       </div>
+      
       <!-- Name -->
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>

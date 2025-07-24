@@ -21,6 +21,7 @@ class SkillResource extends JsonResource
                 'es' => $this->name['es'] ?? '',
             ],
             'profile_image' => $this->profile_image,
+            'published' => $this->published,
         ];
     }
 }
