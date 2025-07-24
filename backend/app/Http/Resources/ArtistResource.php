@@ -41,10 +41,10 @@ class ArtistResource extends JsonResource
                 ])
             ),
             'social_links' => [
-                'website' => $this->social_links['website'] ?? null,
-                'instagram' => $this->social_links['instagram'] ?? null,
-                'twitter' => $this->social_links['twitter'] ?? null,
-                'flickr' => $this->social_links['flickr'] ?? null,
+                'website' => $this->social_links['website'] ?? '',
+                'instagram' => $this->social_links['instagram'] ?? '',
+                'twitter' => $this->social_links['twitter'] ?? '',
+                'flickr' => $this->social_links['flickr'] ?? '',
             ],
             'profile_image_url' => $this->profile_image_url,
             'artworks' => ArtworkResource::collection($this->whenLoaded('artworks')),
