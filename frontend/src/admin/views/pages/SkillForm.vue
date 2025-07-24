@@ -104,7 +104,7 @@ const handleSubmit = async () => {
 </script>
 
 <template>
-  <TitleForm title="skills" :isCreateMode="!isEditMode" />
+  <TitleForm title="skills" :isCreateMode="!isEditMode" :goBack="true" />
   <div v-if="currentSkill" class="card">
     <form @submit.prevent="handleSubmit" class="space-y-6">
       <!-- Profile Image Upload -->

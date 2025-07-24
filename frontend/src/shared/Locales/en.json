@@ -210,6 +210,7 @@
     "writeToken": "write the token",
     "iRememberPassword": "I remember my password",
     "askToken": "forgot your password? Ask for a reset token",
-    "Unauthenticated": "Unauthenticated"
+    "Unauthenticated": "Unauthenticated",
+    "back": "back"
   }
   

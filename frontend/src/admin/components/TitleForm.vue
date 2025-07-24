@@ -1,15 +1,24 @@
 <script setup lang="ts">
-import { capitalizeFirstLetter } from '@/shared/services/Helpers';
-import { useI18n } from 'vue-i18n';
+import { capitalizeFirstLetter } from '@/shared/services/Helpers'
+import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n()
 const props = defineProps<{
   title: string
   isCreateMode?: boolean
-}>();
+  goBack?: boolean
+}>()
 </script>
 <template>
-    <div class="card text-center">
-        <h1 class="text-3xl">{{ `${capitalizeFirstLetter(t( props.title ))} (${isCreateMode ? t( 'create' ) : t( 'edit' )}) ` }}</h1>
-    </div>
+  <div class="card" :class="props.goBack? 'grid grid-cols-3 items-center' : ''" >
+    <a @click="$router.go(-1)" class="text-left" v-if="props.goBack">
+        <Button type="submit" icon="pi pi-arrow-left" :label="capitalizeFirstLetter(t('back'))" />
+    </a>
+
+    <h1 class="text-3xl text-center">
+      {{ `${capitalizeFirstLetter(t(props.title))} (${isCreateMode ? t('create') : t('edit')})` }}
+    </h1>
+
+    <div></div>
+  </div>
 </template>

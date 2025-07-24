@@ -180,7 +180,7 @@ const handleSubmit = async () => {
 </script>
 
 <template>
-  <TitleForm title="workshop" :isCreateMode="!isEditMode" />
+  <TitleForm title="workshop" :isCreateMode="!isEditMode" :goBack="true" />
   <div v-if="currentWorkshop" class="card">
     <form @submit.prevent="handleSubmit" class="space-y-6">
       <!-- Profile Image Upload -->

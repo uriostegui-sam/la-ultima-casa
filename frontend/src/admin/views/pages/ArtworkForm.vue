@@ -206,7 +206,7 @@ const handleSubmit = async () => {
 </script>
 
 <template>
-  <TitleForm title="artwork" :isCreateMode="!isEditMode" />
+  <TitleForm title="artwork" :isCreateMode="!isEditMode" :goBack="true"/>
   <div v-if="currentArtwork" class="card">
     <form @submit.prevent="handleSubmit" class="space-y-6">
       <!-- Basic Info -->

@@ -189,7 +189,7 @@ const handleSubmit = async () => {
 </script>
 
 <template>
-  <TitleForm title="artist" :isCreateMode="!isEditMode" />
+  <TitleForm title="artist" :isCreateMode="!isEditMode" :goBack="true" />
   <div v-if="currentArtist" class="card">
     <div v-if="isAdmin" class="mb-5">
       <Button

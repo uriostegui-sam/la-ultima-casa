@@ -207,5 +207,6 @@
     "writeToken": "escribe el token",
     "iRememberPassword": "recuerdo mi contraseña",
     "askToken": "¿Olvidaste tu contraseña? Pide un token de restablecimiento",
-    "Unauthenticated": "no autenticado"
+    "Unauthenticated": "no autenticado",
+    "back": "volver"
   }
