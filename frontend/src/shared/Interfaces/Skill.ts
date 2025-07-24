@@ -28,3 +28,8 @@ export interface SkillUpdatePayload {
   profile_image?: File
   published?: boolean
 }
+
+export interface TranslatedSkill {
+  en?: string
+  es?: string
+}
