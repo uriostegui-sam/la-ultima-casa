@@ -29,7 +29,7 @@ class StoreAboutUsRequest extends FormRequest
             'address.text' => 'required|string',
             'address.map' => 'required|string',
             'description.es' => 'required|string',
-            'description.en' => 'required|string',
+            'description.en' => 'nullable|string',
         ];
     }
 }

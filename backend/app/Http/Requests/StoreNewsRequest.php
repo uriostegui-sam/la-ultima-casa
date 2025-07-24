@@ -22,9 +22,9 @@ class StoreNewsRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title.en' => 'required|string|max:255',
+            'title.en' => 'nullable|string|max:255',
             'title.es' => 'required|string|max:255',
-            'content.en' => 'required|string',
+            'content.en' => 'nullable|string',
             'content.es' => 'required|string',
             'cover_image' => 'nullable|image|max:2048',
             'published' => 'nullable|boolean',

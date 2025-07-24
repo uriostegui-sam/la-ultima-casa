@@ -23,10 +23,10 @@ class StoreWorkshopRequest extends FormRequest
     {
         return [
             'artist_id' => 'required', 'exists:artists,id',
-            'title.en' => 'required|string|max:255',
+            'title.en' => 'nullable|string|max:255',
             'title.es' => 'required|string|max:255',
             'description.en' => 'nullable|string',
-            'description.es' => 'nullable|string',
+            'description.es' => 'required|string',
             'type' => 'required|string|max:255',
             'start_date' => 'nullable|string|max:255',
             'end_date' => 'nullable|string|max:255',
