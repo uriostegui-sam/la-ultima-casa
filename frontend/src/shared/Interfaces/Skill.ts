@@ -5,6 +5,7 @@ export interface Skill {
     es?: string
   }
   profile_image?: File
+  published?: boolean
   created_at?: string;
   updated_at?: string;
 }
@@ -15,6 +16,7 @@ export interface SkillCreatePayload {
     es?: string
   }
   profile_image?: File
+  published?: boolean
 }
 
 export interface SkillUpdatePayload {
@@ -24,6 +26,7 @@ export interface SkillUpdatePayload {
     es?: string
   }
   profile_image?: File
+  published?: boolean
 }
 
 export interface TranslatedSkill {

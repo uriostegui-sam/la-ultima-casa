@@ -8,6 +8,7 @@ use App\Http\Controllers\NewsController;
 use App\Http\Controllers\SkillController;
 use App\Http\Controllers\WorkshopController;
 use App\Models\AboutUs;
+use App\Models\Skill;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -25,6 +26,7 @@ use Illuminate\Support\Facades\Route;
 // Public routes (no auth needed)
 Route::middleware('api')->group(function () {
     Route::apiResource('artists', ArtistController::class)->only(['index', 'show']);
+    Route::get('skills/published', [SkillController::class, 'getPublishedSkills']);
     Route::apiResource('skills', SkillController::class)->only(['index', 'show']);
     Route::apiResource('artworks', ArtworkController::class)->only(['index', 'show']);
     Route::get('news/published', [NewsController::class, 'getPublishedNews']);

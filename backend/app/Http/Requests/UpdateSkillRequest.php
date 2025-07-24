@@ -25,6 +25,7 @@ class UpdateSkillRequest extends FormRequest
             'name.en' => 'sometimes|string|max:255',
             'name.es' => 'sometimes|string|max:255',
             'profile_image' => 'sometimes|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'published' => 'sometimes|boolean',
         ];
     }
 }

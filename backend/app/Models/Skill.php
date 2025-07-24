@@ -9,7 +9,7 @@ class Skill extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'profile_image',];
+    protected $fillable = ['name', 'profile_image', 'published'];
     protected $casts = ['name' => 'array'];
 
     public function artists() {
