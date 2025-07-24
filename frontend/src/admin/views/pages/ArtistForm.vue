@@ -191,7 +191,7 @@ const handleSubmit = async () => {
 <template>
   <TitleForm title="artist" :isCreateMode="!isEditMode" :goBack="true" />
   <div v-if="currentArtist" class="card">
-    <div v-if="isAdmin" class="mb-5">
+    <div v-if="isAdmin && isEditMode" class="mb-5">
       <Button
       :label="capitalizeFirstLetter(t('resetPassword'))"
       @click="generateResetToken"
@@ -309,7 +309,7 @@ const handleSubmit = async () => {
       <!-- User -->
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
-          <label class="block font-semibold mb-1">Email</label>
+          <label class="block font-semibold mb-1">{{ capitalizeFirstLetter(t('email')) }}</label>
           <InputText
             v-model="currentArtist.user.email"
             :placeholder="capitalizeFirstLetter(t('email'))"
@@ -373,7 +373,7 @@ const handleSubmit = async () => {
       />
     </form>
 
-    <div class="pt-5 mt-10">
+    <div v-if="isEditMode" class="pt-5 mt-10">
       <div class="flex justify-between mb-5">
         <label class="block font-semibold mb-1">{{ capitalizeFirstLetter(t('artworks')) }}</label>
         <RouterLink :to="`/admin/artists/${currentArtist.id}/artwork/create`">
