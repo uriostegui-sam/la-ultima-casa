@@ -140,7 +140,7 @@ onMounted(async () => {
   } else {
     currentArtwork.value = {
       id: 0,
-      artist_id: 0,
+      artist_id: route.params.id ? Number(route.params.id) : 0,
       title: '',
       artist: null,
       description: {
