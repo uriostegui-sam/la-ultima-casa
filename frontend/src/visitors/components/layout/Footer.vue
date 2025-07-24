@@ -3,7 +3,7 @@ import { capitalizeFirstLetter } from '@/shared/services/Helpers'
 import LanguageToggle from '../LanguageToggle.vue'
 import Logo from '../Logo.vue'
 import { useI18n } from 'vue-i18n'
-import { computed, onMounted, ref } from 'vue'
+import { computed, nextTick, onMounted, ref } from 'vue'
 import { useAdminAboutUsStore } from '@/admin/stores/AboutUsAdminStore'
 import type { AboutUs } from '@/shared/Interfaces/AboutUs'
 import LoadingComponent from '@/shared/components/LoadingComponent.vue'
@@ -14,14 +14,23 @@ const existingId = computed(() => {
   return Number(aboutUsStore.aboutUs.length > 0 ? aboutUsStore.aboutUs[0].id : null)
 })
 const aboutUs = ref<AboutUs | null>(null)
+const iframeContainer = ref<HTMLElement | null>(null)
 
 onMounted(async () => {
   await aboutUsStore.getAboutUs()
-
+  
   if (existingId.value) {
     await aboutUsStore.getAboutUsById(existingId.value)
-
+    
     aboutUs.value = aboutUsStore.selectedAboutUs
+  }
+
+  await nextTick()
+
+  const iframe = iframeContainer.value?.querySelector('iframe')
+  if (iframe) {
+    iframe.style.height = '100%'
+    iframe.style.width = '100%'
   }
 })
 
@@ -79,7 +88,7 @@ const contactKeys = computed(() => [
                   </li>
                 </template>
               </ul>
-              <h2 class="mb-2 mt-8 uppercase font-bold">
+              <h2 class="mb-1 mt-4 uppercase font-bold">
                 {{ capitalizeFirstLetter($t('contactUs')) }}
               </h2>
               <ul>
@@ -103,7 +112,7 @@ const contactKeys = computed(() => [
                 </li>
               </template>
             </ul>
-            <h2 class="mb-2 mt-8 uppercase font-bold">
+            <h2 class="mb-1 mt-4 uppercase font-bold">
               {{ capitalizeFirstLetter($t('contactUs')) }}
             </h2>
             <ul>
@@ -113,12 +122,16 @@ const contactKeys = computed(() => [
                 </li>
               </template>
             </ul>
+            <h2 class="mb-1 mt-4 uppercase font-bold">{{ capitalizeFirstLetter($t('comeMeetUs')) }}</h2>
+            <p v-html="formattedAddress"></p>
           </div>
 
           <div class="flex flex-col justify-between px-4">
-            <h2 class="mb-2 uppercase font-bold">{{ capitalizeFirstLetter($t('comeMeetUs')) }}</h2>
-            <p v-html="formattedAddress"></p>
-            <div v-html="aboutUs.address.map" class="pt-6 box-content"></div>
+            <div class="md:hidden block">
+              <h2 class="mb-1 mt-4 uppercase font-bold">{{ capitalizeFirstLetter($t('comeMeetUs')) }}</h2>
+              <p class="mb-4" v-html="formattedAddress"></p>       
+            </div>
+            <div ref="iframeContainer" v-html="aboutUs.address.map" class="box-content h-full"></div>
           </div>
         </div>
 
