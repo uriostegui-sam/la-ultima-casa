@@ -38,4 +38,17 @@ class StoreWorkshopRequest extends FormRequest
             'featured_position' => 'nullable|in:1,2',
         ];
     }
+    
+    public function messages()
+    {
+        return [
+            'artist_id.required' => 'artist_idRequired',
+            'title.es.required' => 'titleRequired',
+            'description.es.required' => 'descriptionRequired',
+            'skills.required' => 'selectRequired',
+            'type.required' => 'typeRequired',
+            'price.required' => 'priceRequired',
+            'cover_image.required' => 'coverImageRequired',
+        ];
+    }
 }

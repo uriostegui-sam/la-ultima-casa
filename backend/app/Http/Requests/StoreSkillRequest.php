@@ -28,4 +28,14 @@ class StoreSkillRequest extends FormRequest
             'published' => 'sometimes|boolean',
         ];
     }
+
+    public function messages()
+    {
+        return [
+            'name.es.required' => 'nameRequired',
+            'profile_image.image' => 'profileImageInvalid',
+            'profile_image.mimes' => 'profileImageMimes',
+            'profile_image.max' => 'profileImageMaxSize',
+        ];
+    }
 }

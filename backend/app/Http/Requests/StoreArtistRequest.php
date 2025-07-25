@@ -39,4 +39,18 @@ class StoreArtistRequest extends FormRequest
             'skills.*' => 'exists:skills,id'
         ];
     }
+
+    public function messages()
+    {
+        return [
+            'user.name.required' => 'nameRequired',
+            'user.lastname.required' => 'lastNameRequired',
+            'minibio.es.required' => 'minibioRequired',
+            'minibio.es.min' => 'minibioMin',
+            'bio.es.required' => 'bioRequired',
+            'bio.es.min' => 'bioMin',
+            'skills.required' => 'selectRequired',
+            'skills.min' => 'selectRequired',
+        ];
+    }
 }

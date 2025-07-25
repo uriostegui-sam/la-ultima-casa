@@ -33,4 +33,14 @@ class StoreArtworkRequest extends FormRequest
             'creation_date' => 'required|string|max:255',
         ];
     }
+
+        public function messages()
+    {
+        return [
+            'title.required' => 'titleRequired',
+            'description.es.required' => 'descriptionRequired',
+            'images.required' => 'imagesRequired',
+            'creation_date.required' => 'creation_dateRequired',
+        ];
+    }
 }
