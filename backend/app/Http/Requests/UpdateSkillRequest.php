@@ -28,4 +28,11 @@ class UpdateSkillRequest extends FormRequest
             'published' => 'sometimes|boolean',
         ];
     }
+
+    public function messages()
+    {
+        return [
+            'name.en.required' => 'nameRequired',
+        ];
+    }
 }

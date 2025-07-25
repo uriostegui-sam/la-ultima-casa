@@ -30,4 +30,12 @@ class UpdateNewsRequest extends FormRequest
             'published' => 'nullable|boolean',
         ];
     }
+
+    public function messages()
+    {
+        return [
+            'title.es.required' => 'titleRequired',
+            'content.es.required' => 'contentRequired',
+        ];
+    }
 }

@@ -25,11 +25,22 @@ class UpdateAboutUsRequest extends FormRequest
             'number' => 'required|string|regex:/^\d[\d\s]*$/|max:16',
             'cover_image' => 'sometimes|image|max:2048',
             'mail' => 'required|email',
-            // 'address' => 'required|array',
             'address.text' => 'required|string',
             'address.map' => 'required|string',
             'description.es' => 'required|string',
             'description.en' => 'sometimes|string',
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'number.required' => 'numberRequired',
+            'cover_image.required' => 'cover_imageRequired',
+            'mail.required' => 'mailRequired',
+            'address.text.required' => 'addressTextRequired',
+            'address.map.required' => 'addressMapRequired',
+            'description.es.required' => 'descriptionRequired',
         ];
     }
 }

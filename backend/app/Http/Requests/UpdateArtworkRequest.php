@@ -34,4 +34,11 @@ class UpdateArtworkRequest extends FormRequest
             'images_to_delete' => 'sometimes|json',
         ];
     }
+
+    public function messages()
+    {
+        return [
+            'description.es.required' => 'descriptionRequired',
+        ];
+    }
 }
