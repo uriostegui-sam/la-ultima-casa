@@ -91,21 +91,21 @@ const handleSubmit = async () => {
     }
 
     emit('success', result)
-    showSuccessToast(toast, t, 'aboutUsSavedSuccessfully', 3000)
+    showSuccessToast(toast, t, 'divers.aboutUsSavedSuccessfully', 3000)
   } catch (err: unknown) {
-    showErrorToast(toast, t, err, 'errorSavingAboutUs')
+    showErrorToast(toast, t, err, 'divers.errorSavingAboutUs')
   }
 }
 </script>
 
 <template>
-  <TitleForm title="aboutUs" :isCreateMode="!existingId" />
+  <TitleForm title="navigation.aboutUs" :isCreateMode="!existingId" />
   <div v-if="currentAboutUs" class="card">
     <form @submit.prevent="handleSubmit" class="space-y-6">
       <!-- Profile Image Upload -->
       <div class="flex flex-wrap justify-center flex-col">
         <label class="block font-semibold mb-1 text-center">{{
-          capitalizeFirstLetter(t('coverImage'))
+          capitalizeFirstLetter(t('commun.coverImage'))
         }}</label>
         <div v-if="profileImagePreview" class="my-4 mb-10 relative w-32 h-32 m-auto">
           <img :src="`${profileImagePreview}`" class="w-full h-full object-cover rounded-full" />
@@ -126,12 +126,12 @@ const handleSubmit = async () => {
             mode="advanced"
             :auto="false"
             customUpload
-            :chooseLabel="capitalizeFirstLetter(t('selectImages'))"
-            :uploadLabel="capitalizeFirstLetter(t('upload'))"
-            :cancelLabel="capitalizeFirstLetter(t('cancel'))"
+            :chooseLabel="capitalizeFirstLetter(t('commun.selectImages'))"
+            :uploadLabel="capitalizeFirstLetter(t('commun.upload'))"
+            :cancelLabel="capitalizeFirstLetter(t('commun.cancel'))"
           >
             <template #empty>
-              <p>{{ capitalizeFirstLetter(t('dragDrop')) }}</p>
+              <p>{{ capitalizeFirstLetter(t('artworks.dragDrop')) }}</p>
             </template>
           </FileUpload>
         </div>
@@ -139,16 +139,16 @@ const handleSubmit = async () => {
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
-          <label class="block font-semibold mb-1">Email</label>
+          <label class="block font-semibold mb-1">{{capitalizeFirstLetter(t('authentication.email'))}}</label>
           <InputText
             v-model="currentAboutUs.mail"
-            :placeholder="capitalizeFirstLetter(t('email'))"
+            :placeholder="capitalizeFirstLetter(t('authentication.email'))"
             class="w-full"
           />
         </div>
         <div>
           <label class="block font-semibold mb-1">{{
-            capitalizeFirstLetter(t('phoneNumber'))
+            capitalizeFirstLetter(t('divers.phoneNumber'))
           }}</label>
           <InputMask
             v-model="currentAboutUs.number"
@@ -163,13 +163,13 @@ const handleSubmit = async () => {
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
           <label class="block font-semibold mb-1">{{
-            `${capitalizeFirstLetter(t('address'))}`
+            `${capitalizeFirstLetter(t('divers.address'))}`
           }}</label>
           <Textarea v-model="currentAboutUs.address.text" rows="2" class="w-full" />
         </div>
         <div>
           <label class="block font-semibold mb-1">{{
-            `${capitalizeFirstLetter(t('address'))} ${capitalizeFirstLetter(t('map'))}`
+            `${capitalizeFirstLetter(t('divers.address'))} ${capitalizeFirstLetter(t('divers.map'))}`
           }}</label>
           <Textarea v-model="currentAboutUs.address.map" rows="2" class="w-full" />
         </div>
@@ -179,13 +179,13 @@ const handleSubmit = async () => {
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
           <label class="block font-semibold mb-1">{{
-            `${capitalizeFirstLetter(t('description'))} ${capitalizeFirstLetter(t('spanish'))}`
+            `${capitalizeFirstLetter(t('workshop.description'))} ${capitalizeFirstLetter(t('spanish'))}`
           }}</label>
           <Textarea v-model="currentAboutUs.description.es" rows="2" class="w-full" />
         </div>
         <div>
           <label class="block font-semibold mb-1">{{
-            `${capitalizeFirstLetter(t('description'))} ${capitalizeFirstLetter(t('english'))}`
+            `${capitalizeFirstLetter(t('workshop.description'))} ${capitalizeFirstLetter(t('english'))}`
           }}</label>
           <Textarea v-model="currentAboutUs.description.en" rows="2" class="w-full" />
         </div>
@@ -193,7 +193,7 @@ const handleSubmit = async () => {
 
       <!-- Submit -->
       <Button
-        :label="capitalizeFirstLetter(t('saveAboutUs'))"
+        :label="capitalizeFirstLetter(t('divers.saveAboutUs'))"
         type="submit"
         class="w-full md:w-auto"
       />

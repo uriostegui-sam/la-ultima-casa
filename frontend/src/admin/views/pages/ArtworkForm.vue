@@ -102,9 +102,9 @@ const setPrimaryImage = async (imageId: number) => {
       }))
     }
 
-    showSuccessToast(toast, t, 'primaryImageUpdated', 3000)
+    showSuccessToast(toast, t, 'artworks.primaryImageUpdated', 3000)
   } catch (err) {
-    showErrorToast(toast, t, err, 'errorUpdatingPrimaryImage')
+    showErrorToast(toast, t, err, 'artworks.errorUpdatingPrimaryImage')
   }
 }
 
@@ -121,9 +121,9 @@ const confirmDeleteImage = async () => {
       )
     }
 
-    showSuccessToast(toast, t, 'imageDeletedSuccessfully', 3000)
+    showSuccessToast(toast, t, 'artworks.imageDeletedSuccessfully', 3000)
   } catch (err) {
-    showErrorToast(toast, t, err, 'errorDeletingImage')
+    showErrorToast(toast, t, err, 'artworks.errorDeletingImage')
   } finally {
     closeConfirmation()
   }
@@ -198,28 +198,28 @@ const handleSubmit = async () => {
     imagesToDelete.value = []
 
     emit('success', result)
-    showSuccessToast(toast, t, 'artworkSavedSuccessfully', 3000)
+    showSuccessToast(toast, t, 'artworks.artworkSavedSuccessfully', 3000)
   } catch (err: unknown) {
-    showErrorToast(toast, t, err, 'errorSavingArtwork')
+    showErrorToast(toast, t, err, 'artworks.errorSavingArtwork')
   }
 }
 </script>
 
 <template>
-  <TitleForm title="artwork" :isCreateMode="!isEditMode" :goBack="true"/>
+  <TitleForm title="artworks.artwork" :isCreateMode="!isEditMode" :goBack="true"/>
   <div v-if="currentArtwork" class="card">
     <form @submit.prevent="handleSubmit" class="space-y-6">
       <!-- Basic Info -->
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <!-- Title -->
         <div>
-          <label class="block mb-2 font-medium">{{ capitalizeFirstLetter(t('title')) }}</label>
+          <label class="block mb-2 font-medium">{{ capitalizeFirstLetter(t('commun.title')) }}</label>
           <InputText v-model="currentArtwork.title" required class="w-full" />
         </div>
 
         <!-- Artist Selection -->
         <div>
-          <label class="block mb-2 font-medium">{{ capitalizeFirstLetter(t('artist')) }}</label>
+          <label class="block mb-2 font-medium">{{ capitalizeFirstLetter(t('artists.artist')) }}</label>
           <Dropdown
             v-model="currentArtwork.artist_id"
             :options="artists"
@@ -235,13 +235,13 @@ const handleSubmit = async () => {
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
           <label class="block mb-2 font-medium">{{
-            capitalizeFirstLetter(t('descriptionEn'))
+            capitalizeFirstLetter(t('artworks.descriptionEn'))
           }}</label>
           <Textarea v-model="currentArtwork.description.en" rows="5" class="w-full" />
         </div>
         <div>
           <label class="block mb-2 font-medium">{{
-            capitalizeFirstLetter(t('descriptionSp'))
+            capitalizeFirstLetter(t('artworks.descriptionSp'))
           }}</label>
           <Textarea v-model="currentArtwork.description.es" rows="5" class="w-full" />
         </div>
@@ -250,22 +250,22 @@ const handleSubmit = async () => {
       <!-- Dimensions -->
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div>
-          <label class="block mb-2 font-medium">{{ capitalizeFirstLetter(t('width')) }}</label>
+          <label class="block mb-2 font-medium">{{ capitalizeFirstLetter(t('artworks.width')) }}</label>
           <InputNumber v-model="currentArtwork.dimensions.width" class="w-full" />
         </div>
         <div>
-          <label class="block mb-2 font-medium">{{ capitalizeFirstLetter(t('height')) }}</label>
+          <label class="block mb-2 font-medium">{{ capitalizeFirstLetter(t('artworks.height')) }}</label>
           <InputNumber v-model="currentArtwork.dimensions.height" class="w-full" />
         </div>
         <div>
-          <label class="block mb-2 font-medium">{{ capitalizeFirstLetter(t('depth')) }}</label>
+          <label class="block mb-2 font-medium">{{ capitalizeFirstLetter(t('artworks.depth')) }}</label>
           <InputNumber v-model="currentArtwork.dimensions.depth" class="w-full" />
         </div>
       </div>
 
       <!-- Creation Date -->
       <div>
-        <label class="block mb-2 font-medium">{{ capitalizeFirstLetter(t('creationDate')) }}</label>
+        <label class="block mb-2 font-medium">{{ capitalizeFirstLetter(t('artworks.creationDate')) }}</label>
         <Calendar
           v-model="currentArtwork.creation_date"
           dateFormat="yy-mm-dd"
@@ -276,7 +276,7 @@ const handleSubmit = async () => {
 
       <!-- Image Upload -->
       <div>
-        <label class="block mb-2 font-medium">{{ capitalizeFirstLetter(t('images')) }}</label>
+        <label class="block mb-2 font-medium">{{ capitalizeFirstLetter(t('artworks.images')) }}</label>
         <FileUpload
           name="images[]"
           multiple
@@ -286,12 +286,12 @@ const handleSubmit = async () => {
           mode="advanced"
           ref="uploader"
           :auto="false"
-          :chooseLabel="capitalizeFirstLetter(t('selectImages'))"
-          :uploadLabel="capitalizeFirstLetter(t('upload'))"
-          :cancelLabel="capitalizeFirstLetter(t('cancel'))"
+          :chooseLabel="capitalizeFirstLetter(t('commun.selectImages'))"
+          :uploadLabel="capitalizeFirstLetter(t('commun.upload'))"
+          :cancelLabel="capitalizeFirstLetter(t('commun.cancel'))"
         >
           <template #empty>
-            <p>{{ capitalizeFirstLetter(t('dragDrop')) }}</p>
+            <p>{{ capitalizeFirstLetter(t('artworks.dragDrop')) }}</p>
           </template>
         </FileUpload>
 
@@ -322,8 +322,8 @@ const handleSubmit = async () => {
                 @click.stop="typeof image.id === 'number' ? setPrimaryImage(image.id) : null"
                 v-tooltip.top="
                   image.is_primary
-                    ? capitalizeFirstLetter(t('primaryImage'))
-                    : capitalizeFirstLetter(t('setPrimary'))
+                    ? capitalizeFirstLetter(t('artworks.primaryImage'))
+                    : capitalizeFirstLetter(t('artworks.setPrimary'))
                 "
               />
 
@@ -334,7 +334,7 @@ const handleSubmit = async () => {
                 @click.stop="
                   typeof image.id === 'number' ? openConfirmation(image.id) : removeImage(image.id)
                 "
-                v-tooltip.top="capitalizeFirstLetter(t('deleteImage'))"
+                v-tooltip.top="capitalizeFirstLetter(t('divers.deleteImage'))"
               />
             </div>
 
@@ -343,7 +343,7 @@ const handleSubmit = async () => {
               v-if="image.is_primary"
               class="absolute top-2 left-2 bg-yellow-500 text-white text-xs px-2 py-1 rounded"
             >
-              {{ capitalizeFirstLetter(t('primaryImage')) }}
+              {{ capitalizeFirstLetter(t('artworks.primaryImage')) }}
             </span>
           </div>
         </div>
@@ -352,7 +352,7 @@ const handleSubmit = async () => {
       <!-- Submit Button -->
       <Button
         type="submit"
-        :label="capitalizeFirstLetter(t('saveArtwork'))"
+        :label="capitalizeFirstLetter(t('artworks.saveArtwork'))"
         class="w-full md:w-auto"
         :loading="isUploading"
         :disabled="isUploading"
@@ -361,22 +361,22 @@ const handleSubmit = async () => {
     <Dialog
       v-model:visible="displayConfirmation"
       :style="{ width: '450px' }"
-      :header="capitalizeFirstLetter(t('confirm'))"
+      :header="capitalizeFirstLetter(t('commun.confirm'))"
       :modal="true"
     >
       <div class="confirmation-content">
         <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem" />
-        <span>{{ capitalizeFirstLetter(t('sureDelete')) }}</span>
+        <span>{{ capitalizeFirstLetter(t('artists.sureDelete')) }}</span>
       </div>
       <template #footer>
         <Button
-          :label="capitalizeFirstLetter(t('no'))"
+          :label="capitalizeFirstLetter(t('commun.no'))"
           icon="pi pi-times"
           @click="closeConfirmation"
           class="p-button-text"
         />
         <Button
-          :label="capitalizeFirstLetter(t('yes'))"
+          :label="capitalizeFirstLetter(t('commun.yes'))"
           icon="pi pi-check"
           @click="confirmDeleteImage"
           class="p-button-danger"

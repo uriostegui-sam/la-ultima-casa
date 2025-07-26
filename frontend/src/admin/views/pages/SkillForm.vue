@@ -39,8 +39,8 @@ const selectButtonValue = computed({
 })
 
 const selectButtonValues = computed(() => [
-  { name: capitalizeFirstLetter(t('published')), value: true },
-  { name: capitalizeFirstLetter(t('hide')), value: false },
+  { name: capitalizeFirstLetter(t('news.published')), value: true },
+  { name: capitalizeFirstLetter(t('news.hide')), value: false },
 ])
 
 const onProfileImageSelect = (event: any) => {
@@ -96,21 +96,21 @@ const handleSubmit = async () => {
     }
 
     emit('success', result)
-    showSuccessToast(toast, t, 'skillSavedSuccessfully', 3000)
+    showSuccessToast(toast, t, 'skills.skillSavedSuccessfully', 3000)
   } catch (err: unknown) {
-    showErrorToast(toast, t, err, 'errorSavingSkill')
+    showErrorToast(toast, t, err, 'skills.errorSavingSkill')
   }
 }
 </script>
 
 <template>
-  <TitleForm title="skills" :isCreateMode="!isEditMode" :goBack="true" />
+  <TitleForm title="skills.skills" :isCreateMode="!isEditMode" :goBack="true" />
   <div v-if="currentSkill" class="card">
     <form @submit.prevent="handleSubmit" class="space-y-6">
       <!-- Profile Image Upload -->
       <div class="flex flex-wrap justify-center flex-col">
         <label class="block font-semibold mb-1 text-center">{{
-          capitalizeFirstLetter(t('referenceImage'))
+          capitalizeFirstLetter(t('artists.referenceImage'))
         }}</label>
         <div v-if="profileImagePreview" class="my-4 mb-10 relative w-32 h-32 m-auto">
           <img :src="`${profileImagePreview}`" class="w-full h-full object-cover rounded-full" />
@@ -131,12 +131,12 @@ const handleSubmit = async () => {
             mode="advanced"
             :auto="false"
             customUpload
-            :chooseLabel="capitalizeFirstLetter(t('selectImages'))"
-            :uploadLabel="capitalizeFirstLetter(t('upload'))"
-            :cancelLabel="capitalizeFirstLetter(t('cancel'))"
+            :chooseLabel="capitalizeFirstLetter(t('commun.selectImages'))"
+            :uploadLabel="capitalizeFirstLetter(t('commun.upload'))"
+            :cancelLabel="capitalizeFirstLetter(t('commun.cancel'))"
           >
             <template #empty>
-              <p>{{ capitalizeFirstLetter(t('dragDrop')) }}</p>
+              <p>{{ capitalizeFirstLetter(t('artworks.dragDrop')) }}</p>
             </template>
           </FileUpload>
         </div>
@@ -145,7 +145,7 @@ const handleSubmit = async () => {
       <!-- Published -->
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
-          <label class="block font-semibold mb-1">{{ `${capitalizeFirstLetter(t('type'))}` }}</label>
+          <label class="block font-semibold mb-1">{{ `${capitalizeFirstLetter(t('commun.type'))}` }}</label>
           <SelectButton
             v-model="selectButtonValue"
             :options="selectButtonValues"
@@ -159,13 +159,13 @@ const handleSubmit = async () => {
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
           <label class="block font-semibold mb-1">{{
-            `${capitalizeFirstLetter(t('name'))} ${capitalizeFirstLetter(t('english'))}`
+            `${capitalizeFirstLetter(t('artists.name'))} ${capitalizeFirstLetter(t('navigation.english'))}`
           }}</label>
           <Textarea v-model="currentSkill.name.en" rows="2" class="w-full" />
         </div>
         <div>
           <label class="block font-semibold mb-1">{{
-            `${capitalizeFirstLetter(t('name'))} ${capitalizeFirstLetter(t('spanish'))}`
+            `${capitalizeFirstLetter(t('artists.name'))} ${capitalizeFirstLetter(t('navigation.spanish'))}`
           }}</label>
           <Textarea v-model="currentSkill.name.es" rows="2" class="w-full" />
         </div>
@@ -173,7 +173,7 @@ const handleSubmit = async () => {
 
       <!-- Submit -->
       <Button
-        :label="capitalizeFirstLetter(t('saveSkill'))"
+        :label="capitalizeFirstLetter(t('skills.saveSkill'))"
         type="submit"
         class="w-full md:w-auto"
       />

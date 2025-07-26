@@ -86,16 +86,16 @@ const removeArtwork = (id: string | number) => {
     currentArtist.value.artworks =
       currentArtist.value.artworks?.filter((art) => art.id !== id) || []
 
-    showSuccessToast(toast, t, 'artistSavedSuccessfully', 3000)
+    showSuccessToast(toast, t, 'artists.artistSavedSuccessfully', 3000)
   } catch (err: unknown) {
-    showErrorToast(toast, t, err, 'errorSavingArtist')
+    showErrorToast(toast, t, err, 'artists.errorSavingArtist')
   }
 }
 
 const generateResetToken = async () => {
   if (!currentArtist.value) return
   if (!authStore.isAdmin) {
-    showErrorToast(toast, t, 'notAuthorized', 'errorNotAuthorized')
+    showErrorToast(toast, t, 'divers.notAuthorized', 'divers.errorNotAuthorized')
     return
   }
   
@@ -111,9 +111,9 @@ const generateResetToken = async () => {
     token.value = result.token
 
     emit('success', result)
-    showSuccessToast(toast, t, 'resetPasswordSuccess', 3000)
+    showSuccessToast(toast, t, 'authentication.resetPasswordSuccess', 3000)
   } catch (err: unknown) {
-    showErrorToast(toast, t, err, 'resetPasswordError')
+    showErrorToast(toast, t, err, 'authentication.resetPasswordError')
   }
 }
 
@@ -181,33 +181,33 @@ const handleSubmit = async () => {
     }
 
     emit('success', result)
-    showSuccessToast(toast, t, 'artistSavedSuccessfully', 3000)
+    showSuccessToast(toast, t, 'artists.artistSavedSuccessfully', 3000)
   } catch (err: unknown) {
-    showErrorToast(toast, t, err, 'errorSavingArtist')
+    showErrorToast(toast, t, err, 'artists.errorSavingArtist')
   }
 }
 </script>
 
 <template>
-  <TitleForm title="artist" :isCreateMode="!isEditMode" :goBack="true" />
+  <TitleForm title="artists.artist" :isCreateMode="!isEditMode" :goBack="true" />
   <div v-if="currentArtist" class="card">
     <div v-if="isAdmin && isEditMode" class="mb-5">
       <Button
-      :label="capitalizeFirstLetter(t('resetPassword'))"
+      :label="capitalizeFirstLetter(t('authentication.resetPassword'))"
       @click="generateResetToken"
       class="w-full md:w-auto"
       severity="warn"
       variant="outlined"
       />
       <div v-if="token" class="mt-2">
-        <p>{{ capitalizeFirstLetter(t('sendToken')) }}: <span class="font-bold">{{ token }}</span></p>
+        <p>{{ capitalizeFirstLetter(t('authentication.sendToken')) }}: <span class="font-bold">{{ token }}</span></p>
       </div>
     </div>
     <form @submit.prevent="handleSubmit" class="space-y-6">
       <!-- Profile Image Upload -->
       <div class="flex flex-wrap justify-center flex-col">
         <label class="block font-semibold mb-1 text-center">{{
-          capitalizeFirstLetter(t('profileImage'))
+          capitalizeFirstLetter(t('artists.profileImage'))
         }}</label>
         <div v-if="profileImagePreview" class="my-4 mb-10 relative w-32 h-32 m-auto">
           <img :src="profileImagePreview" class="w-full h-full object-cover rounded-full" />
@@ -228,12 +228,12 @@ const handleSubmit = async () => {
             mode="advanced"
             :auto="false"
             customUpload
-            :chooseLabel="capitalizeFirstLetter(t('selectImages'))"
-            :uploadLabel="capitalizeFirstLetter(t('upload'))"
-            :cancelLabel="capitalizeFirstLetter(t('cancel'))"
+            :chooseLabel="capitalizeFirstLetter(t('commun.selectImages'))"
+            :uploadLabel="capitalizeFirstLetter(t('commun.upload'))"
+            :cancelLabel="capitalizeFirstLetter(t('commun.cancel'))"
           >
             <template #empty>
-              <p>{{ capitalizeFirstLetter(t('dragDrop')) }}</p>
+              <p>{{ capitalizeFirstLetter(t('artworks.dragDrop')) }}</p>
             </template>
           </FileUpload>
         </div>
@@ -242,18 +242,18 @@ const handleSubmit = async () => {
       <!-- Name -->
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
-          <label class="block font-semibold mb-1">{{ capitalizeFirstLetter(t('name')) }}</label>
+          <label class="block font-semibold mb-1">{{ capitalizeFirstLetter(t('artists.name')) }}</label>
           <InputText
             v-model="currentArtist.user.name"
-            :placeholder="`${capitalizeFirstLetter(t('artistName'))}`"
+            :placeholder="`${capitalizeFirstLetter(t('artists.artistName'))}`"
             class="w-full"
           />
         </div>
         <div>
-          <label class="block font-semibold mb-1">{{ capitalizeFirstLetter(t('lastName')) }}</label>
+          <label class="block font-semibold mb-1">{{ capitalizeFirstLetter(t('artists.lastName')) }}</label>
           <InputText
             v-model="currentArtist.user.lastname"
-            :placeholder="`${capitalizeFirstLetter(t('artistLastName'))}`"
+            :placeholder="`${capitalizeFirstLetter(t('artists.artistLastName'))}`"
             class="w-full"
           />
         </div>
@@ -263,13 +263,13 @@ const handleSubmit = async () => {
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
           <label class="block font-semibold mb-1">{{
-            `${capitalizeFirstLetter(t('minibio'))} ${capitalizeFirstLetter(t('english'))}`
+            `${capitalizeFirstLetter(t('artists.minibio'))} ${capitalizeFirstLetter(t('navigation.english'))}`
           }}</label>
           <Textarea v-model="currentArtist.minibio.en" rows="2" class="w-full" />
         </div>
         <div>
           <label class="block font-semibold mb-1">{{
-            `${capitalizeFirstLetter(t('minibio'))} ${capitalizeFirstLetter(t('spanish'))}`
+            `${capitalizeFirstLetter(t('artists.minibio'))} ${capitalizeFirstLetter(t('navigation.spanish'))}`
           }}</label>
           <Textarea v-model="currentArtist.minibio.es" rows="2" class="w-full" />
         </div>
@@ -279,13 +279,13 @@ const handleSubmit = async () => {
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
           <label class="block font-semibold mb-1">{{
-            `${capitalizeFirstLetter(t('biography'))} ${capitalizeFirstLetter(t('english'))}`
+            `${capitalizeFirstLetter(t('artists.biography'))} ${capitalizeFirstLetter(t('navigation..english'))}`
           }}</label>
           <Textarea v-model="currentArtist.bio.en" rows="5" class="w-full" />
         </div>
         <div>
           <label class="block font-semibold mb-1">{{
-            `${capitalizeFirstLetter(t('biography'))} ${capitalizeFirstLetter(t('spanish'))}`
+            `${capitalizeFirstLetter(t('artists.biography'))} ${capitalizeFirstLetter(t('navigation..spanish'))}`
           }}</label>
           <Textarea v-model="currentArtist.bio.es" rows="5" class="w-full" />
         </div>
@@ -294,12 +294,12 @@ const handleSubmit = async () => {
       <!-- Skills -->
       <div>
         <label class="block font-semibold mb-1">{{
-          capitalizeFirstLetter(t('selectSkills'))
+          capitalizeFirstLetter(t('artists.selectSkills'))
         }}</label>
         <MultiSelect
           v-model="currentArtistSkills"
           :options="skillOptions"
-          :placeholder="capitalizeFirstLetter(t('selectSkills'))"
+          :placeholder="capitalizeFirstLetter(t('artists.selectSkills'))"
           class="w-full"
           option-label="label"
           option-value="value"
@@ -309,10 +309,10 @@ const handleSubmit = async () => {
       <!-- User -->
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
-          <label class="block font-semibold mb-1">{{ capitalizeFirstLetter(t('email')) }}</label>
+          <label class="block font-semibold mb-1">{{ capitalizeFirstLetter(t('authentication.email')) }}</label>
           <InputText
             v-model="currentArtist.user.email"
-            :placeholder="capitalizeFirstLetter(t('email'))"
+            :placeholder="capitalizeFirstLetter(t('authentication.email'))"
             class="w-full"
           />
         </div>
@@ -347,7 +347,7 @@ const handleSubmit = async () => {
           />
         </div>
         <div>
-          <label class="block font-semibold mb-1">{{ capitalizeFirstLetter(t('website')) }}</label>
+          <label class="block font-semibold mb-1">{{ capitalizeFirstLetter(t('divers.website')) }}</label>
           <InputText
             v-model="currentArtist.social_links.website"
             placeholder="http://www.website.com"
@@ -358,16 +358,16 @@ const handleSubmit = async () => {
 
       <template v-if="isOwnersProfile">
         <label class="block font-semibold mb-3">
-          *{{ capitalizeFirstLetter(t('modifyInUserProfile')) }}
+          *{{ capitalizeFirstLetter(t('authentication.modifyInUserProfile')) }}
           <router-link to="/admin/user" class="underline text-(--color-salmon) cursor-pointer">
-            <a href="">{{ capitalizeFirstLetter(t('profileUser')) }}</a>
+            <a href="">{{ capitalizeFirstLetter(t('divers.profileUser')) }}</a>
           </router-link>
         </label>
       </template>
 
       <!-- Submit -->
       <Button
-        :label="capitalizeFirstLetter(t('saveArtist'))"
+        :label="capitalizeFirstLetter(t('artists.saveArtist'))"
         type="submit"
         class="w-full md:w-auto"
       />
@@ -375,9 +375,9 @@ const handleSubmit = async () => {
 
     <div v-if="isEditMode" class="pt-5 mt-10">
       <div class="flex justify-between mb-5">
-        <label class="block font-semibold mb-1">{{ capitalizeFirstLetter(t('artworks')) }}</label>
+        <label class="block font-semibold mb-1">{{ capitalizeFirstLetter(t('artworks.artworks')) }}</label>
         <RouterLink :to="`/admin/artists/${currentArtist.id}/artwork/create`">
-          <Button icon="pi pi-plus" label="Add Artwork" class="w-full md:w-auto" />
+          <Button icon="pi pi-plus" :label="capitalizeFirstLetter(t('artworks.addArtwork'))" class="w-full md:w-auto" />
         </RouterLink>
       </div>
       <div class="flex flex-wrap gap-3 justify-around">
@@ -396,25 +396,25 @@ const handleSubmit = async () => {
               @click="openConfirmation(artwork.id)"
             />
             <Dialog
-              :header="capitalizeFirstLetter(t('confirmation'))"
+              :header="capitalizeFirstLetter(t('commun.confirmation'))"
               v-model:visible="displayConfirmation"
               :style="{ width: '350px' }"
               :modal="true"
             >
               <div class="flex items-center justify-center">
                 <i class="pi pi-exclamation-triangle mr-4" style="font-size: 2rem" />
-                <span>{{ capitalizeFirstLetter(t('sureDelete')) }}</span>
+                <span>{{ capitalizeFirstLetter(t('artists.sureDelete')) }}</span>
               </div>
               <template #footer>
                 <Button
-                  :label="capitalizeFirstLetter(t('no'))"
+                  :label="capitalizeFirstLetter(t('commun.no'))"
                   icon="pi pi-times"
                   @click="closeConfirmation"
                   text
                   severity="secondary"
                 />
                 <Button
-                  :label="capitalizeFirstLetter(t('yes'))"
+                  :label="capitalizeFirstLetter(t('commun.yes'))"
                   icon="pi pi-check"
                   @click="removeArtwork(artwork.id)"
                   severity="danger"
