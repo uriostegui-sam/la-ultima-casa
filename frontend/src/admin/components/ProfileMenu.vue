@@ -33,15 +33,15 @@ function goToProfile() {
 <template>
   <div class="layout-topbar-action" @click="toggleProfileMenu($event)">
     <i class="pi pi-user"></i>
-    <span>{{ capitalizeFirstLetter(t('profile')) }}</span>
+    <span>{{ capitalizeFirstLetter(t('authentication.profile')) }}</span>
 
     <OverlayPanel ref="profileMenu">
       <ul class="list-none p-2">
-        <li class="p-2 hover:bg-gray-100 cursor-pointer" @click="goToProfile">{{ capitalizeFirstLetter(t('profileArtist')) }}</li>
+        <li class="p-2 hover:bg-gray-100 cursor-pointer" @click="goToProfile">{{ capitalizeFirstLetter(t('artists.profileArtist')) }}</li>
         <router-link to="/admin/user" class="layout-topbar-logo">
-          <li class="p-2 hover:bg-gray-100 cursor-pointer">{{ capitalizeFirstLetter(t('profileUser')) }}</li>
+          <li class="p-2 hover:bg-gray-100 cursor-pointer">{{ capitalizeFirstLetter(t('divers.profileUser')) }}</li>
         </router-link>
-        <li class="p-2 hover:bg-gray-100 cursor-pointer" @click="logout">{{ capitalizeFirstLetter(t('logout')) }}</li>
+        <li class="p-2 hover:bg-gray-100 cursor-pointer" @click="logout">{{ capitalizeFirstLetter(t('authentication.logout')) }}</li>
       </ul>
     </OverlayPanel>
   </div>
