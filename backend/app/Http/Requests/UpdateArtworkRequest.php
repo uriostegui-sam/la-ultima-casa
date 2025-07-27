@@ -38,7 +38,7 @@ class UpdateArtworkRequest extends FormRequest
     public function messages()
     {
         return [
-            'description.es.required' => 'descriptionRequired',
+            'description.es.required' => 'divers.descriptionRequired',
         ];
     }
 }

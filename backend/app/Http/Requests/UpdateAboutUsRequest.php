@@ -35,12 +35,12 @@ class UpdateAboutUsRequest extends FormRequest
     public function messages()
     {
         return [
-            'number.required' => 'numberRequired',
-            'cover_image.required' => 'cover_imageRequired',
-            'mail.required' => 'mailRequired',
-            'address.text.required' => 'addressTextRequired',
-            'address.map.required' => 'addressMapRequired',
-            'description.es.required' => 'descriptionRequired',
+            'number.required' => 'divers.numberRequired',
+            'cover_image.required' => 'divers.coverImageRequired',
+            'mail.required' => 'authentication.emailRequired',
+            'address.text.required' => 'divers.addressTextRequired',
+            'address.map.required' => 'divers.addressMapRequired',
+            'description.es.required' => 'divers.descriptionRequired',
         ];
     }
 }

@@ -34,8 +34,8 @@ class UpdateNewsRequest extends FormRequest
     public function messages()
     {
         return [
-            'title.es.required' => 'titleRequired',
-            'content.es.required' => 'contentRequired',
+            'title.es.required' => 'divers.titleRequired',
+            'content.es.required' => 'divers.contentRequired',
         ];
     }
 }

@@ -32,10 +32,10 @@ class RegisterRequest extends FormRequest
     public function messages()
     {
         return [
-            'first_name.required' => 'first_nameRequired',
-            'last_name.required' => 'last_nameRequired',
-            'email.required' => 'emailRequired',
-            'password.required' => 'passwordRequired',
+            'first_name.required' => 'artists.nameRequired',
+            'last_name.required' => 'artists.lastNameRequired',
+            'email.required' => 'authentication.emailRequired',
+            'password.required' => 'authentication.passwordRequired',
         ];
     }
 }

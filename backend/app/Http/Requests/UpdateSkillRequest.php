@@ -32,7 +32,7 @@ class UpdateSkillRequest extends FormRequest
     public function messages()
     {
         return [
-            'name.en.required' => 'nameRequired',
+            'name.en.required' => 'artists.nameRequired',
         ];
     }
 }

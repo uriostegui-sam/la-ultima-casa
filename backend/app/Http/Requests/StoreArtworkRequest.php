@@ -37,10 +37,10 @@ class StoreArtworkRequest extends FormRequest
         public function messages()
     {
         return [
-            'title.required' => 'titleRequired',
-            'description.es.required' => 'descriptionRequired',
-            'images.required' => 'imagesRequired',
-            'creation_date.required' => 'creation_dateRequired',
+            'title.required' => 'divers.titleRequired',
+            'description.es.required' => 'divers.descriptionRequired',
+            'images.required' => 'divers.imagesRequired',
+            'creation_date.required' => 'divers.creationDateRequired',
         ];
     }
 }

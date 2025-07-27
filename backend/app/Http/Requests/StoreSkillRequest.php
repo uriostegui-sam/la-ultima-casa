@@ -32,10 +32,10 @@ class StoreSkillRequest extends FormRequest
     public function messages()
     {
         return [
-            'name.es.required' => 'nameRequired',
-            'profile_image.image' => 'profileImageInvalid',
-            'profile_image.mimes' => 'profileImageMimes',
-            'profile_image.max' => 'profileImageMaxSize',
+            'name.es.required' => 'artists.nameRequired',
+            'profile_image.image' => 'divers.profileImageInvalid',
+            'profile_image.mimes' => 'divers.profileImageMimes',
+            'profile_image.max' => 'divers.profileImageMaxSize',
         ];
     }
 }

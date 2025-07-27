@@ -42,13 +42,13 @@ class StoreWorkshopRequest extends FormRequest
     public function messages()
     {
         return [
-            'artist_id.required' => 'artist_idRequired',
-            'title.es.required' => 'titleRequired',
-            'description.es.required' => 'descriptionRequired',
-            'skills.required' => 'selectRequired',
-            'type.required' => 'typeRequired',
-            'price.required' => 'priceRequired',
-            'cover_image.required' => 'coverImageRequired',
+            'artist_id.required' => 'divers.artist_idRequired',
+            'title.es.required' => 'divers.titleRequired',
+            'description.es.required' => 'divers.descriptionRequired',
+            'skills.required' => 'divers.selectRequired',
+            'type.required' => 'divers.typeRequired',
+            'price.required' => 'divers.priceRequired',
+            'cover_image.required' => 'divers.coverImageRequired',
         ];
     }
 }
