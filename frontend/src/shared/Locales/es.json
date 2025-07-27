@@ -49,7 +49,12 @@
     "iRememberPassword": "recuerdo mi contraseña",
     "askToken": "¿Olvidaste tu contraseña? Pide un token de restablecimiento",
     "Unauthenticated": "no autenticado",
-    "unauthorized": "no autorizado"
+    "unauthorized": "no autorizado",
+    "emailRequired": "el correo electrónico es obligatorio",
+    "passwordRequired": "la contraseña es obligatoria",
+    "newPasswordRequired": "la nueva contraseña es obligatoria",
+    "newPasswordMin": "la nueva contraseña debe tener al menos :min caracteres",
+    "newPassword_confirmationRequired": "las contraseñas no coinciden"
   },
   "artists": {
     "artists": "artistas",
@@ -235,6 +240,23 @@
     "deleteImage": "eliminar imagen",
     "profileUser": "perfil de Usuario",
     "incorrectPassword": "la contraseña actual es incorrecta",
-    "errorNotAuthorized": "no estás autorizado para realizar esta acción"
+    "errorNotAuthorized": "no estás autorizado para realizar esta acción",
+    "notAuthorized": "no autorizado",
+    "numberRequired": "el número es obligatorio",
+    "coverImageRequired": "la imagen de portada es obligatoria",
+    "addressTextRequired": "el texto de la dirección es obligatorio",
+    "addressMapRequired": "el mapa de la dirección es obligatorio",
+    "descriptionRequired": "la descripción en español es obligatoria",
+    "titleRequired": "el título es obligatorio",
+    "contentRequired": "el contenido es obligatorio",
+    "imageRequired": "la imagen es obligatoria",
+    "imagesRequired": "al menos una imagen es obligatoria",
+    "creationDateRequired": "la fecha de creación es obligatoria",
+    "profileImageInvalid": "la imagen de perfil debe ser una imagen válida",
+    "profileImageMimes": "la imagen de perfil debe ser una imagen de tipo: jpeg, png, jpg, gif",
+    "profileImageMaxSize": "la imagen de perfil no debe exceder los 2MB",
+    "artist_idRequired": "el artista es obligatorio",
+    "typeRequired": "el tipo es obligatorio",
+    "priceRequired": "el precio es obligatorio"
   }
 }

@@ -49,8 +49,13 @@
     "iRememberPassword": "I remember my password",
     "askToken": "forgot your password? Ask for a reset token",
     "Unauthenticated": "Unauthenticated",
-    "unauthorized": "unauthorized"
-  },
+    "unauthorized": "unauthorized",
+    "emailRequired": "the email is required",
+    "passwordRequired": "the password is required",
+    "newPasswordRequired": "the new password is required",
+    "newPasswordMin": "the new password must have at least :min characters",
+    "newPassword_confirmationRequired": "the new password confirmation does not match"
+    },
   "artists": {
     "artists": "artists",
     "artist": "artist",
@@ -236,6 +241,22 @@
     "profileUser": "user profile",
     "incorrectPassword": "incorrect password",
     "errorNotAuthorized": "you are not authorized to perform this action",
-    "notAuthorized": "not authorized"
+    "notAuthorized": "not authorized",
+    "numberRequired": "the number is required",
+    "coverImageRequired": "the cover image is required",
+    "addressTextRequired": "the address text is required",
+    "addressMapRequired": "the address map is required",
+    "descriptionRequired": "the description is required",
+    "titleRequired": "the title is required",
+    "contentRequired": "the content is required",
+    "imageRequired": "the image is required",
+    "imagesRequired": "at least one image is required",
+    "creationDateRequired": "the creation date is required",
+    "profileImageInvalid": "the profile image is invalid",
+    "profileImageMimes": "the profile image must be a file of type: jpeg, png, jpg, gif.",
+    "profileImageMaxSize": "the profile image must not be greater than 2MB.",
+    "artist_idRequired": "the artist id is required",
+    "typeRequired": "the type is required",
+    "priceRequired": "the price is required"
   }
 }
