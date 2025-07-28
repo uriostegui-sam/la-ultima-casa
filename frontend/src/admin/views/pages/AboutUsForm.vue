@@ -179,13 +179,13 @@ const handleSubmit = async () => {
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
           <label class="block font-semibold mb-1">{{
-            `${capitalizeFirstLetter(t('workshop.description'))} ${capitalizeFirstLetter(t('spanish'))}`
+            `${capitalizeFirstLetter(t('artworks.descriptionSp'))}`
           }}</label>
           <Textarea v-model="currentAboutUs.description.es" rows="2" class="w-full" />
         </div>
         <div>
           <label class="block font-semibold mb-1">{{
-            `${capitalizeFirstLetter(t('workshop.description'))} ${capitalizeFirstLetter(t('english'))}`
+            `${capitalizeFirstLetter(t('artworks.descriptionEn'))}`
           }}</label>
           <Textarea v-model="currentAboutUs.description.en" rows="2" class="w-full" />
         </div>

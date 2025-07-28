@@ -22,24 +22,24 @@ onMounted(async () => {
 
 <template>
     <div class="card">
-        <div class="font-semibold text-xl mb-4">{{ capitalizeFirstLetter(t('latestWorkshops')) }}</div>
+        <div class="font-semibold text-xl mb-4">{{ capitalizeFirstLetter(t('workshop.latestWorkshops')) }}</div>
         <DataTable :value="workshopTransformed" :rows="5" :paginator="true" responsiveLayout="scroll">
-            <Column style="width: 15%" :header="capitalizeFirstLetter(t('image'))">
+            <Column style="width: 15%" :header="capitalizeFirstLetter(t('commun.image'))">
                 <template #body="slotProps">
                     <img :src="slotProps.data.cover_image_url" :alt="slotProps.data.cover_image_url" width="50" class="shadow" />
                 </template>
             </Column>
-            <Column field="title" :header="capitalizeFirstLetter(t('title'))" :sortable="true" style="width: 35%">
+            <Column field="title" :header="capitalizeFirstLetter(t('commun.title'))" :sortable="true" style="width: 35%">
                 <template #body="slotProps">
                     {{ choseCurrentLanguage(slotProps.data.title, current) }}
                 </template>
             </Column>
-            <Column field="type" :header="capitalizeFirstLetter(t('type'))" :sortable="true" style="width: 35%">
+            <Column field="type" :header="capitalizeFirstLetter(t('commun.type'))" :sortable="true" style="width: 35%">
                 <template #body="slotProps">
                     {{ capitalizeFirstLetter(t(slotProps.data.type)) }}
                 </template>
             </Column>
-            <Column style="width: 15%" :header="capitalizeFirstLetter(t('view'))">
+            <Column style="width: 15%" :header="capitalizeFirstLetter(t('commun.view'))">
                 <template #body>
                     <Button icon="pi pi-search" type="button" class="p-button-text"></Button>
                 </template>
