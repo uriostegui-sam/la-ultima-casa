@@ -29,7 +29,19 @@ class StoreAboutUsRequest extends FormRequest
             'address.text' => 'required|string',
             'address.map' => 'required|string',
             'description.es' => 'required|string',
-            'description.en' => 'required|string',
+            'description.en' => 'nullable|string',
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'number.required' => 'divers.numberRequired',
+            'cover_image.required' => 'divers.coverImageRequired',
+            'mail.required' => 'authentication.emailRequired',
+            'address.text.required' => 'divers.addressTextRequired',
+            'address.map.required' => 'divers.addressMapRequired',
+            'description.es.required' => 'divers.descriptionRequired',
         ];
     }
 }

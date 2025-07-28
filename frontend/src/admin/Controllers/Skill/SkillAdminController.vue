@@ -4,7 +4,7 @@ import { useToast } from 'primevue/usetoast'
 import { computed, onMounted, ref } from 'vue'
 import { useAdminSkillStore } from '@/admin/stores/SkillAdminStore'
 import { showErrorToast, showSuccessToast } from '@/admin/Services/Helpers'
-import { capitalizeFirstLetter } from '@/shared/services/Helpers'
+import { capitalizeFirstLetter, choseCurrentLanguage } from '@/shared/services/Helpers'
 import { useI18n } from 'vue-i18n'
 import { Languages, locale } from '@/shared/services/Translation'
 
@@ -17,8 +17,8 @@ const currentLang = locale
 const skillTransformed = computed(() => {
   return skillAdminStore.skills.map((skill) => ({
     ...skill,
-    nameTrans: currentLang.value === Languages.English ?
-      skill.name.en : skill.name.es
+    published: skill.published ? capitalizeFirstLetter(t('commun.yes')) : capitalizeFirstLetter(t('commun.no')),
+    nameTrans: choseCurrentLanguage(skill.name, currentLang.value),
   }))
 })
 
@@ -46,10 +46,10 @@ async function deleteSkill(id) {
     try {
     await skillAdminStore.deleteSkill(id)
 
-    showSuccessToast(toast, t, 'skillDeletedSuccessfully', 3000)
+    showSuccessToast(toast, t, 'skills.skillDeletedSuccessfully', 3000)
     skill.value = {}
   } catch (err) {
-    showErrorToast(toast, t, err, 'errorSavingSkill')
+    showErrorToast(toast, t, err, 'skills.errorSavingSkill')
   }
   skill.value = {}
 }
@@ -71,9 +71,9 @@ async function deleteSelectedSkills() {
     selectedSkills.value = [];
     deleteSkillsDialog.value = false;
     
-    showSuccessToast(toast, t, 'skillsDeleted', 3000);
+    showSuccessToast(toast, t, 'skills.skillsDeleted', 3000);
   } catch (err) {
-    showErrorToast(toast, t, err, 'errorDeletingSkills');
+    showErrorToast(toast, t, err, 'skills.errorDeletingSkills');
   }
 }
 </script>
@@ -86,7 +86,7 @@ async function deleteSelectedSkills() {
           <RouterLink 
                 :to="{ name: 'adminSkillCreate'}">
           <Button
-            :label="capitalizeFirstLetter(t('new'))"
+            :label="capitalizeFirstLetter(t('commun.new'))"
             icon="pi pi-plus"
             severity="secondary"
             class="mr-2"
@@ -94,7 +94,7 @@ async function deleteSelectedSkills() {
           />
           </RouterLink>
           <Button
-            :label="capitalizeFirstLetter(t('delete'))"
+            :label="capitalizeFirstLetter(t('commun.delete'))"
             icon="pi pi-trash"
             severity="secondary"
             @click="confirmDeleteSelected"
@@ -113,25 +113,25 @@ async function deleteSelectedSkills() {
         :filters="filters"
         paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
         :rowsPerPageOptions="[5, 10, 25]"
-        :currentPageReportTemplate="capitalizeFirstLetter(t('showingSkills'))"
+        :currentPageReportTemplate="capitalizeFirstLetter(t('skills.showingSkills'))"
       >
         <template #header>
           <div class="flex flex-wrap gap-2 items-center justify-between">
-            <h4 class="m-0">{{ capitalizeFirstLetter(t('manageSkill')) }}</h4>
+            <h4 class="m-0">{{ capitalizeFirstLetter(t('skills.manageSkill')) }}</h4>
             <IconField>
               <InputIcon>
                 <i class="pi pi-search" />
               </InputIcon>
-              <InputText v-model="filters['global'].value" :placeholder="`${capitalizeFirstLetter(t('search'))} ...`" />
+              <InputText v-model="filters['global'].value" :placeholder="`${capitalizeFirstLetter(t('commun.search'))} ...`" />
             </IconField>
           </div>
         </template>
 
         <Column selectionMode="multiple" style="width: 3rem" :exportable="false"></Column>
         <Column field="id" header="ID" sortable style="min-width: 2rem"></Column>
-        <Column field="published" :header="capitalizeFirstLetter(t('published'))" sortable style="min-width: 2rem"></Column>
-        <Column field="nameTrans" :header="capitalizeFirstLetter(t('name'))" sortable style="min-width: 16rem"></Column>
-        <Column :header="capitalizeFirstLetter(t('image'))">
+        <Column field="published" :header="capitalizeFirstLetter(t('news.published'))" sortable style="min-width: 2rem"></Column>
+        <Column field="nameTrans" :header="capitalizeFirstLetter(t('artists.name'))" sortable style="min-width: 16rem"></Column>
+        <Column :header="capitalizeFirstLetter(t('commun.image'))">
           <template #body="slotProps">
             <img
               :src="`${baseUrl}/${slotProps.data.profile_image}`"
@@ -141,7 +141,7 @@ async function deleteSelectedSkills() {
             />
           </template>
         </Column>
-        <Column :header="capitalizeFirstLetter(t('actions'))" :exportable="false" style="min-width: 12rem">
+        <Column :header="capitalizeFirstLetter(t('commun.actions'))" :exportable="false" style="min-width: 12rem">
           <template #body="slotProps">
             <RouterLink 
                 :to="{ name: 'adminSkillEdit', params: { id: slotProps.data.id } }">
@@ -167,35 +167,35 @@ async function deleteSelectedSkills() {
     <Dialog
       v-model:visible="deleteSkillDialog"
       :style="{ width: '450px' }"
-      :header="capitalizeFirstLetter(t('confirm'))"
+      :header="capitalizeFirstLetter(t('commun.confirm'))"
       :modal="true"
     >
       <div class="flex items-center gap-4">
         <i class="pi pi-exclamation-triangle !text-3xl" />
         <span v-if="skill"
-          >{{ capitalizeFirstLetter(t('sureDelete')) }} <b>{{ skill.nameTrans }}</b
+          >{{ capitalizeFirstLetter(t('artists.sureDelete')) }} <b>{{ choseCurrentLanguage(skill.name, currentLang) }}</b
           >?</span
         >
       </div>
       <template #footer>
-        <Button :label="capitalizeFirstLetter(t('no'))" icon="pi pi-times" text @click="deleteSkillDialog = false" />
-        <Button :label="capitalizeFirstLetter(t('yes'))" icon="pi pi-check" @click="deleteSkill(skill.id)" />
+        <Button :label="capitalizeFirstLetter(t('commun.no'))" icon="pi pi-times" text @click="deleteSkillDialog = false" />
+        <Button :label="capitalizeFirstLetter(t('commun.yes'))" icon="pi pi-check" @click="deleteSkill(skill.id)" />
       </template>
     </Dialog>
 
     <Dialog
       v-model:visible="deleteSkillsDialog"
       :style="{ width: '450px' }"
-      :header="capitalizeFirstLetter(t('confirm'))"
+      :header="capitalizeFirstLetter(t('commun.confirm'))"
       :modal="true"
     >
       <div class="flex items-center gap-4">
         <i class="pi pi-exclamation-triangle !text-3xl" />
-        <span v-if="skill">{{ capitalizeFirstLetter(t('sureDeleteSelectedSkills')) }}</span>
+        <span v-if="skill">{{ capitalizeFirstLetter(t('skills.sureDeleteSelectedSkills')) }}</span>
       </div>
       <template #footer>
-        <Button :label="capitalizeFirstLetter(t('no'))" icon="pi pi-times" text @click="deleteSkillsDialog = false" />
-        <Button :label="capitalizeFirstLetter(t('yes'))" icon="pi pi-check" @click="deleteSelectedSkills" />
+        <Button :label="capitalizeFirstLetter(t('commun.no'))" icon="pi pi-times" text @click="deleteSkillsDialog = false" />
+        <Button :label="capitalizeFirstLetter(t('commun.yes'))" icon="pi pi-check" @click="deleteSelectedSkills" />
       </template>
     </Dialog>
   </div>

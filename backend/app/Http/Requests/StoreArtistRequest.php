@@ -27,9 +27,9 @@ class StoreArtistRequest extends FormRequest
             'user.email' => 'required_without:user_id|email|unique:users,email',
             'user.name' => 'required_without:user_id|string|max:255',
             'user.lastname' => 'required_without:user_id|string|max:255',            
-            'minibio.en' => 'required|string|min:20|max:160',
+            'minibio.en' => 'nullable|string|min:20|max:160',
             'minibio.es' => 'required|string|min:20|max:160',
-            'bio.en' => 'required|string|min:100',
+            'bio.en' => 'nullable|string|min:100',
             'bio.es' => 'required|string|min:100',
             'social_links.website' => 'nullable|url',
             'social_links.instagram' => 'nullable|string|max:255',
@@ -37,6 +37,20 @@ class StoreArtistRequest extends FormRequest
             'social_links.flickr' => 'nullable|url',
             'skills' => 'sometimes|array',
             'skills.*' => 'exists:skills,id'
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'user.name.required' => 'artists.nameRequired',
+            'user.lastname.required' => 'artists.lastNameRequired',
+            'minibio.es.required' => 'artists.minibioRequired',
+            'minibio.es.min' => 'artists.minibioMin',
+            'bio.es.required' => 'artists.bioRequired',
+            'bio.es.min' => 'artists.bioMin',
+            'skills.required' => 'divers.selectRequired',
+            'skills.min' => 'divers.selectRequired',
         ];
     }
 }

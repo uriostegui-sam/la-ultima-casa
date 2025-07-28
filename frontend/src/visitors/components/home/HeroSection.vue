@@ -4,7 +4,7 @@ import { useI18n } from 'vue-i18n'
 import ActionButton from '../ActionButton.vue'
 import ArrowRightIcon from '@/visitors/assets/Icons/arrow-right-solid.svg'
 import { computed, onMounted, ref } from 'vue'
-import { capitalizeFirstLetter } from '@/shared/services/Helpers'
+import { capitalizeFirstLetter, choseCurrentLanguage } from '@/shared/services/Helpers'
 import { useAdminAboutUsStore } from '@/admin/stores/AboutUsAdminStore'
 import type { AboutUs } from '@/shared/Interfaces/AboutUs'
 import { Languages, locale } from '@/shared/services/Translation'
@@ -60,33 +60,23 @@ const imageSrc = computed(() => {
 })
 
 const firstTitle = computed(() =>
-  currentLang.value === Languages.English
-    ? firstWorkshop.value?.title?.en
-    : firstWorkshop.value?.title?.es,
+  choseCurrentLanguage(firstWorkshop.value?.title ?? {}, currentLang.value)
 )
 
 const secondTitle = computed(() =>
-  currentLang.value === Languages.English
-    ? secondWorkshop.value?.title?.en
-    : secondWorkshop.value?.title?.es,
+  choseCurrentLanguage(secondWorkshop.value?.title ?? {}, currentLang.value)
 )
 
 const firstDescription = computed(() =>
-  currentLang.value === Languages.English
-    ? firstWorkshop.value?.description?.en
-    : firstWorkshop.value?.description?.es,
+  choseCurrentLanguage(firstWorkshop.value?.description ?? {}, currentLang.value)
 )
 
 const secondDescription = computed(() =>
-  currentLang.value === Languages.English
-    ? secondWorkshop.value?.description?.en
-    : secondWorkshop.value?.description?.es,
+  choseCurrentLanguage(secondWorkshop.value?.description ?? {}, currentLang.value)
 )
 
 const aboutUsDescription = computed(() => {
-  return currentLang.value === Languages.English
-    ? (aboutUs.value?.description?.en ?? null)
-    : (aboutUs.value?.description?.es ?? null)
+  return choseCurrentLanguage(aboutUs.value?.description ?? {}, currentLang.value)
 })
 
 const description = computed(() => {
@@ -96,7 +86,7 @@ const description = computed(() => {
 
 const buttonColor = computed(() => (props.reverse ? '--color-salmon' : '--color-teal'))
 const buttonText = computed(() =>
-  props.first ? capitalizeFirstLetter(t('join')) : capitalizeFirstLetter(t('explore')),
+  props.first ? capitalizeFirstLetter(t('courses.join')) : capitalizeFirstLetter(t('courses.explore')),
 )
 
 onMounted(async () => {

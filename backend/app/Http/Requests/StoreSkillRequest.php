@@ -23,9 +23,19 @@ class StoreSkillRequest extends FormRequest
     {
         return [
             'name.es' => 'required|string|max:255',
-            'name.en' => 'required|string|max:255',
+            'name.en' => 'nullable|string|max:255',
             'profile_image' => 'sometimes|image|mimes:jpeg,png,jpg,gif|max:2048',
             'published' => 'sometimes|boolean',
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'name.es.required' => 'artists.nameRequired',
+            'profile_image.image' => 'divers.profileImageInvalid',
+            'profile_image.mimes' => 'divers.profileImageMimes',
+            'profile_image.max' => 'divers.profileImageMaxSize',
         ];
     }
 }

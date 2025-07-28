@@ -50,10 +50,10 @@ async function handleResetPassword() {
 
     result = await AuthService.resetPasswordWToken(payload)
     emit('success', result)
-    showSuccessToast(toast, t, 'resetPasswordSuccess', 3000)
+    showSuccessToast(toast, t, 'authentication.resetPasswordSuccess', 3000)
     isPasswordForgotten.value = false
   } catch (err: any) {
-    showErrorToast(toast, t, err, 'resetPasswordError')
+    showErrorToast(toast, t, err, 'authentication.resetPasswordError')
   } finally {
     loading.value = false
   }
@@ -87,13 +87,13 @@ async function handleLogin() {
           <div class="text-center mb-8 flex flex-col items-center">
             <Logo class="pb-8" />
             <div class="text-surface-900 dark:text-surface-0 text-3xl font-medium mb-4">
-              {{ capitalizeFirstLetter(t('welcomeTo')) }} La Última Casa Admin
+              {{ capitalizeFirstLetter(t('navigation.welcomeTo')) }} La Última Casa Admin
             </div>
             <span v-if="!isPasswordForgotten" class="text-muted-color font-medium">{{
-              capitalizeFirstLetter(t('signInCont'))
+              capitalizeFirstLetter(t('authentication.signInCont'))
             }}</span>
             <span v-if="isPasswordForgotten" class="text-muted-color font-medium">{{
-              capitalizeFirstLetter(t('askToken'))
+              capitalizeFirstLetter(t('authentication.askToken'))
             }}</span>
           </div>
 
@@ -108,12 +108,12 @@ async function handleLogin() {
               <label
                 for="email1"
                 class="block text-surface-900 dark:text-surface-0 text-xl font-medium mb-2"
-                >{{ capitalizeFirstLetter(t('email')) }}</label
+                >{{ capitalizeFirstLetter(t('authentication.email')) }}</label
               >
               <InputText
                 id="email1"
                 type="email"
-                :placeholder="capitalizeFirstLetter(t('email'))"
+                :placeholder="capitalizeFirstLetter(t('authentication.email'))"
                 class="w-full mb-8"
                 v-model="credentials.email"
                 :disabled="loading"
@@ -121,12 +121,12 @@ async function handleLogin() {
               <label
                 for="password1"
                 class="block text-surface-900 dark:text-surface-0 font-medium text-xl mb-2"
-                >{{ capitalizeFirstLetter(t('password')) }}</label
+                >{{ capitalizeFirstLetter(t('authentication.password')) }}</label
               >
               <Password
                 id="password1"
                 v-model="credentials.password"
-                :placeholder="capitalizeFirstLetter(t('password'))"
+                :placeholder="capitalizeFirstLetter(t('authentication.password'))"
                 :toggleMask="true"
                 class="mb-8"
                 fluid
@@ -141,32 +141,32 @@ async function handleLogin() {
               
               <InputText
                 v-model="currentReset.token"
-                :placeholder="capitalizeFirstLetter(t('writeToken'))"
+                :placeholder="capitalizeFirstLetter(t('authentication.writeToken'))"
                 class="w-full mb-8"
               />
 
               <label class="block text-surface-900 dark:text-surface-0 font-medium text-xl mb-2">{{
-                capitalizeFirstLetter(t('newPassword'))
+                capitalizeFirstLetter(t('authentication.newPassword'))
               }}</label>
               
               <Password
                 v-model="currentReset.new_password"
-                :placeholder="capitalizeFirstLetter(t('writeNewPassword'))"
+                :placeholder="capitalizeFirstLetter(t('authentication.writeNewPassword'))"
                 class="w-full mb-8"
                 :style="{ width: '100%' }"
                 :inputStyle="{ width: '100%' }"
-                :weakLabel="capitalizeFirstLetter(t('weakLabel'))"
-                :mediumLabel="capitalizeFirstLetter(t('mediumLabel'))"
-                :strongLabel="capitalizeFirstLetter(t('strongLabel'))"
+                :weakLabel="capitalizeFirstLetter(t('authentication.weakLabel'))"
+                :mediumLabel="capitalizeFirstLetter(t('authentication.mediumLabel'))"
+                :strongLabel="capitalizeFirstLetter(t('authentication.strongLabel'))"
                 :toggleMask="true"
               />
 
               <label class="block text-surface-900 dark:text-surface-0 font-medium text-xl mb-2">{{
-                capitalizeFirstLetter(t('newPasswordAgain'))
+                capitalizeFirstLetter(t('authentication.newPasswordAgain'))
               }}</label>
               <Password
                 v-model="currentReset.new_password_confirmation"
-                :placeholder="capitalizeFirstLetter(t('writeNewPasswordAgain'))"
+                :placeholder="capitalizeFirstLetter(t('authentication.writeNewPasswordAgain'))"
                 class="w-full mb-8"
                 :style="{ width: '100%' }"
                 :inputStyle="{ width: '100%' }"
@@ -182,25 +182,25 @@ async function handleLogin() {
                   class="mr-2"
                   :disabled="loading"
                 ></Checkbox>
-                <label for="rememberme1">{{ capitalizeFirstLetter(t('rememberMe')) }}</label>
+                <label for="rememberme1">{{ capitalizeFirstLetter(t('authentication.rememberMe')) }}</label>
               </div>
               <span
                 class="font-medium no-underline ml-2 text-right cursor-pointer text-primary"
                 @click="passwordForgotten"
-                >{{ capitalizeFirstLetter(t('forgotPassword')) }}</span
+                >{{ capitalizeFirstLetter(t('authentication.forgotPassword')) }}</span
               >
             </div>
             <div v-else class="flex items-center justify-between mt-2 mb-8 gap-8">
               <span
                 class="font-medium no-underline ml-2 text-right cursor-pointer text-primary"
                 @click="passwordForgotten"
-                >{{ capitalizeFirstLetter(t('iRememberPassword')) }}</span
+                >{{ capitalizeFirstLetter(t('authentication.iRememberPassword')) }}</span
               >
             </div>
 
             <div v-if="!isPasswordForgotten">
               <Button
-                :label="capitalizeFirstLetter(t('signIn'))"
+                :label="capitalizeFirstLetter(t('authentication.signIn'))"
                 severity="warn"
                 class="w-full bg-salmon"
                 @click="handleLogin"
@@ -210,7 +210,7 @@ async function handleLogin() {
             </div>
             <div v-else>
               <Button
-                :label="capitalizeFirstLetter(t('resetPassword'))"
+                :label="capitalizeFirstLetter(t('authentication.resetPassword'))"
                 severity="warn"
                 class="w-full bg-salmon"
                 @click="handleResetPassword"

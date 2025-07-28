@@ -28,4 +28,14 @@ class RegisterRequest extends FormRequest
             'password' => 'required|string|min:8|confirmed'
         ];
     }
+
+    public function messages()
+    {
+        return [
+            'first_name.required' => 'artists.nameRequired',
+            'last_name.required' => 'artists.lastNameRequired',
+            'email.required' => 'authentication.emailRequired',
+            'password.required' => 'authentication.passwordRequired',
+        ];
+    }
 }

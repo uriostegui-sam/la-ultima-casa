@@ -4,7 +4,7 @@ import { useAdminWorkshopStore } from '@/admin/stores/WorkshopAdminStore'
 import { useAdminSkillStore } from '@/admin/stores/SkillAdminStore'
 import { Languages, locale } from '@/shared/services/Translation'
 import { useI18n } from 'vue-i18n'
-import { capitalizeFirstLetter } from '@/shared/services/Helpers'
+import { capitalizeFirstLetter, choseCurrentLanguage } from '@/shared/services/Helpers'
 import { useRoute, useRouter } from 'vue-router'
 import { useToast } from 'primevue/usetoast'
 import { showErrorToast, showSuccessToast } from '@/admin/Services/Helpers'
@@ -43,13 +43,13 @@ const currentWorkshopSkills = ref<number[]>([])
 const workshop = ref<Workshop | null>(null)
 
 const selectButtonValues = computed(() => [
-  { name: capitalizeFirstLetter(t('permanent')), value: 'permanent' },
-  { name: capitalizeFirstLetter(t('temporary')), value: 'temporary' },
+  { name: capitalizeFirstLetter(t('workshop.permanent')), value: 'permanent' },
+  { name: capitalizeFirstLetter(t('workshop.temporary')), value: 'temporary' },
 ])
 
 const skillOptions = computed(() =>
   skillAdminStore.skills.map((skill) => ({
-    label: currentLang.value === Languages.English ? skill.name.en : skill.name.es,
+    label: choseCurrentLanguage(skill.name, currentLang.value),
     value: skill.id,
   })),
 )
@@ -90,8 +90,8 @@ watch(isFeatured, (val) => {
 })
 
 const isFeaturedButtonValues = computed(() => [
-  { name: capitalizeFirstLetter(t('yes')), value: true },
-  { name: capitalizeFirstLetter(t('no')), value: false },
+  { name: capitalizeFirstLetter(t('commun.yes')), value: true },
+  { name: capitalizeFirstLetter(t('commun.no')), value: false },
 ])
 
 
@@ -172,21 +172,21 @@ const handleSubmit = async () => {
     }
 
     emit('success', result)
-    showSuccessToast(toast, t, 'workshopSavedSuccessfully', 3000)
+    showSuccessToast(toast, t, 'workshop.workshopSavedSuccessfully', 3000)
   } catch (err: unknown) {
-    showErrorToast(toast, t, err, 'errorSavingWorkshop')
+    showErrorToast(toast, t, err, 'workshop.errorSavingWorkshop')
   }
 }
 </script>
 
 <template>
-  <TitleForm title="workshop" :isCreateMode="!isEditMode" />
+  <TitleForm title="workshop.workshop" :isCreateMode="!isEditMode" :goBack="true" />
   <div v-if="currentWorkshop" class="card">
     <form @submit.prevent="handleSubmit" class="space-y-6">
       <!-- Profile Image Upload -->
       <div class="flex flex-wrap justify-center flex-col">
         <label class="block font-semibold mb-1 text-center">{{
-          capitalizeFirstLetter(t('coverImage'))
+          capitalizeFirstLetter(t('commun.coverImage'))
         }}</label>
         <div v-if="profileImagePreview" class="my-4 mb-10 relative w-32 h-32 m-auto">
           <img :src="profileImagePreview" class="w-full h-full object-cover rounded-full" />
@@ -207,12 +207,12 @@ const handleSubmit = async () => {
             mode="advanced"
             :auto="false"
             customUpload
-            :chooseLabel="capitalizeFirstLetter(t('selectImages'))"
-            :uploadLabel="capitalizeFirstLetter(t('upload'))"
-            :cancelLabel="capitalizeFirstLetter(t('cancel'))"
+            :chooseLabel="capitalizeFirstLetter(t('commun.selectImages'))"
+            :uploadLabel="capitalizeFirstLetter(t('commun.upload'))"
+            :cancelLabel="capitalizeFirstLetter(t('commun.cancel'))"
           >
             <template #empty>
-              <p>{{ capitalizeFirstLetter(t('dragDrop')) }}</p>
+              <p>{{ capitalizeFirstLetter(t('artworks.dragDrop')) }}</p>
             </template>
           </FileUpload>
         </div>
@@ -221,7 +221,7 @@ const handleSubmit = async () => {
       <div v-if="isAdmin"
         class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
-          <label class="block font-semibold mb-1">{{ `${capitalizeFirstLetter(t('en portada'))}` }}</label>
+          <label class="block font-semibold mb-1">{{ `${capitalizeFirstLetter(t('workshop.inFrontPage'))}` }}</label>
           <SelectButton
             v-model="isFeatured"
             :options="isFeaturedButtonValues"
@@ -231,7 +231,7 @@ const handleSubmit = async () => {
         </div>
 
         <div v-if="isFeatured" class="mt-2">
-          <label class="block font-semibold mb-1">{{ `${capitalizeFirstLetter(t('position en portada'))}` }}</label>
+          <label class="block font-semibold mb-1">{{ `${capitalizeFirstLetter(t('workshop.positionInFrontPage'))}` }}</label>
           <Select
             v-model="featuredPosition"
             :options="[1, 2]"
@@ -244,21 +244,21 @@ const handleSubmit = async () => {
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
           <label class="block font-semibold mb-1">{{
-            `${capitalizeFirstLetter(t('title'))} ${capitalizeFirstLetter(t('english'))}`
+            `${capitalizeFirstLetter(t('commun.title'))} ${capitalizeFirstLetter(t('navigation.english'))}`
           }}</label>
           <InputText
             v-model="currentWorkshop.title.en"
-            :placeholder="`${capitalizeFirstLetter(t('workshopName'))} ${capitalizeFirstLetter(t('english'))}`"
+            :placeholder="`${capitalizeFirstLetter(t('workshop.workshopName'))} ${capitalizeFirstLetter(t('navigation.english'))}`"
             class="w-full"
           />
         </div>
         <div>
           <label class="block font-semibold mb-1">{{
-            `${capitalizeFirstLetter(t('title'))} ${capitalizeFirstLetter(t('spanish'))}`
+            `${capitalizeFirstLetter(t('commun.title'))} ${capitalizeFirstLetter(t('navigation.spanish'))}`
           }}</label>
           <InputText
             v-model="currentWorkshop.title.es"
-            :placeholder="`${capitalizeFirstLetter(t('workshopName'))} ${capitalizeFirstLetter(t('spanish'))}`"
+            :placeholder="`${capitalizeFirstLetter(t('workshop.workshopName'))} ${capitalizeFirstLetter(t('navigation.spanish'))}`"
             class="w-full"
           />
         </div>
@@ -268,13 +268,13 @@ const handleSubmit = async () => {
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
           <label class="block font-semibold mb-1">{{
-            `${capitalizeFirstLetter(t('description'))} ${capitalizeFirstLetter(t('english'))}`
+            `${capitalizeFirstLetter(t('commun.description'))} ${capitalizeFirstLetter(t('navigation.english'))}`
           }}</label>
           <Textarea v-model="currentWorkshop.description.en" rows="2" class="w-full" />
         </div>
         <div>
           <label class="block font-semibold mb-1">{{
-            `${capitalizeFirstLetter(t('description'))} ${capitalizeFirstLetter(t('spanish'))}`
+            `${capitalizeFirstLetter(t('commun.description'))} ${capitalizeFirstLetter(t('navigation.spanish'))}`
           }}</label>
           <Textarea v-model="currentWorkshop.description.es" rows="2" class="w-full" />
         </div>
@@ -284,7 +284,7 @@ const handleSubmit = async () => {
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
           <label class="block font-semibold mb-1">{{
-            `${capitalizeFirstLetter(t('type'))}`
+            `${capitalizeFirstLetter(t('commun.type'))}`
           }}</label>
           <SelectButton
             v-model="selectButtonValue"
@@ -295,7 +295,7 @@ const handleSubmit = async () => {
         </div>
         <!-- Artist Selection -->
         <div>
-          <label class="block mb-2 font-medium">{{ capitalizeFirstLetter(t('artist')) }}</label>
+          <label class="block mb-2 font-medium">{{ capitalizeFirstLetter(t('artists.artist')) }}</label>
           <Select
             v-model="currentWorkshop.artist_id"
             :options="artists"
@@ -311,7 +311,7 @@ const handleSubmit = async () => {
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
           <label class="block font-semibold mb-1">{{
-            `${capitalizeFirstLetter(t('startDate'))}`
+            `${capitalizeFirstLetter(t('workshop.startDate'))}`
           }}</label>
           <Calendar
             v-model="currentWorkshop.start_date"
@@ -322,7 +322,7 @@ const handleSubmit = async () => {
         </div>
         <div>
           <label class="block font-semibold mb-1">{{
-            `${capitalizeFirstLetter(t('endDate'))}`
+            `${capitalizeFirstLetter(t('workshop.endDate'))}`
           }}</label>
           <Calendar
             v-model="currentWorkshop.end_date"
@@ -336,12 +336,12 @@ const handleSubmit = async () => {
       <!-- Skills -->
       <div>
         <label class="block font-semibold mb-1">{{
-          capitalizeFirstLetter(t('selectSkillsWorkshop'))
+          capitalizeFirstLetter(t('skills.selectSkillsWorkshop'))
         }}</label>
         <MultiSelect
           v-model="currentWorkshopSkills"
           :options="skillOptions"
-          :placeholder="capitalizeFirstLetter(t('selectSkillsWorkshop'))"
+          :placeholder="capitalizeFirstLetter(t('skills.selectSkillsWorkshop'))"
           class="w-full"
           option-label="label"
           option-value="value"
@@ -351,20 +351,20 @@ const handleSubmit = async () => {
       <!-- Details -->
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
-          <label class="block font-semibold mb-1">{{ capitalizeFirstLetter(t('price')) }}</label>
+          <label class="block font-semibold mb-1">{{ capitalizeFirstLetter(t('workshop.price')) }}</label>
           <InputNumber
             v-model="currentWorkshop.price"
-            :placeholder="capitalizeFirstLetter(t('price'))"
+            :placeholder="capitalizeFirstLetter(t('workshop.price'))"
             class="w-full"
           />
         </div>
         <div>
           <label class="block font-semibold mb-1">{{
-            capitalizeFirstLetter(t('maxStudents'))
+            capitalizeFirstLetter(t('workshop.maxStudents'))
           }}</label>
           <InputNumber
             v-model="currentWorkshop.max_students"
-            :placeholder="capitalizeFirstLetter(t('maxStudents'))"
+            :placeholder="capitalizeFirstLetter(t('workshop.maxStudents'))"
             class="w-full"
           />
         </div>
@@ -372,7 +372,7 @@ const handleSubmit = async () => {
 
       <!-- Submit -->
       <Button
-        :label="capitalizeFirstLetter(t('saveWorkshop'))"
+        :label="capitalizeFirstLetter(t('workshop.saveWorkshop'))"
         type="submit"
         class="w-full md:w-auto"
       />

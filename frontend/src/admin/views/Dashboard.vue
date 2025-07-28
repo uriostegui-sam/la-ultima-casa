@@ -37,9 +37,9 @@ onMounted(async () => {
         class="grid grid-cols-12 gap-8">
 
         <div class="col-span-12 flex justify-between">
-            <DashboadCountWidget icon="pi-palette" :title="capitalizeFirstLetter(t('artists'))" :count="artists"/>
-            <DashboadCountWidget icon="pi-pen-to-square" :title="capitalizeFirstLetter(t('artwork'))" :count="artwork"/>
-            <DashboadCountWidget icon="pi-wrench" :title="capitalizeFirstLetter(t('workshops'))" :count="workshops"/>
+            <DashboadCountWidget icon="pi-palette" :title="capitalizeFirstLetter(t('artists.artists'))" :count="artists"/>
+            <DashboadCountWidget icon="pi-pen-to-square" :title="capitalizeFirstLetter(t('artworks.artwork'))" :count="artwork"/>
+            <DashboadCountWidget icon="pi-wrench" :title="capitalizeFirstLetter(t('workshop.workshops'))" :count="workshops"/>
         </div>
         <div class="col-span-12">
             <LatestWorkshopWidget />

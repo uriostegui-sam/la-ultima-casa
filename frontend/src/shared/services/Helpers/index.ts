@@ -1,3 +1,5 @@
+import { Languages } from "../Translation"
+
 export function capitalizeFirstLetter(string?: string): string {
   if (!string) return ''
   return string[0].toUpperCase() + string.slice(1)
@@ -27,4 +29,17 @@ export function formatDateRange(startDateStr: string, endDateStr: string, locale
   const { from, until } = labels[locale as 'en' | 'es'] || labels.en
 
   return `${from} ${startWeekday} ${startDayMonth} ${until} ${endWeekday} ${endDayMonth}`
+}
+
+
+export const choseCurrentLanguage = (
+interfaceObj: Record<string, string>,
+current: Languages
+) => {
+  if (current === Languages.English) {
+    return interfaceObj['en'] ? interfaceObj['en'] : interfaceObj['es']
+  } else if (current === Languages.Spanish) {
+    return interfaceObj['es']
+  }
+  return ''
 }

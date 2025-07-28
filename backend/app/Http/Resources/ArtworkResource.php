@@ -18,8 +18,8 @@ class ArtworkResource extends JsonResource
             'id' => $this->id,
             'title' => $this->title,
             'description' => [
-                'en' => $this->description['en'],
-                'es' => $this->description['es'],
+                'en' => $this->description['en'] ?? '',
+                'es' => $this->description['es'] ?? '',
             ],
             'dimensions' => [
                 'width' => $this->dimensions['width'],

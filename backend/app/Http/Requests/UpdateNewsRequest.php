@@ -23,11 +23,19 @@ class UpdateNewsRequest extends FormRequest
     {
         return [
             'title.en' => 'sometimes|string|max:255',
-            'title.es' => 'sometimes|string|max:255',
+            'title.es' => 'required|string|max:255',
             'content.en' => 'sometimes|string',
-            'content.es' => 'sometimes|string',
+            'content.es' => 'required|string',
             'cover_image' => 'nullable|image|max:2048',
             'published' => 'nullable|boolean',
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'title.es.required' => 'divers.titleRequired',
+            'content.es.required' => 'divers.contentRequired',
         ];
     }
 }

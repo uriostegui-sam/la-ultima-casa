@@ -27,4 +27,14 @@ class UpdatePasswordRequest extends FormRequest
             'newPassword_confirmation' => 'required|string',
         ];
     }
+
+    public function messages()
+    {
+        return [
+            'password.required' => 'authentication.passwordRequired',
+            'newPassword.required' => 'authentication.newPasswordRequired',
+            'newPassword.min' => 'authentication.newPasswordMin',
+            'newPassword_confirmation.required' => 'authentication.newPassword_confirmationRequired',
+        ];
+    }
 }

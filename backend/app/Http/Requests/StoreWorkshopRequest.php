@@ -23,10 +23,10 @@ class StoreWorkshopRequest extends FormRequest
     {
         return [
             'artist_id' => 'required', 'exists:artists,id',
-            'title.en' => 'required|string|max:255',
+            'title.en' => 'nullable|string|max:255',
             'title.es' => 'required|string|max:255',
             'description.en' => 'nullable|string',
-            'description.es' => 'nullable|string',
+            'description.es' => 'required|string',
             'type' => 'required|string|max:255',
             'start_date' => 'nullable|string|max:255',
             'end_date' => 'nullable|string|max:255',
@@ -36,6 +36,19 @@ class StoreWorkshopRequest extends FormRequest
             'skills' => 'required|array',
             'skills.*' => 'exists:skills,id',
             'featured_position' => 'nullable|in:1,2',
+        ];
+    }
+    
+    public function messages()
+    {
+        return [
+            'artist_id.required' => 'divers.artist_idRequired',
+            'title.es.required' => 'divers.titleRequired',
+            'description.es.required' => 'divers.descriptionRequired',
+            'skills.required' => 'divers.selectRequired',
+            'type.required' => 'divers.typeRequired',
+            'price.required' => 'divers.priceRequired',
+            'cover_image.required' => 'divers.coverImageRequired',
         ];
     }
 }

@@ -49,14 +49,14 @@ class UpdateArtistRequest extends FormRequest
     public function messages()
     {
         return [
-            'user.name.required' => 'nameRequired',
-            'user.lastname.required' => 'lastNameRequired',
-            'minibio.es.required' => 'minibioRequired',
-            'minibio.es.min' => 'minibioMin',
-            'bio.es.required' => 'bioRequired',
-            'bio.es.min' => 'bioMin',
-            'skills.required' => 'selectRequired',
-            'skills.min' => 'selectRequired',
+            'user.name.required' => 'artists.nameRequired',
+            'user.lastname.required' => 'artists.lastNameRequired',
+            'minibio.es.required' => 'artists.minibioRequired',
+            'minibio.es.min' => 'artists.minibioMin',
+            'bio.es.required' => 'artists.bioRequired',
+            'bio.es.min' => 'artists.bioMin',
+            'skills.required' => 'divers.selectRequired',
+            'skills.min' => 'divers.selectRequired',
         ];
     }
 }

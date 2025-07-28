@@ -50,14 +50,14 @@ const truncatedDescription = computed(() => {
         </p>
       </div>
       <ActionButton
-        :title="'knowMore'"
+        :title="'divers.knowMore'"
         :color="'--color-salmon'"
         :href="props.id"
         class="hidden md:block"
       />
     </div>
     <ActionButton
-      :title="'knowMore'"
+      :title="'divers.knowMore'"
       :color="'--color-salmon'"
       :href="props.id"
       class="md:hidden justify-self-center"
