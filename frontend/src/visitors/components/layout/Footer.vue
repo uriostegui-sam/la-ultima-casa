@@ -39,8 +39,8 @@ const formattedAddress = computed(() => {
 })
 
 const aboutKeys = [
-  { key: 'whoWeAre', href: '/' },
-  { key: 'courses', href: '/workshops' },
+  { key: 'navigation.whoWeAre', href: '/' },
+  { key: 'courses.courses', href: '/workshops' },
 ]
 
 const contactKeys = computed(() => [
@@ -78,7 +78,7 @@ const contactKeys = computed(() => [
               </div>
             </div>
             <div class="self-start md:hidden block">
-              <h2 class="mb-2 uppercase font-bold">{{ capitalizeFirstLetter($t('aboutUs')) }}</h2>
+              <h2 class="mb-2 uppercase font-bold">{{ capitalizeFirstLetter($t('navigation.aboutUs')) }}</h2>
               <ul>
                 <template v-for="item in aboutKeys" :key="item.key">
                   <li>
@@ -89,7 +89,7 @@ const contactKeys = computed(() => [
                 </template>
               </ul>
               <h2 class="mb-1 mt-4 uppercase font-bold">
-                {{ capitalizeFirstLetter($t('contactUs')) }}
+                {{ capitalizeFirstLetter($t('navigation.contactUs')) }}
               </h2>
               <ul>
                 <template v-for="item in contactKeys" :key="item.key">
@@ -102,7 +102,7 @@ const contactKeys = computed(() => [
           </div>
 
           <div class="px-4 hidden md:block">
-            <h2 class="mb-2 uppercase font-bold">{{ capitalizeFirstLetter($t('aboutUs')) }}</h2>
+            <h2 class="mb-2 uppercase font-bold">{{ capitalizeFirstLetter($t('navigation.aboutUs')) }}</h2>
             <ul>
               <template v-for="item in aboutKeys" :key="item.key">
                 <li>
@@ -113,7 +113,7 @@ const contactKeys = computed(() => [
               </template>
             </ul>
             <h2 class="mb-1 mt-4 uppercase font-bold">
-              {{ capitalizeFirstLetter($t('contactUs')) }}
+              {{ capitalizeFirstLetter($t('navigation.contactUs')) }}
             </h2>
             <ul>
               <template v-for="item in contactKeys" :key="item.key">
@@ -122,13 +122,13 @@ const contactKeys = computed(() => [
                 </li>
               </template>
             </ul>
-            <h2 class="mb-1 mt-4 uppercase font-bold">{{ capitalizeFirstLetter($t('comeMeetUs')) }}</h2>
+            <h2 class="mb-1 mt-4 uppercase font-bold">{{ capitalizeFirstLetter($t('navigation.comeMeetUs')) }}</h2>
             <p v-html="formattedAddress"></p>
           </div>
 
           <div class="flex flex-col justify-between px-4">
             <div class="md:hidden block">
-              <h2 class="mb-1 mt-4 uppercase font-bold">{{ capitalizeFirstLetter($t('comeMeetUs')) }}</h2>
+              <h2 class="mb-1 mt-4 uppercase font-bold">{{ capitalizeFirstLetter($t('navigation.comeMeetUs')) }}</h2>
               <p class="mb-4" v-html="formattedAddress"></p>       
             </div>
             <div ref="iframeContainer" v-html="aboutUs.address.map" class="box-content h-full"></div>

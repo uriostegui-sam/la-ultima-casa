@@ -75,8 +75,8 @@ watch(locale, () => {
       :subtitle="skillsTransformed"
       :type="
         currentWorkshop.type === 'permanent'
-          ? 'typeOfWorkshopPerm'
-          : 'typeOfWorkshopTemp'
+          ? 'workshop.typeOfWorkshopPerm'
+          : 'workshop.typeOfWorkshopTemp'
       "
       :cover-image="`${baseUrl}/${currentWorkshop.cover_image_path}`"
       :artist="capitalizeFirstLetter(currentWorkshop.artist?.name)"

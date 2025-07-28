@@ -23,7 +23,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <Title :title="capitalizeFirstLetter($t('latestNews'))" />
+  <Title :title="capitalizeFirstLetter($t('news.latestNews'))" />
   <section class="lg:pb-15 lg:pt-5 px-10 mx-auto pb-8 max-w-screen-2xl">
     <div class="flex flex-wrap gap-y-7 gap-x-20">
       <CourseCard

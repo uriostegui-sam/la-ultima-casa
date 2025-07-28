@@ -96,7 +96,7 @@ const description = computed(() => {
 
 const buttonColor = computed(() => (props.reverse ? '--color-salmon' : '--color-teal'))
 const buttonText = computed(() =>
-  props.first ? capitalizeFirstLetter(t('join')) : capitalizeFirstLetter(t('explore')),
+  props.first ? capitalizeFirstLetter(t('courses.join')) : capitalizeFirstLetter(t('courses.explore')),
 )
 
 onMounted(async () => {

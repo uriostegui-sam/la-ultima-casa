@@ -45,7 +45,7 @@ onMounted(async () => {
 </script>
 
 <template class="flex flex-col justify-between">
-  <Title :title="capitalizeFirstLetter($t('workshops'))" />
+  <Title :title="capitalizeFirstLetter($t('workshop.workshops'))" />
   <MenuFilter :active="activeFilter" :temporary="existsTemporary" :permanent="existsPermanent" @change="activeFilter = $event" class="mb-12" />
   <section class="lg:pb-15 lg:pt-5 px-10 mx-auto max-w-screen-2xl">
     <div class="flex flex-wrap gap-y-7 gap-x-20">

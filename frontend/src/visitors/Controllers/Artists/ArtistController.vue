@@ -24,7 +24,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <Title :title="capitalizeFirstLetter($t('artists'))" />
+  <Title :title="capitalizeFirstLetter($t('artists.artists'))" />
   <section class="md:pb-15 md:pt-5 px-10 mx-auto max-w-screen-2xl">
     <div class="flex flex-wrap gap-y-7 md:gap-x-20">
       <CourseCard

@@ -21,7 +21,7 @@ onMounted(async () => {
 <template>
   <section class="pb-15 pt-5 px-10 max-w-9xl mx-auto">
     <div class="container bg-(--color-light-salmon) rounded-xl lg:px-15 px-5 py-16 mx-auto">
-      <h2 class="section-title text-center font-title md:text-5xl text-2xl pb-5 lg:pb-14">{{ capitalizeFirstLetter($t('ourTechniques'))}}</h2>
+      <h2 class="section-title text-center font-title md:text-5xl text-2xl pb-5 lg:pb-14">{{ capitalizeFirstLetter($t('courses.ourTechniques'))}}</h2>
       <div class="flex flex-wrap justify-center gap-y-3">
         <div
             v-for="(skill, index) in skillTransformed"
