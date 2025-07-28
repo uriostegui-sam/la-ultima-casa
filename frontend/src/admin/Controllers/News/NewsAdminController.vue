@@ -171,7 +171,7 @@ async function deleteSelectedNewss() {
       <div class="flex items-center gap-4">
         <i class="pi pi-exclamation-triangle !text-3xl" />
         <span v-if="news"
-          >{{ capitalizeFirstLetter(t('artists.sureDelete')) }} <b>{{ news.nameTrans }}</b
+          >{{ capitalizeFirstLetter(t('artists.sureDelete')) }} <b>{{ choseCurrentLanguage(news.title, currentLang) }}</b
           >?</span
         >
       </div>

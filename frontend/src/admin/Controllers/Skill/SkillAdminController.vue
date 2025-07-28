@@ -173,7 +173,7 @@ async function deleteSelectedSkills() {
       <div class="flex items-center gap-4">
         <i class="pi pi-exclamation-triangle !text-3xl" />
         <span v-if="skill"
-          >{{ capitalizeFirstLetter(t('artists.sureDelete')) }} <b>{{ skill.nameTrans }}</b
+          >{{ capitalizeFirstLetter(t('artists.sureDelete')) }} <b>{{ choseCurrentLanguage(skill.name, currentLang) }}</b
           >?</span
         >
       </div>

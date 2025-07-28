@@ -226,7 +226,7 @@ async function deleteSelectedWorkshops() {
       <div class="flex items-center gap-4">
         <i class="pi pi-exclamation-triangle !text-3xl" />
         <span v-if="workshop"
-          >{{ capitalizeFirstLetter(t('artists.sureDelete')) }} <b>{{ workshop.name }}</b
+          >{{ capitalizeFirstLetter(t('artists.sureDelete')) }} <b>{{ choseCurrentLanguage(workshop.title, currentLang) }}</b
           >?</span
         >
       </div>
@@ -253,7 +253,7 @@ async function deleteSelectedWorkshops() {
     >
       <div class="flex items-center gap-4">
         <i class="pi pi-exclamation-triangle !text-3xl" />
-        <span v-if="workshop">{{ capitalizeFirstLetter(t('sureDeleteSelectedWorkshops')) }}</span>
+        <span v-if="workshop">{{ capitalizeFirstLetter(t('workshop.sureDeleteSelectedWorkshops')) }}</span>
       </div>
       <template #footer>
         <Button
