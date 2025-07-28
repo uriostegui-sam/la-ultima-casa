@@ -16,7 +16,7 @@ export const useNewsStore = defineStore('news', {
       this.error = null
       try {
         const response = await NewsService.getNews(params)
-        this.news = response.data
+        this.news = response
       } catch (err: any) {
         this.error = err.message || 'Failed to get news'
       } finally {

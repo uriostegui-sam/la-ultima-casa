@@ -23,8 +23,8 @@ class UpdateArtworkRequest extends FormRequest
     {
         return [
             'title' => 'sometimes|string|max:255',
-            'description.en' => 'nullable|string',
-            'description.es' => 'nullable|string',
+            'description.en' => 'sometimes|string',
+            'description.es' => 'required|string',
             'dimensions.width' => 'nullable|numeric',
             'dimensions.height' => 'nullable|numeric',
             'dimensions.depth' => 'nullable|numeric',
@@ -32,6 +32,13 @@ class UpdateArtworkRequest extends FormRequest
             'images' => 'sometimes|array',
             'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
             'images_to_delete' => 'sometimes|json',
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'description.es.required' => 'divers.descriptionRequired',
         ];
     }
 }

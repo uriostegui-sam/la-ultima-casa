@@ -23,10 +23,10 @@ class UpdateWorkshopRequest extends FormRequest
     {
         return [
             'artist_id' => 'required', 'exists:artists,id',
-            'title.en' => 'sometimes|string|max:255',
+            'title.en' => 'required|string|max:255',
             'title.es' => 'sometimes|string|max:255',
-            'description.en' => 'nullable|string',
-            'description.es' => 'nullable|string',
+            'description.en' => 'sometimes|string',
+            'description.es' => 'required|string',
             'type' => 'sometimes|string|max:255',
             'start_date' => 'sometimes|string|max:255',
             'end_date' => 'nullable|string|max:255',
@@ -36,6 +36,16 @@ class UpdateWorkshopRequest extends FormRequest
             'skills' => 'required|array',
             'skills.*' => 'exists:skills,id',
             'featured_position' => 'nullable|in:1,2',
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'artist_id.required' => 'divers.artist_idRequired',
+            'title.es.required' => 'divers.titleRequired',
+            'description.es.required' => 'divers.descriptionRequired',
+            'skills.required' => 'divers.selectRequired',
         ];
     }
 }

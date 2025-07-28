@@ -47,10 +47,10 @@ async function deleteArtist(id) {
     try {
     await artistAdminStore.deleteArtist(id)
 
-    showSuccessToast(toast, t, 'artistDeletedSuccessfully', 3000)
+    showSuccessToast(toast, t, 'artists.artistDeletedSuccessfully', 3000)
     artist.value = {}
   } catch (err) {
-    showErrorToast(toast, t, err, 'errorSavingArtist')
+    showErrorToast(toast, t, err, 'artists.errorSavingArtist')
   }
   artist.value = {}
 }
@@ -72,9 +72,9 @@ async function deleteSelectedArtists() {
     selectedArtists.value = [];
     deleteArtistsDialog.value = false;
     
-    showSuccessToast(toast, t, 'artistsDeleted', 3000);
+    showSuccessToast(toast, t, 'artists.artistsDeleted', 3000);
   } catch (err) {
-    showErrorToast(toast, t, err, 'errorDeletingArtists');
+    showErrorToast(toast, t, err, 'artists.errorDeletingArtists');
   }
 }
 </script>
@@ -87,7 +87,7 @@ async function deleteSelectedArtists() {
           <RouterLink 
                 :to="{ name: 'adminArtistCreate'}">
           <Button
-            :label="capitalizeFirstLetter(t('new'))"
+            :label="capitalizeFirstLetter(t('commun.new'))"
             icon="pi pi-plus"
             severity="secondary"
             class="mr-2"
@@ -95,7 +95,7 @@ async function deleteSelectedArtists() {
           />
           </RouterLink>
           <Button
-            :label="capitalizeFirstLetter(t('delete'))"
+            :label="capitalizeFirstLetter(t('commun.delete'))"
             icon="pi pi-trash"
             severity="secondary"
             @click="confirmDeleteSelected"
@@ -114,24 +114,24 @@ async function deleteSelectedArtists() {
         :filters="filters"
         paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
         :rowsPerPageOptions="[5, 10, 25]"
-        :currentPageReportTemplate="capitalizeFirstLetter(t('showingArtists'))"
+        :currentPageReportTemplate="capitalizeFirstLetter(t('artists.showingArtists'))"
       >
         <template #header>
           <div class="flex flex-wrap gap-2 items-center justify-between">
-            <h4 class="m-0">{{ capitalizeFirstLetter(t('manageArtist')) }}</h4>
+            <h4 class="m-0">{{ capitalizeFirstLetter(t('artists.manageArtist')) }}</h4>
             <IconField>
               <InputIcon>
                 <i class="pi pi-search" />
               </InputIcon>
-              <InputText v-model="filters['global'].value" :placeholder="`${capitalizeFirstLetter(t('search'))} ...`" />
+              <InputText v-model="filters['global'].value" :placeholder="`${capitalizeFirstLetter(t('commun.search'))} ...`" />
             </IconField>
           </div>
         </template>
 
         <Column selectionMode="multiple" style="width: 3rem" :exportable="false"></Column>
         <Column field="id" header="ID" sortable style="min-width: 2rem"></Column>
-        <Column field="name" :header="capitalizeFirstLetter(t('name'))" sortable style="min-width: 16rem"></Column>
-        <Column :header="capitalizeFirstLetter(t('image'))">
+        <Column field="name" :header="capitalizeFirstLetter(t('artists.name'))" sortable style="min-width: 16rem"></Column>
+        <Column :header="capitalizeFirstLetter(t('commun.image'))">
           <template #body="slotProps">
             <img
               :src="slotProps.data.profile_image_url"
@@ -141,17 +141,17 @@ async function deleteSelectedArtists() {
             />
           </template>
         </Column>
-        <Column field="minibio" :header="capitalizeFirstLetter(t('minibio'))" style="min-width: 8rem">
+        <Column field="minibio" :header="capitalizeFirstLetter(t('artists.minibio'))" style="min-width: 8rem">
           <template #body="slotProps">
             {{ slotProps.data.minibioStatus }}
           </template>
         </Column>
-        <Column field="bio" :header="capitalizeFirstLetter(t('bio'))" sortable style="min-width: 8rem">
+        <Column field="bio" :header="capitalizeFirstLetter(t('artists.bio'))" sortable style="min-width: 8rem">
           <template #body="slotProps">
             {{ slotProps.data.bioStatus }}
           </template>
         </Column>
-        <Column field="social_links" :header="capitalizeFirstLetter(t('social'))" sortable style="min-width: 12rem">
+        <Column field="social_links" :header="capitalizeFirstLetter(t('artists.social'))" sortable style="min-width: 12rem">
           <template #body="slotProps">
             <Button
               v-for="socialLink of slotProps.data.socialLinksStatus"
@@ -163,7 +163,7 @@ async function deleteSelectedArtists() {
             />           
           </template>
         </Column>
-        <Column :header="capitalizeFirstLetter(t('actions'))" :exportable="false" style="min-width: 12rem">
+        <Column :header="capitalizeFirstLetter(t('commun.actions'))" :exportable="false" style="min-width: 12rem">
           <template #body="slotProps">
             <RouterLink 
                 :to="{ name: 'adminArtistEdit', params: { id: slotProps.data.id } }">
@@ -189,35 +189,35 @@ async function deleteSelectedArtists() {
     <Dialog
       v-model:visible="deleteArtistDialog"
       :style="{ width: '450px' }"
-      :header="capitalizeFirstLetter(t('confirm'))"
+      :header="capitalizeFirstLetter(t('commun.confirm'))"
       :modal="true"
     >
       <div class="flex items-center gap-4">
         <i class="pi pi-exclamation-triangle !text-3xl" />
         <span v-if="artist"
-          >{{ capitalizeFirstLetter(t('sureDelete')) }} <b>{{ artist.name }}</b
+          >{{ capitalizeFirstLetter(t('artists.sureDelete')) }} <b>{{ artist.name }}</b
           >?</span
         >
       </div>
       <template #footer>
-        <Button :label="capitalizeFirstLetter(t('no'))" icon="pi pi-times" text @click="deleteArtistDialog = false" />
-        <Button :label="capitalizeFirstLetter(t('yes'))" icon="pi pi-check" @click="deleteArtist(artist.id)" />
+        <Button :label="capitalizeFirstLetter(t('commun.no'))" icon="pi pi-times" text @click="deleteArtistDialog = false" />
+        <Button :label="capitalizeFirstLetter(t('commun.yes'))" icon="pi pi-check" @click="deleteArtist(artist.id)" />
       </template>
     </Dialog>
 
     <Dialog
       v-model:visible="deleteArtistsDialog"
       :style="{ width: '450px' }"
-      :header="capitalizeFirstLetter(t('confirm'))"
+      :header="capitalizeFirstLetter(t('commun.confirm'))"
       :modal="true"
     >
       <div class="flex items-center gap-4">
         <i class="pi pi-exclamation-triangle !text-3xl" />
-        <span v-if="artist">{{ capitalizeFirstLetter(t('sureDeleteSelectedArtists')) }}</span>
+        <span v-if="artist">{{ capitalizeFirstLetter(t('artists.sureDeleteSelectedArtists')) }}</span>
       </div>
       <template #footer>
-        <Button :label="capitalizeFirstLetter(t('no'))" icon="pi pi-times" text @click="deleteArtistsDialog = false" />
-        <Button :label="capitalizeFirstLetter(t('yes'))" icon="pi pi-check" @click="deleteSelectedArtists" />
+        <Button :label="capitalizeFirstLetter(t('commun.no'))" icon="pi pi-times" text @click="deleteArtistsDialog = false" />
+        <Button :label="capitalizeFirstLetter(t('commun.yes'))" icon="pi pi-check" @click="deleteSelectedArtists" />
       </template>
     </Dialog>
   </div>

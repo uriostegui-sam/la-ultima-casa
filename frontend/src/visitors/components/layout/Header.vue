@@ -11,10 +11,10 @@ import { capitalizeFirstLetter } from '@/shared/services/Helpers'
 const { t } = useI18n()
 
 const menuKeys = [
-  { key: 'aboutUs', href: '/' },
-  { key: 'artists', href: '/artists' },
-  { key: 'news', href: '/news' },
-  { key: 'workshops', href: '/workshops' },
+  { key: 'navigation.aboutUs', href: '/' },
+  { key: 'artists.artists', href: '/artists' },
+  { key: 'news.news', href: '/news' },
+  { key: 'workshop.workshops', href: '/workshops' },
 ]
 
 const mobileMenuOpen = ref(false)
@@ -33,14 +33,14 @@ const mobileMenuOpen = ref(false)
             class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700"
             @click="mobileMenuOpen = true"
           >
-            <span class="sr-only">{{ capitalizeFirstLetter($t('openMainMenu')) }}</span>
+            <span class="sr-only">{{ capitalizeFirstLetter($t('navigation.openMainMenu')) }}</span>
             <Bars3Icon class="size-6" aria-hidden="true" />
           </button>
         </div>
         <PopoverGroup class="hidden lg:flex lg:gap-x-12">
           <div>
             <h1>LA ÚLTIMA CASA</h1>
-            <h3 class="font-logo-sub text-center">{{ capitalizeFirstLetter($t('artStudio')) }}</h3>
+            <h3 class="font-logo-sub text-center">{{ capitalizeFirstLetter($t('navigation.artStudio')) }}</h3>
           </div>
         </PopoverGroup>
         <div class="hidden lg:flex lg:flex-1 lg:justify-end">
@@ -50,7 +50,7 @@ const mobileMenuOpen = ref(false)
       <div class="hidden lg:flex lg:items-center lg:justify-around lg:max-w-2xl mx-auto mt-7">
         <template v-for="(item, index) in menuKeys" :key="item.key">
           <router-link :to="item.href" custom v-slot="{ href, isActive }">
-            <NavLink :active="isActive && (item.key !== 'aboutUs' || $route.path === '/')" :href="href">
+            <NavLink :active="isActive && (item.key !== 'navigation.aboutUs' || $route.path === '/')" :href="href">
               {{ capitalizeFirstLetter(t(item.key)) }}
             </NavLink>
           </router-link>
@@ -70,7 +70,7 @@ const mobileMenuOpen = ref(false)
             class="-m-2.5 rounded-md p-2.5 text-gray-700"
             @click="mobileMenuOpen = false"
           >
-            <span class="sr-only">{{ capitalizeFirstLetter($t('closeMenu')) }}</span>
+            <span class="sr-only">{{ capitalizeFirstLetter($t('navigation.closeMenu')) }}</span>
             <XMarkIcon class="size-6" aria-hidden="true" />
           </button>
         </div>

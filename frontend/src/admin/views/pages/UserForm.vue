@@ -60,35 +60,35 @@ const handleSubmit = async () => {
     }
 
     emit('success', result)
-    showSuccessToast(toast, t, 'successPassword', 3000)
+    showSuccessToast(toast, t, 'authentication.successPassword', 3000)
   } catch (err: unknown) {
-    showErrorToast(toast, t, err, 'errorSavingPassword')
+    showErrorToast(toast, t, err, 'authentication.errorSavingPassword')
   }
 }
 
 </script>
 
 <template>
-  <TitleForm title="user" />
+  <TitleForm title="authentication.user" />
   <div v-if="currentArtist" class="card">
     <form @submit.prevent="handleSubmit" class="space-y-6">
       <!-- Name -->
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
-          <label class="block font-semibold mb-1">{{ capitalizeFirstLetter(t('name')) }}</label>
+          <label class="block font-semibold mb-1">{{ capitalizeFirstLetter(t('artists.name')) }}</label>
           <InputText
             v-model="currentArtist.user.name"
             :disabled="true"
-            :placeholder="`${capitalizeFirstLetter(t('artistName'))}`"
+            :placeholder="`${capitalizeFirstLetter(t('artists.artistName'))}`"
             class="w-full"
           />
         </div>
         <div>
-          <label class="block font-semibold mb-1">{{ capitalizeFirstLetter(t('lastName')) }}</label>
+          <label class="block font-semibold mb-1">{{ capitalizeFirstLetter(t('artists.lastName')) }}</label>
           <InputText
             v-model="currentArtist.user.lastname"
             :disabled="true"
-            :placeholder="`${capitalizeFirstLetter(t('artistLastName'))}`"
+            :placeholder="`${capitalizeFirstLetter(t('artists.artistLastName'))}`"
             class="w-full"
           />
         </div>
@@ -97,27 +97,27 @@ const handleSubmit = async () => {
       <!-- User -->
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
-          <label class="block font-semibold mb-1">{{ capitalizeFirstLetter(t('email')) }}</label>
+          <label class="block font-semibold mb-1">{{ capitalizeFirstLetter(t('authentication.email')) }}</label>
           <InputText
             v-model="currentArtist.user.email"
             disabled="true"
-            :placeholder="capitalizeFirstLetter(t('email'))"
+            :placeholder="capitalizeFirstLetter(t('authentication.email'))"
             class="w-full"
           />
         </div>
         <div>
           <label class="block font-semibold mb-1">{{
-            capitalizeFirstLetter(t('actualPassword'))
+            capitalizeFirstLetter(t('authentication.actualPassword'))
           }}</label>
           <Password
             v-model="currentUser.password"
-            :placeholder="capitalizeFirstLetter(t('writeActualPassword'))"
+            :placeholder="capitalizeFirstLetter(t('authentication.writeActualPassword'))"
             class="w-full"
             :style="{ width: '100%' }"
             :inputStyle="{ width: '100%' }"
-            :weakLabel="capitalizeFirstLetter(t('weakLabel'))"
-            :mediumLabel="capitalizeFirstLetter(t('mediumLabel'))"
-            :strongLabel="capitalizeFirstLetter(t('strongLabel'))"
+            :weakLabel="capitalizeFirstLetter(t('authentication.weakLabel'))"
+            :mediumLabel="capitalizeFirstLetter(t('authentication.mediumLabel'))"
+            :strongLabel="capitalizeFirstLetter(t('authentication.strongLabel'))"
             :feedback="false"
             :toggleMask="true" 
           />
@@ -127,27 +127,27 @@ const handleSubmit = async () => {
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
           <label class="block font-semibold mb-1">{{
-            capitalizeFirstLetter(t('newPassword'))
+            capitalizeFirstLetter(t('authentication.newPassword'))
           }}</label>
           <Password
             v-model="currentUser.newPassword"
-            :placeholder="capitalizeFirstLetter(t('writeNewPassword'))"
+            :placeholder="capitalizeFirstLetter(t('authentication.writeNewPassword'))"
             class="w-full"
             :style="{ width: '100%' }"
             :inputStyle="{ width: '100%' }"
-            :weakLabel="capitalizeFirstLetter(t('weakLabel'))"
-            :mediumLabel="capitalizeFirstLetter(t('mediumLabel'))"
-            :strongLabel="capitalizeFirstLetter(t('strongLabel'))"
+            :weakLabel="capitalizeFirstLetter(t('authentication.weakLabel'))"
+            :mediumLabel="capitalizeFirstLetter(t('authentication.mediumLabel'))"
+            :strongLabel="capitalizeFirstLetter(t('authentication.strongLabel'))"
             :toggleMask="true" 
           />
         </div>
         <div>
           <label class="block font-semibold mb-1">{{
-            capitalizeFirstLetter(t('newPasswordAgain'))
+            capitalizeFirstLetter(t('authentication.newPasswordAgain'))
           }}</label>
           <Password
             v-model="currentUser.newPassword_confirmation"
-            :placeholder="capitalizeFirstLetter(t('writeNewPasswordAgain'))"
+            :placeholder="capitalizeFirstLetter(t('authentication.writeNewPasswordAgain'))"
             class="w-full"
             :style="{ width: '100%' }"
             :inputStyle="{ width: '100%' }"
@@ -157,18 +157,18 @@ const handleSubmit = async () => {
       </div>
 
       <label class="block font-semibold mb-3">
-        *{{ capitalizeFirstLetter(t('modifyInArtistProfile')) }}
+        *{{ capitalizeFirstLetter(t('artists.modifyInArtistProfile')) }}
         <router-link
           :to="`/admin/artists/edit/${artistId}`"
           class="underline text-(--color-salmon) cursor-pointer"
         >
-          <a href="">{{ capitalizeFirstLetter(t('profileArtist')) }}</a>
+          <a href="">{{ capitalizeFirstLetter(t('artists.profileArtist')) }}</a>
         </router-link>
       </label>
 
       <!-- Submit -->
       <Button
-        :label="capitalizeFirstLetter(t('saveUser'))"
+        :label="capitalizeFirstLetter(t('authentication.saveUser'))"
         type="submit"
         class="w-full md:w-auto"
       />

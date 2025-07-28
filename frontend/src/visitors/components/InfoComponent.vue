@@ -14,7 +14,7 @@ const props = defineProps<{
   coverImage?: string
   artist?: string
   date?: string
-  price?: number
+  price?: number | string
   description?: string
   instagram?: string
   facebook?: string

@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import NewsCarousel from '@/visitors/views/News/NewsCarousel.vue'
 import { useI18n } from 'vue-i18n'
-import { Languages, locale } from '@/shared/services/Translation'
+import { locale } from '@/shared/services/Translation'
 import { useArtistStore } from '@/shared/stores/ArtistStore'
 import { computed, onMounted } from 'vue'
 import CourseCard from '@/visitors/components/CourseCard.vue'
 import Title from '@/visitors/components/Title.vue'
-import { capitalizeFirstLetter } from '@/shared/services/Helpers'
+import { capitalizeFirstLetter, choseCurrentLanguage } from '@/shared/services/Helpers'
 
 const { t } = useI18n()
 const current = locale
@@ -24,14 +24,14 @@ onMounted(async () => {
 </script>
 
 <template>
-  <Title :title="capitalizeFirstLetter($t('artists'))" />
+  <Title :title="capitalizeFirstLetter($t('artists.artists'))" />
   <section class="md:pb-15 md:pt-5 px-10 mx-auto max-w-screen-2xl">
     <div class="flex flex-wrap gap-y-7 md:gap-x-20">
       <CourseCard
         v-for="(artist, index) in artistTransformed"
         :key="index"
         :title="artist.name"
-        :description="current === Languages.English ? artist.minibio['en'] : artist.minibio['es']"
+        :description="choseCurrentLanguage(artist.minibio, current)"
         :image="artist.profile_image_url"
         :id="`/artists/${artist.id}`"
       />

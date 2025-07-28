@@ -1,26 +1,23 @@
 <script setup>
 import { ref } from 'vue';
-const { t } = useI18n()
-const current = locale
-
 import AppMenuItem from './AppMenuItem.vue';
 import { useI18n } from 'vue-i18n';
-import { locale } from '@/shared/services/Translation';
 import { capitalizeFirstLetter } from '@/shared/services/Helpers';
 
+const { t } = useI18n();
 const model = ref([
     {
-        label: 'Home',
-        items: [{ label: 'Dashboard', icon: 'pi pi-fw pi-home', to: '/admin' }]
+        label: capitalizeFirstLetter(t('navigation.home')),
+        items: [{ label: capitalizeFirstLetter(t('navigation.dashboard')), icon: 'pi pi-fw pi-home', to: '/admin' }]
     },
     {
-        label: 'Pages',
+        label: capitalizeFirstLetter(t('navigation.interiorPages')),
         items: [
-            { label: capitalizeFirstLetter(t('aboutUs')), icon: 'pi pi-fw pi-id-card', to: '/admin/about-us' },
-            { label: capitalizeFirstLetter(t('artists')), icon: 'pi pi-fw pi-palette', to: '/admin/artists' },
-            { label: capitalizeFirstLetter(t('news')), icon: 'pi pi-fw pi-folder-open', to: '/admin/news', class: 'rotated-icon' },
-            { label: capitalizeFirstLetter(t('workshops')), icon: 'pi pi-fw pi-wrench', to: '/admin/workshops' },
-            { label: capitalizeFirstLetter(t('skills')), icon: 'pi pi-fw pi-paperclip', to: '/admin/skills' },
+            { label: capitalizeFirstLetter(t('navigation.aboutUs')), icon: 'pi pi-fw pi-id-card', to: '/admin/about-us' },
+            { label: capitalizeFirstLetter(t('artists.artists')), icon: 'pi pi-fw pi-palette', to: '/admin/artists' },
+            { label: capitalizeFirstLetter(t('news.news')), icon: 'pi pi-fw pi-folder-open', to: '/admin/news', class: 'rotated-icon' },
+            { label: capitalizeFirstLetter(t('workshop.workshops')), icon: 'pi pi-fw pi-wrench', to: '/admin/workshops' },
+            { label: capitalizeFirstLetter(t('skills.skills')), icon: 'pi pi-fw pi-paperclip', to: '/admin/skills' },
         ]
     },
 ]);

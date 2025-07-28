@@ -4,20 +4,19 @@ import { useToast } from 'primevue/usetoast'
 import { computed, onMounted, ref } from 'vue'
 import { useAdminNewsStore } from '@/admin/stores/NewsAdminStore'
 import { showErrorToast, showSuccessToast } from '@/admin/Services/Helpers'
-import { capitalizeFirstLetter } from '@/shared/services/Helpers'
+import { capitalizeFirstLetter, choseCurrentLanguage } from '@/shared/services/Helpers'
 import { useI18n } from 'vue-i18n'
-import { Languages, locale } from '@/shared/services/Translation'
+import { locale } from '@/shared/services/Translation'
 
 const { t } = useI18n()
 const newsAdminStore = useAdminNewsStore()
 const currentLang = locale
 
-
 const newsTransformed = computed(() => {
   return newsAdminStore.news.map((news) => ({
     ...news,
-    titleTrans: currentLang.value === Languages.English ?
-    news.title.en : news.title.es
+    published: news.published ? capitalizeFirstLetter(t('commun.yes')) : capitalizeFirstLetter(t('commun.no')),
+    titleTrans: choseCurrentLanguage(news.title, currentLang.value)
   }))
 })
 
@@ -45,10 +44,10 @@ async function deleteNews(id) {
     try {
     await newsAdminStore.deleteNews(id)
 
-    showSuccessToast(toast, t, 'newsDeletedSuccessfully', 3000)
+    showSuccessToast(toast, t, 'news.newsDeletedSuccessfully', 3000)
     news.value = {}
   } catch (err) {
-    showErrorToast(toast, t, err, 'errorSavingNews')
+    showErrorToast(toast, t, err, 'news.errorSavingNews')
   }
   news.value = {}
 }
@@ -85,7 +84,7 @@ async function deleteSelectedNewss() {
           <RouterLink 
                 :to="{ name: 'adminNewsCreate'}">
           <Button
-            :label="capitalizeFirstLetter(t('new'))"
+            :label="capitalizeFirstLetter(t('commun.new'))"
             icon="pi pi-plus"
             severity="secondary"
             class="mr-2"
@@ -93,7 +92,7 @@ async function deleteSelectedNewss() {
           />
           </RouterLink>
           <Button
-            :label="capitalizeFirstLetter(t('delete'))"
+            :label="capitalizeFirstLetter(t('commun.delete'))"
             icon="pi pi-trash"
             severity="secondary"
             @click="confirmDeleteSelected"
@@ -112,25 +111,25 @@ async function deleteSelectedNewss() {
         :filters="filters"
         paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
         :rowsPerPageOptions="[5, 10, 25]"
-        :currentPageReportTemplate="capitalizeFirstLetter(t('showingNews'))"
+        :currentPageReportTemplate="capitalizeFirstLetter(t('news.showingNews'))"
       >
         <template #header>
           <div class="flex flex-wrap gap-2 items-center justify-between">
-            <h4 class="m-0">{{ capitalizeFirstLetter(t('manageNews')) }}</h4>
+            <h4 class="m-0">{{ capitalizeFirstLetter(t('news.manageNews')) }}</h4>
             <IconField>
               <InputIcon>
                 <i class="pi pi-search" />
               </InputIcon>
-              <InputText v-model="filters['global'].value" :placeholder="`${capitalizeFirstLetter(t('search'))} ...`" />
+              <InputText v-model="filters['global'].value" :placeholder="`${capitalizeFirstLetter(t('commun.search'))} ...`" />
             </IconField>
           </div>
         </template>
 
         <Column selectionMode="multiple" style="width: 3rem" :exportable="false"></Column>
         <Column field="id" header="ID" sortable style="min-width: 2rem"></Column>
-        <Column field="published" :header="capitalizeFirstLetter(t('published'))" sortable style="min-width: 2rem"></Column>
-        <Column field="titleTrans" :header="capitalizeFirstLetter(t('title'))" sortable style="min-width: 12rem"></Column>
-        <Column :header="capitalizeFirstLetter(t('image'))">
+        <Column field="published" :header="capitalizeFirstLetter(t('news.published'))" sortable style="min-width: 2rem"></Column>
+        <Column field="titleTrans" :header="capitalizeFirstLetter(t('commun.title'))" sortable style="min-width: 12rem"></Column>
+        <Column :header="capitalizeFirstLetter(t('commun.image'))">
           <template #body="slotProps">
             <img
               :src="`${slotProps.data.image_url}`"
@@ -140,7 +139,7 @@ async function deleteSelectedNewss() {
             />
           </template>
         </Column>
-        <Column :header="capitalizeFirstLetter(t('actions'))" :exportable="false" style="min-width: 12rem">
+        <Column :header="capitalizeFirstLetter(t('commun.actions'))" :exportable="false" style="min-width: 12rem">
           <template #body="slotProps">
             <RouterLink 
                 :to="{ name: 'adminNewsEdit', params: { id: slotProps.data.id } }">
@@ -166,35 +165,35 @@ async function deleteSelectedNewss() {
     <Dialog
       v-model:visible="deleteNewsDialog"
       :style="{ width: '450px' }"
-      :header="capitalizeFirstLetter(t('confirm'))"
+      :header="capitalizeFirstLetter(t('commun.confirm'))"
       :modal="true"
     >
       <div class="flex items-center gap-4">
         <i class="pi pi-exclamation-triangle !text-3xl" />
         <span v-if="news"
-          >{{ capitalizeFirstLetter(t('sureDelete')) }} <b>{{ news.nameTrans }}</b
+          >{{ capitalizeFirstLetter(t('artists.sureDelete')) }} <b>{{ news.nameTrans }}</b
           >?</span
         >
       </div>
       <template #footer>
-        <Button :label="capitalizeFirstLetter(t('no'))" icon="pi pi-times" text @click="deleteNewsDialog = false" />
-        <Button :label="capitalizeFirstLetter(t('yes'))" icon="pi pi-check" @click="deleteNews(news.id)" />
+        <Button :label="capitalizeFirstLetter(t('commun.no'))" icon="pi pi-times" text @click="deleteNewsDialog = false" />
+        <Button :label="capitalizeFirstLetter(t('commun.yes'))" icon="pi pi-check" @click="deleteNews(news.id)" />
       </template>
     </Dialog>
 
     <Dialog
       v-model:visible="deleteNewssDialog"
       :style="{ width: '450px' }"
-      :header="capitalizeFirstLetter(t('confirm'))"
+      :header="capitalizeFirstLetter(t('commun.confirm'))"
       :modal="true"
     >
       <div class="flex items-center gap-4">
         <i class="pi pi-exclamation-triangle !text-3xl" />
-        <span v-if="news">{{ capitalizeFirstLetter(t('sureDeleteSelectedNews')) }}</span>
+        <span v-if="news">{{ capitalizeFirstLetter(t('news.sureDeleteSelectedNews')) }}</span>
       </div>
       <template #footer>
-        <Button :label="capitalizeFirstLetter(t('no'))" icon="pi pi-times" text @click="deleteNewssDialog = false" />
-        <Button :label="capitalizeFirstLetter(t('yes'))" icon="pi pi-check" @click="deleteSelectedNewss" />
+        <Button :label="capitalizeFirstLetter(t('commun.no'))" icon="pi pi-times" text @click="deleteNewssDialog = false" />
+        <Button :label="capitalizeFirstLetter(t('commun.yes'))" icon="pi pi-check" @click="deleteSelectedNewss" />
       </template>
     </Dialog>
   </div>

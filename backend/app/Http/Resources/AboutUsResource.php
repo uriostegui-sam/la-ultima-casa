@@ -20,12 +20,12 @@ class AboutUsResource extends JsonResource
             'cover_image' => $this->cover_image ?? null,
             'mail' => $this->mail ?? null,
             'address' => [
-                'text' => $this->address['text'] ?? null,
-                'map' => $this->address['map'] ?? null,
+                'text' => $this->address['text'] ?? '',
+                'map' => $this->address['map'] ?? '',
             ],
             'description' => [
-                'es' => $this->description['es'] ?? null,
-                'en' => $this->description['en'] ?? null,
+                'es' => $this->description['es'] ?? '',
+                'en' => $this->description['en'] ?? '',
             ],
         ];
     }

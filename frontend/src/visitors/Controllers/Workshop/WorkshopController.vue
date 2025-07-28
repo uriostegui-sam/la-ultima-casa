@@ -2,11 +2,11 @@
 import Title from '@/visitors/components/Title.vue'
 import CourseCard from '@/visitors/components/CourseCard.vue'
 import MenuFilter from '@/visitors/components/MenuFilter.vue'
-import { Languages, locale } from '@/shared/services/Translation'
+import { locale } from '@/shared/services/Translation'
 import { useWorkshopStore } from '@/shared/stores/WorkshopStore'
 import { onMounted, computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { capitalizeFirstLetter } from '@/shared/services/Helpers'
+import { capitalizeFirstLetter, choseCurrentLanguage } from '@/shared/services/Helpers'
 import NewsCarousel from '@/visitors/views/News/NewsCarousel.vue'
 
 const { t } = useI18n()
@@ -45,15 +45,15 @@ onMounted(async () => {
 </script>
 
 <template class="flex flex-col justify-between">
-  <Title :title="capitalizeFirstLetter($t('workshops'))" />
+  <Title :title="capitalizeFirstLetter($t('workshop.workshops'))" />
   <MenuFilter :active="activeFilter" :temporary="existsTemporary" :permanent="existsPermanent" @change="activeFilter = $event" class="mb-12" />
   <section class="lg:pb-15 lg:pt-5 px-10 mx-auto max-w-screen-2xl">
     <div class="flex flex-wrap gap-y-7 gap-x-20">
       <CourseCard
         v-for="(workshop, index) in workshopTransformed"
         :key="index"
-        :title="current === Languages.English ? workshop.title['en'] : workshop.title['es']"
-        :description="current === Languages.English ? workshop.description['en'] : workshop.description['es']"
+        :title="choseCurrentLanguage(workshop.title, current)"
+        :description="choseCurrentLanguage(workshop.description, current)"
         :image="`${baseUrl}/${workshop.cover_image_path}`"
         :type="workshop.type"
         :id="`/workshops/${workshop.id}`"

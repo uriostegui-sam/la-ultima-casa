@@ -33,7 +33,7 @@ export const getSocialLinksStatus = (links: Object) => {
 export const showSuccessToast = (toast: any, t: Function, key: string, life = 3000) => {
   toast.add({
     severity: 'success',
-    summary: capitalizeFirstLetter(t('success')),
+    summary: capitalizeFirstLetter(t('commun.success')),
     detail: capitalizeFirstLetter(t(key)),
     life: life,
   });
@@ -48,7 +48,7 @@ export const showErrorToast = (toast: any, t: Function, err: unknown, fallbackKe
 
   toast.add({
     severity: 'error',
-    summary: capitalizeFirstLetter(t('error')),
+    summary: capitalizeFirstLetter(t('commun.error')),
     detail: capitalizeFirstLetter(t(errorMessage)) || capitalizeFirstLetter(t(fallbackKey)),
     life,
   });

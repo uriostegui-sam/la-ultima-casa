@@ -17,12 +17,12 @@ class NewsResource extends JsonResource
         return [
             'id' => $this->id,
             'title' => [
-                'en' => $this->title['en'],
-                'es' => $this->title['es'],
+                'en' => $this->title['en'] ?? '',
+                'es' => $this->title['es'] ?? '',
             ],
             'content' => [
-                'en' => $this->content['en'],
-                'es' => $this->content['es'],
+                'en' => $this->content['en'] ?? '',
+                'es' => $this->content['es'] ?? '',
             ],
             'image_url' => $this->image_url,
             'published' => $this->published,

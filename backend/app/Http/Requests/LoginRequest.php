@@ -28,6 +28,14 @@ class LoginRequest extends FormRequest
         ];
     }
 
+    public function messages()
+    {
+        return [
+            'email.required' => 'authentication.emailRequired',
+            'password.required' => 'authentication.passwordRequired',
+        ];
+    }
+
     public function authenticate(): bool
     {
         return Auth::attempt($this->only('email', 'password'));
