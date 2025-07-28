@@ -91,7 +91,7 @@
     "manageArtist": "gestionar artistas",
     "showingArtists": "mostrando del {first} al {last} de {totalRecords} artistas",
     "sureDeleteSelectedArtists": "¿Estás seguro que quieres eliminar los artistas seleccionados?",
-    "sureDelete": "seguro que lo quieres eliminar",
+    "sureDelete": "seguro que quieres eliminar",
     "artistDeleted": "artista eliminado",
     "artistsDeleted": "artistas eliminados"
   },
