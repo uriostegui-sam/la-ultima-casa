@@ -4,7 +4,7 @@ import { useToast } from 'primevue/usetoast'
 import { computed, onMounted, ref } from 'vue'
 import { useAdminSkillStore } from '@/admin/stores/SkillAdminStore'
 import { showErrorToast, showSuccessToast } from '@/admin/Services/Helpers'
-import { capitalizeFirstLetter } from '@/shared/services/Helpers'
+import { capitalizeFirstLetter, choseCurrentLanguage } from '@/shared/services/Helpers'
 import { useI18n } from 'vue-i18n'
 import { Languages, locale } from '@/shared/services/Translation'
 
@@ -17,8 +17,8 @@ const currentLang = locale
 const skillTransformed = computed(() => {
   return skillAdminStore.skills.map((skill) => ({
     ...skill,
-    nameTrans: currentLang.value === Languages.English ?
-      skill.name.en : skill.name.es
+    published: skill.published ? capitalizeFirstLetter(t('commun.yes')) : capitalizeFirstLetter(t('commun.no')),
+    nameTrans: choseCurrentLanguage(skill.name, currentLang.value),
   }))
 })
 

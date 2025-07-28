@@ -4,7 +4,7 @@ import { useAdminWorkshopStore } from '@/admin/stores/WorkshopAdminStore'
 import { useAdminSkillStore } from '@/admin/stores/SkillAdminStore'
 import { Languages, locale } from '@/shared/services/Translation'
 import { useI18n } from 'vue-i18n'
-import { capitalizeFirstLetter } from '@/shared/services/Helpers'
+import { capitalizeFirstLetter, choseCurrentLanguage } from '@/shared/services/Helpers'
 import { useRoute, useRouter } from 'vue-router'
 import { useToast } from 'primevue/usetoast'
 import { showErrorToast, showSuccessToast } from '@/admin/Services/Helpers'
@@ -49,7 +49,7 @@ const selectButtonValues = computed(() => [
 
 const skillOptions = computed(() =>
   skillAdminStore.skills.map((skill) => ({
-    label: currentLang.value === Languages.English ? skill.name.en : skill.name.es,
+    label: choseCurrentLanguage(skill.name, currentLang.value),
     value: skill.id,
   })),
 )

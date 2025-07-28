@@ -4,20 +4,19 @@ import { useToast } from 'primevue/usetoast'
 import { computed, onMounted, ref } from 'vue'
 import { useAdminNewsStore } from '@/admin/stores/NewsAdminStore'
 import { showErrorToast, showSuccessToast } from '@/admin/Services/Helpers'
-import { capitalizeFirstLetter } from '@/shared/services/Helpers'
+import { capitalizeFirstLetter, choseCurrentLanguage } from '@/shared/services/Helpers'
 import { useI18n } from 'vue-i18n'
-import { Languages, locale } from '@/shared/services/Translation'
+import { locale } from '@/shared/services/Translation'
 
 const { t } = useI18n()
 const newsAdminStore = useAdminNewsStore()
 const currentLang = locale
 
-
 const newsTransformed = computed(() => {
   return newsAdminStore.news.map((news) => ({
     ...news,
-    titleTrans: currentLang.value === Languages.English ?
-    news.title.en : news.title.es
+    published: news.published ? capitalizeFirstLetter(t('commun.yes')) : capitalizeFirstLetter(t('commun.no')),
+    titleTrans: choseCurrentLanguage(news.title, currentLang.value)
   }))
 })
 

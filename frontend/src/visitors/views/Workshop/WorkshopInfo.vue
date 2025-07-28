@@ -5,7 +5,7 @@ import { useI18n } from 'vue-i18n'
 import { useWorkshopStore } from '@/shared/stores/WorkshopStore'
 import { useRoute } from 'vue-router'
 import { onMounted, computed, ref, watch } from 'vue'
-import { capitalizeFirstLetter, formatDateRange } from '@/shared/services/Helpers'
+import { capitalizeFirstLetter, choseCurrentLanguage, formatDateRange } from '@/shared/services/Helpers'
 import InfoComponent from '@/visitors/components/InfoComponent.vue'
 import type { TranslatedSkill } from '@/shared/Interfaces/Skill'
 import NewsCarousel from '../News/NewsCarousel.vue'
@@ -24,9 +24,7 @@ const skillsTransformed = computed(() => {
   const skills = currentWorkshop.value.skills as TranslatedSkill[]
 
   const translatedNames = skills.map((skill) => 
-    currentLang.value === Languages.English
-      ? skill.en
-      : skill.es
+    choseCurrentLanguage(skill as Record<string, string>, currentLang.value)
   )
 
   return capitalizeFirstLetter(translatedNames.join(', ').toLowerCase())
@@ -66,11 +64,7 @@ watch(locale, () => {
   <div v-if="currentWorkshop">
     <InfoComponent
       :is-workshop="true"
-      :title="
-        currentLang === Languages.English
-          ? currentWorkshop.title['en']
-          : currentWorkshop.title['es']
-      "
+      :title="choseCurrentLanguage(currentWorkshop.title, currentLang)"
       :has-subtitle="true"
       :subtitle="skillsTransformed"
       :type="
@@ -82,11 +76,7 @@ watch(locale, () => {
       :artist="capitalizeFirstLetter(currentWorkshop.artist?.name)"
       :date="capitalizeFirstLetter(formattedDate)"
       :price="currentWorkshop.price"
-      :description="
-        currentLang === Languages.English
-          ? currentWorkshop.description['en']
-          : currentWorkshop.description['es']
-      "
+      :description="choseCurrentLanguage(currentWorkshop.description, currentLang)"
     />
   </div>
   <div v-else><LoadingComponent /></div>

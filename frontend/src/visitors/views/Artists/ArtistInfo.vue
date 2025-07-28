@@ -4,7 +4,7 @@ import { useRoute } from 'vue-router'
 import { useArtistStore } from '@/shared/stores/ArtistStore'
 import { computed, onMounted, ref } from 'vue'
 import type { Artist } from '@/shared/Interfaces/Artist'
-import { capitalizeFirstLetter } from '@/shared/services/Helpers'
+import { capitalizeFirstLetter, choseCurrentLanguage } from '@/shared/services/Helpers'
 import InfoComponent from '@/visitors/components/InfoComponent.vue'
 import type { TranslatedSkill } from '@/shared/Interfaces/Skill'
 import NewsCarousel from '../News/NewsCarousel.vue'
@@ -22,8 +22,7 @@ const skillsTransformed = computed(() => {
   const skills = currentArtist.value.skills as TranslatedSkill[]
 
   const translatedNames = skills.map((skill) => 
-    currentLang.value === Languages.English ?
-      skill.en : skill.es
+    choseCurrentLanguage(skill as Record<string, string>, currentLang.value)
   )
 
   return capitalizeFirstLetter(translatedNames.join(', ').toLowerCase())
@@ -47,11 +46,7 @@ onMounted(async() => {
         :has-subtitle="true"
         :subtitle="skillsTransformed"
         :cover-image="currentArtist.profile_image_url"
-        :description="
-          currentLang === Languages.English
-            ? currentArtist.bio['en']
-            : currentArtist.bio['es']
-        "
+        :description="choseCurrentLanguage(currentArtist.bio, currentLang)"
         :instagram="currentArtist.social_links['instagram'] ? currentArtist.social_links['instagram'] : undefined"
         :facebook="currentArtist.social_links['twitter'] ? currentArtist.social_links['twitter'] : undefined"
         :website="currentArtist.social_links['website'] ? currentArtist.social_links['website'] : undefined"

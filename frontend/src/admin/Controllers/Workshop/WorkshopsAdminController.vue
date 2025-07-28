@@ -4,7 +4,7 @@ import { useToast } from 'primevue/usetoast'
 import { computed, onMounted, ref } from 'vue'
 import { useAdminWorkshopStore } from '@/admin/stores/WorkshopAdminStore'
 import { showErrorToast, showSuccessToast } from '@/admin/Services/Helpers'
-import { capitalizeFirstLetter } from '@/shared/services/Helpers'
+import { capitalizeFirstLetter, choseCurrentLanguage } from '@/shared/services/Helpers'
 import { useI18n } from 'vue-i18n'
 import { Languages, locale } from '@/shared/services/Translation'
 
@@ -29,8 +29,7 @@ const workshopTransformed = computed(() =>
     }
     return {
       ...workshop,
-      titleTranslated:
-        currentLang.value === Languages.English ? workshop.title.en : workshop.title.es,
+      titleTranslated: choseCurrentLanguage(workshop.title, currentLang.value),
       dateTranslated: {
         start: new Date(workshop.start_date).toLocaleDateString(),
         end:
