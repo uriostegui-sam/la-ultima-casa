@@ -13,7 +13,10 @@
     "artStudio": "estudio de arte",
     "closeMenu": "cerrar menú",
     "openMainMenu": "abrir menú principal",
-    "goDashboard": "ir al panel de control"
+    "goDashboard": "ir al panel de control",
+    "dashboard": "panel de control",
+    "home": "página de inicio",
+    "interiorPages": "páginas interiores"
   },
   "authentication": {
     "signInCont": "inicia sesión para continuar",
@@ -185,7 +188,6 @@
     "coverImage": "imagen de portada",
     "type": "tipo",
     "view": "ver más",
-    "all": "todos",
     "new": "nuevo",
     "edit": "edición",
     "create": "creación",
@@ -258,5 +260,8 @@
     "artist_idRequired": "el artista es obligatorio",
     "typeRequired": "el tipo es obligatorio",
     "priceRequired": "el precio es obligatorio"
-  }
+  },
+  "temporary": "temporales",
+  "permanent": "permanentes",
+  "all": "todos"
 }

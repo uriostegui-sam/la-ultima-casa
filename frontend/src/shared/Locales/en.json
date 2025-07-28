@@ -13,7 +13,10 @@
     "artStudio": "art studio",
     "closeMenu": "close menu",
     "openMainMenu": "open main menu",
-    "goDashboard": "go to dashboard"
+    "goDashboard": "go to dashboard",
+    "dashboard": "dashboard",
+    "home": "home",
+    "interiorPages": "interior pages"
   },
   "authentication": {
     "signInCont": "sign in to continue",
@@ -185,7 +188,6 @@
     "coverImage": "cover image",
     "type": "type",
     "view": "view",
-    "all": "all",
     "new": "new",
     "edit": "edit",
     "create": "create",
@@ -258,5 +260,8 @@
     "artist_idRequired": "the artist id is required",
     "typeRequired": "the type is required",
     "priceRequired": "the price is required"
-  }
+  },
+  "temporary": "temporary",
+  "permanent": "permanent",
+  "all": "all"
 }
