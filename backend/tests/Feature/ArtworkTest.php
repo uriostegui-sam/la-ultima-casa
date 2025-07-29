@@ -183,4 +183,28 @@ class ArtworkTest extends TestCase
         $deleteResponse->assertNoContent();
         $this->assertDatabaseMissing('artwork_images', ['id' => $imageId]);
     }
+
+    /** @test */
+    public function artist_can_set_primary_image_for_artwork()
+    {
+        Storage::fake('public');
+
+        $user = User::factory()->create(['role' => 'artist']);
+        $artist = Artist::factory()->create(['user_id' => $user->id]);
+
+        $artwork = Artwork::factory()->create(['artist_id' => $artist->id]);
+
+        $image1 = ArtworkImage::factory()->create(['artwork_id' => $artwork->id, 'is_primary' => false]);
+
+        $response = $this->actingAs($user)
+            ->patchJson("/api/artworks/{$artwork->id}/images/{$image1->id}/set-primary");
+
+        $response->assertOk();
+
+        $this->assertDatabaseHas('artwork_images', [
+            'id' => $image1->id,
+            'is_primary' => true,
+        ]);
+
+    }
 }
