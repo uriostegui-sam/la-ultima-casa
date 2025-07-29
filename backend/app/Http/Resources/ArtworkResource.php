@@ -22,9 +22,9 @@ class ArtworkResource extends JsonResource
                 'es' => $this->description['es'] ?? '',
             ],
             'dimensions' => [
-                'width' => $this->dimensions['width'],
-                'height' => $this->dimensions['height'],
-                'depth' => $this->dimensions['depth'],
+                'width' => $this->dimensions['width'] ?? '',
+                'height' => $this->dimensions['height'] ?? '',
+                'depth' => $this->dimensions['depth'] ?? '',
             ],
             'creation_date' => $this->creation_date,
             'artist_id' => $this->artist_id,

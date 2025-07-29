@@ -30,8 +30,8 @@ class ArtworkTest extends TestCase
                 'title' => 'Test Artwork',
                 'description' => ['en' => 'English Ullam et in animi incidunt est. Accusamus dolore natus ut accusantium.\n\nQuia eum sapiente non fugit id laboriosam earum.', 'es' => 'Español Ullam et in animi incidunt est. Accusamus dolore natus ut accusantium.\n\nQuia eum sapiente non fugit id laboriosam earum.'],
                 'images' => [
-                    UploadedFile::fake()->image('artwork1.jpg'),
-                    UploadedFile::fake()->image('artwork2.jpg')
+                    UploadedFile::fake()->create('artwork1.jpg', 100, 'image/jpeg'),
+                    UploadedFile::fake()->create('artwork2.jpg', 100, 'image/jpeg'),
                 ],
                 'creation_date' => '2023-01-01'
             ]);
@@ -53,7 +53,7 @@ class ArtworkTest extends TestCase
             'title' => 'Guest try',
             'description' => 'Should fail',
             'images' => [
-                UploadedFile::fake()->image('art.jpg')
+                UploadedFile::fake()->create('art.jpg', 100, 'image/jpeg'),
             ],
             'creation_date' => '2023-01-01'
         ]);
@@ -74,12 +74,13 @@ class ArtworkTest extends TestCase
             'title' => 'Old Title'
         ]);
 
-        $newImage = UploadedFile::fake()->image('new_image.jpg');
+        $newImage = UploadedFile::fake()->create('new_image.jpg', 100, 'image/jpeg');
 
         $response = $this->actingAs($user)
             ->putJson("/api/artworks/{$artwork->id}", [
                 'title' => 'Updated Title',
                 'images' => [$newImage],
+                'description' => ['en' => 'English Ullam et in animi incidunt est. Accusamus dolore natus ut accusantium.\n\nQuia eum sapiente non fugit id laboriosam earum.', 'es' => 'Español Ullam et in animi incidunt est. Accusamus dolore natus ut accusantium.\n\nQuia eum sapiente non fugit id laboriosam earum.'],
             ]);
 
         $response->assertOk()
@@ -166,8 +167,9 @@ class ArtworkTest extends TestCase
                 'artist_id' => $artist->id,
                 'title' => 'Artwork with images',
                 'images' => [
-                    UploadedFile::fake()->image('delete_me.jpg'),
+                    UploadedFile::fake()->create('delete_me.jpg', 100, 'image/jpeg')
                 ],
+                'description' => ['en' => 'English Ullam et in animi incidunt est. Accusamus dolore natus ut accusantium.\n\nQuia eum sapiente non fugit id laboriosam earum.', 'es' => 'Español Ullam et in animi incidunt est. Accusamus dolore natus ut accusantium.\n\nQuia eum sapiente non fugit id laboriosam earum.'],
                 'creation_date' => '2023-01-01'
             ]);
         
