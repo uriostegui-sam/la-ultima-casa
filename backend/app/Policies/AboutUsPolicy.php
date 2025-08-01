@@ -11,15 +11,7 @@ class AboutUsPolicy
     /**
      * Determine whether the user can view any models.
      */
-    public function viewAny(User $user): bool
-    {
-        return true;
-    }
-
-    /**
-     * Determine whether the user can view the model.
-     */
-    public function view(User $user, AboutUs $aboutUs): bool
+    public function viewAny(): bool
     {
         return true;
     }
@@ -35,7 +27,7 @@ class AboutUsPolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, AboutUs $aboutUs): bool
+    public function update(User $user): bool
     {
         return $user->isAdmin();
     }
@@ -43,23 +35,7 @@ class AboutUsPolicy
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, AboutUs $aboutUs): bool
-    {
-        return $user->isAdmin();
-    }
-
-    /**
-     * Determine whether the user can restore the model.
-     */
-    public function restore(User $user, AboutUs $aboutUs): bool
-    {
-        return $user->isAdmin();
-    }
-
-    /**
-     * Determine whether the user can permanently delete the model.
-     */
-    public function forceDelete(User $user, AboutUs $aboutUs): bool
+    public function delete(User $user): bool
     {
         return $user->isAdmin();
     }
