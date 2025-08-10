@@ -30,6 +30,25 @@ const skillsTransformed = computed(() => {
   return capitalizeFirstLetter(translatedNames.join(', ').toLowerCase())
 })
 
+function updateFormattedDate() {
+  if (
+    currentWorkshop.value &&
+    currentWorkshop.value.type !== 'permanent' &&
+    currentWorkshop.value.start_date &&
+    currentWorkshop.value.end_date
+  ) {
+    const startDate = new Date (currentWorkshop.value.start_date);
+    const endDate = new Date (currentWorkshop.value.end_date);
+    formattedDate.value = formatDateRange(
+      startDate.toISOString(),
+      endDate.toISOString(),
+      currentLang.value === Languages.English ? 'en' : 'es',
+    )
+  } else {
+    formattedDate.value = ''
+  }
+}
+
 onMounted(async () => {
   const id = Number(route.params.id)
 
@@ -38,22 +57,6 @@ onMounted(async () => {
   updateFormattedDate()
 })
 
-function updateFormattedDate() {
-  if (
-    currentWorkshop.value &&
-    currentWorkshop.value.type !== 'permanent' &&
-    currentWorkshop.value.start_date &&
-    currentWorkshop.value.end_date
-  ) {
-    formattedDate.value = formatDateRange(
-      currentWorkshop.value.start_date.toISOString(),
-      currentWorkshop.value.end_date.toISOString(),
-      currentLang.value === Languages.English ? 'en' : 'es',
-    )
-  } else {
-    formattedDate.value = ''
-  }
-}
 
 watch(locale, () => {
   updateFormattedDate()

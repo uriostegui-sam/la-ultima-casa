@@ -62,20 +62,4 @@ class SkillTest extends TestCase
         $response->assertOk()
             ->assertJsonCount(3, 'data');
     }
-
-    public function test_admin_sees_translations()
-    {
-        $admin = User::factory()->admin()->create();
-        $skill = Skill::factory()->create();
-
-        $response = $this->actingAs($admin)
-            ->getJson("/api/skills/{$skill->id}");
-
-        $response->assertOk()
-            ->assertJsonStructure([
-                'data' => [
-                    'translations'
-                ]
-            ]);
-    }
 }

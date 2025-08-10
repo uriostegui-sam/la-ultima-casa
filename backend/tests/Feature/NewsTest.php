@@ -32,7 +32,7 @@ class NewsTest extends TestCase
                     'es' => '¡Estamos emocionados de anunciar una nueva exposición!',
                 ],
                 'published' => true,
-                'image' => UploadedFile::fake()->image('news.jpg')
+                'image' => UploadedFile::fake()->create('news.jpg', 100, 'image/jpeg'),
             ]);
 
         $response->assertCreated();
