@@ -2,7 +2,6 @@
 
 namespace App\Policies;
 
-use App\Models\Skill;
 use App\Models\User;
 
 class SkillPolicy
@@ -10,15 +9,7 @@ class SkillPolicy
     /**
      * Determine whether the user can view any models.
      */
-    public function viewAny(User $user): bool
-    {
-        return true;
-    }
-
-    /**
-     * Determine whether the user can view a model.
-     */
-    public function view(User $user, Skill $skill): bool
+    public function viewAny(): bool
     {
         return true;
     }
@@ -34,7 +25,7 @@ class SkillPolicy
     /**
      * Determine whether the user can update a model.
      */
-    public function update(User $user, Skill $skill): bool
+    public function update(User $user): bool
     {
         return $user->isAdmin();
     }
@@ -42,7 +33,7 @@ class SkillPolicy
     /**
      * Determine whether the user can delete a model.
      */
-    public function delete(User $user, Skill $skill): bool
+    public function delete(User $user): bool
     {
         return $user->isAdmin();
     }

@@ -58,12 +58,10 @@ class ArtistTest extends TestCase
     {
         $admin = User::factory()->admin()->create();
         $skills = Skill::factory()->count(3)->create();
-        $image = UploadedFile::fake()->image('artist.jpg');
 
         $response = $this->actingAs($admin)
             ->postJson('/api/artists', [
                 'user_id' => User::factory()->create()->id,
-                'profile_image' => $image,
                 'minibio' => ['en' => 'English Ullam et in animi incidunt est. Accusamus dolore natus ut accusantium.\n\nQuia eum sapiente non fugit id laboriosam earum.', 'es' => 'Español Ullam et in animi incidunt est. Accusamus dolore natus ut accusantium.\n\nQuia eum sapiente non fugit id laboriosam earum.'],
                 'bio' => ['en' => 'Long English Accusamus dolore natus ut accusantium.\n\nQuia eum sapiente non fugit id laboriosam earum. Aut mollitia unde dolorem nesciunt. Labore illo dolore hic quaerat. Laudantium dicta nemo quo commodi vero accusamus nobis.', 'es' => 'Bio largo español Accusamus dolore natus ut accusantium.\n\nQuia eum sapiente non fugit id laboriosam earum. Aut mollitia unde dolorem nesciunt. Labore illo dolore hic quaerat. Laudantium dicta nemo quo commodi vero accusamus nobis.'],
                 'skills' => $skills->pluck('id')->toArray()
@@ -121,7 +119,7 @@ class ArtistTest extends TestCase
             ->create();
 
         $newSkills = Skill::factory()->count(2)->create();
-        $newImage = UploadedFile::fake()->image('new-image.jpg');
+        $newImage = UploadedFile::fake()->create('new-image.jpg');
 
         $response = $this->actingAs($admin)
             ->putJson("/api/artists/{$artist->id}", [
@@ -130,11 +128,18 @@ class ArtistTest extends TestCase
                     'en' => 'Updated Ullam et in animi incidunt est. Accusamus dolore natus ut accusantium.\n\nQuia eum sapiente non fugit id laboriosam earum.',
                     'es' => 'Español Actualizado Ullam et in animi incidunt est. Accusamus dolore natus ut accusantium.\n\nQuia eum sapiente non fugit id laboriosam earum.'
                 ],
-                'skills' => $newSkills->pluck('id')->toArray()
+                'skills' => $newSkills->pluck('id')->toArray(),
+                'user' => [
+                    'name' => 'Updated Name',
+                    'lastname' => 'Updated Lastname',
+                ],
+                'bio' => [
+                    'es' => 'Biografía actualizada en español. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut aliquet sapien et augue faucibus egestas ac non ligula.',
+                ],
             ]);
 
         $response->assertOk()
-            ->assertJsonPath('data.minibio', 'Español Actualizado Ullam et in animi incidunt est. Accusamus dolore natus ut accusantium.\n\nQuia eum sapiente non fugit id laboriosam earum.');
+            ->assertJsonPath('data.minibio.es', 'Español Actualizado Ullam et in animi incidunt est. Accusamus dolore natus ut accusantium.\n\nQuia eum sapiente non fugit id laboriosam earum.');
 
 
         Storage::disk('public')->assertExists(
@@ -174,7 +179,7 @@ class ArtistTest extends TestCase
             ->deleteJson("/api/artists/{$artist->id}");
 
         $response->assertStatus(422)
-            ->assertJson(['message' => 'Cannot delete artist with existing artworks']);
+            ->assertJson(['message' => 'cannotArtistWArtwork']);
     }
 
     /** @test */

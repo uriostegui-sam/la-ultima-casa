@@ -9,6 +9,14 @@ use Illuminate\Auth\Access\Response;
 class ArtistPolicy
 {
     /**
+     * Determine whether the user can view any models.
+     */
+    public function viewAny(): bool
+    {
+        return true;
+    }
+    
+    /**
      * Determine whether the user can create models.
      */
     public function create(User $user): bool
