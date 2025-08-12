@@ -265,13 +265,13 @@ const handleSubmit = async () => {
           <label class="block font-semibold mb-1">{{
             `${capitalizeFirstLetter(t('artists.minibio'))} ${capitalizeFirstLetter(t('navigation.english'))}`
           }}</label>
-          <Textarea v-model="currentArtist.minibio.en" rows="2" class="w-full" />
+          <Editor v-model="currentArtist.minibio.en" class="w-full" />
         </div>
         <div>
           <label class="block font-semibold mb-1">{{
             `${capitalizeFirstLetter(t('artists.minibio'))} ${capitalizeFirstLetter(t('navigation.spanish'))}`
           }}</label>
-          <Textarea v-model="currentArtist.minibio.es" rows="2" class="w-full" />
+          <Editor v-model="currentArtist.minibio.es" class="w-full" />
         </div>
       </div>
 
@@ -281,13 +281,13 @@ const handleSubmit = async () => {
           <label class="block font-semibold mb-1">{{
             `${capitalizeFirstLetter(t('artists.biography'))} ${capitalizeFirstLetter(t('navigation.english'))}`
           }}</label>
-          <Textarea v-model="currentArtist.bio.en" rows="5" class="w-full" />
+          <Editor v-model="currentArtist.bio.en" class="w-full" />
         </div>
         <div>
           <label class="block font-semibold mb-1">{{
             `${capitalizeFirstLetter(t('artists.biography'))} ${capitalizeFirstLetter(t('navigation.spanish'))}`
           }}</label>
-          <Textarea v-model="currentArtist.bio.es" rows="5" class="w-full" />
+          <Editor v-model="currentArtist.bio.es" class="w-full" />
         </div>
       </div>
 
