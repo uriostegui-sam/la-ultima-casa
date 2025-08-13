@@ -209,7 +209,8 @@
     "error": "error",
     "notFound": "no encontrado",
     "requestedNotAvailable": "el recurso solicitado no está disponible",
-    "back": "volver"
+    "back": "volver",
+    "errorNotFound": "oops... la página que estás buscando no existe"
   },
   "courses": {
     "courses": "talleres",
