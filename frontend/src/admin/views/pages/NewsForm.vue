@@ -161,13 +161,13 @@ const handleSubmit = async () => {
           <label class="block font-semibold mb-1">{{
             `${capitalizeFirstLetter(t('commun.title'))} ${capitalizeFirstLetter(t('navigation.english'))}`
           }}</label>
-          <Textarea v-model="currentNews.title.en" rows="2" class="w-full" />
+          <Editor v-model="currentNews.title.en" class="w-full" />
         </div>
         <div>
           <label class="block font-semibold mb-1">{{
             `${capitalizeFirstLetter(t('commun.title'))} ${capitalizeFirstLetter(t('navigation.spanish'))}`
           }}</label>
-          <Textarea v-model="currentNews.title.es" rows="2" class="w-full" />
+          <Editor v-model="currentNews.title.es" class="w-full" />
         </div>
       </div>
 
@@ -177,13 +177,13 @@ const handleSubmit = async () => {
           <label class="block font-semibold mb-1">{{
             `${capitalizeFirstLetter(t('commun.content'))} ${capitalizeFirstLetter(t('navigation.english'))}`
           }}</label>
-          <Textarea v-model="currentNews.content.en" rows="2" class="w-full" />
+          <Editor v-model="currentNews.content.en" class="w-full" />
         </div>
         <div>
           <label class="block font-semibold mb-1">{{
             `${capitalizeFirstLetter(t('commun.content'))} ${capitalizeFirstLetter(t('navigation.spanish'))}`
           }}</label>
-          <Textarea v-model="currentNews.content.es" rows="2" class="w-full" />
+          <Editor v-model="currentNews.content.es" class="w-full" />
         </div>
       </div>
 

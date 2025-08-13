@@ -165,7 +165,7 @@ const handleSubmit = async () => {
           <label class="block font-semibold mb-1">{{
             `${capitalizeFirstLetter(t('divers.address'))}`
           }}</label>
-          <Textarea v-model="currentAboutUs.address.text" rows="2" class="w-full" />
+          <Editor v-model="currentAboutUs.address.text" class="w-full" />
         </div>
         <div>
           <label class="block font-semibold mb-1">{{
@@ -181,13 +181,13 @@ const handleSubmit = async () => {
           <label class="block font-semibold mb-1">{{
             `${capitalizeFirstLetter(t('artworks.descriptionSp'))}`
           }}</label>
-          <Textarea v-model="currentAboutUs.description.es" rows="2" class="w-full" />
+          <Editor v-model="currentAboutUs.description.es" class="w-full" />
         </div>
         <div>
           <label class="block font-semibold mb-1">{{
             `${capitalizeFirstLetter(t('artworks.descriptionEn'))}`
           }}</label>
-          <Textarea v-model="currentAboutUs.description.en" rows="2" class="w-full" />
+          <Editor v-model="currentAboutUs.description.en" class="w-full" />
         </div>
       </div>
 
