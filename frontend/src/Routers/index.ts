@@ -23,6 +23,7 @@ import NewsForm from '@/admin/views/pages/NewsForm.vue'
 import AboutUsForm from '@/admin/views/pages/AboutUsForm.vue'
 import NotFound from '@/admin/views/pages/NotFound.vue'
 import UserForm from '@/admin/views/pages/UserForm.vue'
+import NotFoundLayout from '@/visitors/views/NotFoundLayout.vue'
 
 const routes = [
   {
@@ -66,6 +67,12 @@ const routes = [
         name: 'NewsInfo',
         component: NewsInfo,
         props: true,
+      },
+      //   // 404 fallback
+      {
+        path: '/:pathMatch(.*)*',
+        name: 'NotFoundLayout',
+        component: NotFoundLayout,
       },
     ],
   },
@@ -171,9 +178,8 @@ const routes = [
     name: 'login',
     component: Login
   },
-  //   // 404 fallback
   {
-    path: '/:pathMatch(.*)*',
+    path: '/admin/:pathMatch(.*)*',
     name: 'NotFound',
     component: NotFound,
   },

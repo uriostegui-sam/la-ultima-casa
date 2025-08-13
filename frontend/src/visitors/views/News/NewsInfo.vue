@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import InfoComponent from '@/visitors/components/InfoComponent.vue'
 import type { News } from '@/shared/Interfaces/News'
-import { Languages, locale } from '@/shared/services/Translation'
+import { locale } from '@/shared/services/Translation'
 import { useNewsStore } from '@/shared/stores/NewsStore'
 import { onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
@@ -9,6 +9,7 @@ import { useRoute } from 'vue-router'
 import NewsCarousel from './NewsCarousel.vue'
 import LoadingComponent from '@/shared/components/LoadingComponent.vue'
 import { choseCurrentLanguage } from '@/shared/services/Helpers'
+import NotFoundLayout from '../NotFoundLayout.vue'
 
 const currentLang = locale
 const route = useRoute()
@@ -25,14 +26,17 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div v-if="currentNews">
+  <div v-if="newsStore.loading"><LoadingComponent /></div>
+  <div v-else-if="currentNews">
     <InfoComponent
       :title="choseCurrentLanguage(currentNews.title, currentLang)"
       :cover-image="currentNews.image_url"
       :description="choseCurrentLanguage(currentNews.content, currentLang)"
     />
   </div>
-  <div v-else><LoadingComponent /></div>
+  <div v-else>
+    <NotFoundLayout type="news" />
+  </div>
   <NewsCarousel />
 </template>
 

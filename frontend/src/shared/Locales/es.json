@@ -209,7 +209,11 @@
     "error": "error",
     "notFound": "no encontrado",
     "requestedNotAvailable": "el recurso solicitado no está disponible",
-    "back": "volver"
+    "back": "volver",
+    "errorNotFoundGeneral": "oops... la página que estás buscando no existe",
+    "errorNotFoundArtist": "oops... el artista que estás buscando no existe",
+    "errorNotFoundWorkshop": "oops... el taller que estás buscando no existe",
+    "errorNotFoundNews": "oops... la noticia que estás buscando no existe"
   },
   "courses": {
     "courses": "talleres",

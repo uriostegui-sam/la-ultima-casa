@@ -10,6 +10,7 @@ import type { TranslatedSkill } from '@/shared/Interfaces/Skill'
 import NewsCarousel from '../News/NewsCarousel.vue'
 import ArtworkGallery from '../Artwork/ArtworkGallery.vue'
 import LoadingComponent from '@/shared/components/LoadingComponent.vue'
+import NotFoundLayout from '../NotFoundLayout.vue'
 
 const currentLang = locale
 const route = useRoute()
@@ -37,7 +38,8 @@ onMounted(async() => {
 </script>
 
 <template>
-  <div v-if="currentArtist">
+  <div v-if="artistStore.loading"><LoadingComponent /></div>
+  <div v-else-if="currentArtist">
     <div>
       <InfoComponent
         :is-workshop="false"
@@ -55,7 +57,9 @@ onMounted(async() => {
       <ArtworkGallery :artist="currentArtist.name" :artworks="currentArtist.artworks" />
     </div>
   </div>
-  <div v-else><LoadingComponent /></div>
+  <div v-else>
+    <NotFoundLayout type="artist" />
+  </div>
   <NewsCarousel />
 </template>
 

@@ -10,6 +10,7 @@ import InfoComponent from '@/visitors/components/InfoComponent.vue'
 import type { TranslatedSkill } from '@/shared/Interfaces/Skill'
 import NewsCarousel from '../News/NewsCarousel.vue'
 import LoadingComponent from '@/shared/components/LoadingComponent.vue'
+import NotFoundLayout from '../NotFoundLayout.vue'
 
 const currentLang = ref(locale)
 const route = useRoute()
@@ -64,7 +65,8 @@ watch(locale, () => {
 </script>
 
 <template>
-  <div v-if="currentWorkshop">
+  <div v-if="workshopStore.loading"><LoadingComponent /></div>
+  <div v-else-if="currentWorkshop">
     <InfoComponent
       :is-workshop="true"
       :title="choseCurrentLanguage(currentWorkshop.title, currentLang)"
@@ -82,7 +84,9 @@ watch(locale, () => {
       :description="choseCurrentLanguage(currentWorkshop.description, currentLang)"
     />
   </div>
-  <div v-else><LoadingComponent /></div>
+  <div v-else>
+    <NotFoundLayout type="workshop" />
+  </div>
   <NewsCarousel />
 </template>
 
