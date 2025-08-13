@@ -1,5 +1,9 @@
 <script setup lang="ts">
 import { capitalizeFirstLetter } from '@/shared/services/Helpers';
+
+const props = defineProps<{
+  type: string
+}>()
 </script>
 
 <template>
@@ -10,7 +14,7 @@ import { capitalizeFirstLetter } from '@/shared/services/Helpers';
            class="w-1/2 h-1/2 object-cover"
          />
          <div class="text-center text-2xl font-bold mt-4">
-           {{ (capitalizeFirstLetter($t('commun.errorNotFound'))) }}.
+           {{ (capitalizeFirstLetter($t('commun.'+ 'errorNotFound' + capitalizeFirstLetter(!type ? 'general': type)))) }}.
          </div>
     </div>
 </template>
