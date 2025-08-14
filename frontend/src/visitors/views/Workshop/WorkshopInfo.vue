@@ -5,7 +5,7 @@ import { useI18n } from 'vue-i18n'
 import { useWorkshopStore } from '@/shared/stores/WorkshopStore'
 import { useRoute } from 'vue-router'
 import { onMounted, computed, ref, watch } from 'vue'
-import { capitalizeFirstLetter, choseCurrentLanguage, formatDateRange } from '@/shared/services/Helpers'
+import { capitalizeFirstLetter, choseCurrentLanguage, formatDateRange, normalizeSpaces } from '@/shared/services/Helpers'
 import InfoComponent from '@/visitors/components/InfoComponent.vue'
 import type { TranslatedSkill } from '@/shared/Interfaces/Skill'
 import NewsCarousel from '../News/NewsCarousel.vue'
@@ -81,7 +81,7 @@ watch(locale, () => {
       :artist="capitalizeFirstLetter(currentWorkshop.artist?.name)"
       :date="capitalizeFirstLetter(formattedDate)"
       :price="currentWorkshop.price"
-      :description="choseCurrentLanguage(currentWorkshop.description, currentLang)"
+      :description="normalizeSpaces(choseCurrentLanguage(currentWorkshop.description, currentLang))"
     />
   </div>
   <div v-else>

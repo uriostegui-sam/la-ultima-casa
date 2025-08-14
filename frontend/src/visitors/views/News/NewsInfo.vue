@@ -8,7 +8,7 @@ import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
 import NewsCarousel from './NewsCarousel.vue'
 import LoadingComponent from '@/shared/components/LoadingComponent.vue'
-import { choseCurrentLanguage } from '@/shared/services/Helpers'
+import { choseCurrentLanguage, normalizeSpaces } from '@/shared/services/Helpers'
 import NotFoundLayout from '../NotFoundLayout.vue'
 
 const currentLang = locale
@@ -31,7 +31,7 @@ onMounted(async () => {
     <InfoComponent
       :title="choseCurrentLanguage(currentNews.title, currentLang)"
       :cover-image="currentNews.image_url"
-      :description="choseCurrentLanguage(currentNews.content, currentLang)"
+      :description="normalizeSpaces(choseCurrentLanguage(currentNews.content, currentLang))"
     />
   </div>
   <div v-else>
