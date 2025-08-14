@@ -6,6 +6,7 @@ const props = defineProps<{
   description?: string
   date?: string
   image?: string
+  id?: string
 }>()
 
 const formattedDate = computed(() => {
@@ -16,16 +17,18 @@ const formattedDate = computed(() => {
 </script>
 
 <template>
-  <div class="rounded flex flex-col h-full">
-    <img class="w-full h-48 object-cover" src="https://picsum.photos/200" :alt="props.title" /> <!-- :src="props.image" -->
+  <router-link v-if="props.id" :to="props.id">
+    <div class="rounded flex flex-col h-full">
+      <img class="w-full h-48 object-cover" :src="props.image" :alt="props.title" />
       <div class="flex flex-col justify-between flex-1">
         <div>
           <p class="text-sm text-gray-500 mb-1">{{ formattedDate }}</p>
           <h3 class="text-lg font-bold text-(--color-teal) mb-2">{{ props.title }}</h3>
-          <p class="text-gray-700 text-sm">{{ props.description }}</p>
+          <p class="text-gray-700 text-sm" v-html="props.description" />
         </div>
       </div>
     </div>
-  </template>
+  </router-link>
+</template>
 
 <style scoped></style>
