@@ -38,10 +38,12 @@ class ArtworkService
 
     public function storeImage(UploadedFile $image, Artwork|string $artworkOrTitle, int $index = 0): string
     {
+
         $title = is_string($artworkOrTitle) ? $artworkOrTitle : $artworkOrTitle->title;
         $slug = Str::slug($title);
+        $unique = date('mdYHis') . uniqid();
         $extension = $image->getClientOriginalExtension();
-        $filename = "{$slug}-{$index}.{$extension}";
+        $filename = "{$slug}-{$unique}.{$extension}";
 
         return $image->storeAs('artworks/images', $filename, 'public');
     }
