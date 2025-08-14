@@ -8,6 +8,7 @@ import { onMounted, computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { capitalizeFirstLetter, choseCurrentLanguage } from '@/shared/services/Helpers'
 import NewsCarousel from '@/visitors/views/News/NewsCarousel.vue'
+import dashify from 'dashify'
 
 const { t } = useI18n()
 const current = locale
@@ -56,7 +57,7 @@ onMounted(async () => {
         :description="choseCurrentLanguage(workshop.description, current)"
         :image="`${baseUrl}/${workshop.cover_image_path}`"
         :type="workshop.type"
-        :id="`/workshops/${workshop.id}`"
+        :id="`/workshops/${dashify(choseCurrentLanguage(workshop.title, current))}/${workshop.id}`"
       />
     </div>
   </section>
