@@ -18,6 +18,7 @@ const [emblaRef, emblaApi] = emblaCarouselVue({
 })
 
 const selectedIndex = ref(0)
+const baseUrl = import.meta.env.VITE_STORAGE_URL
 
 onMounted(() => {
   emblaApi.value?.on('select', () => {
@@ -51,7 +52,7 @@ watch(
       <div class="embla__container">
         <div v-for="(img, i) in props.artwork.images" :key="i" class="embla__slide">
           <img
-            :src="img.url"
+            :src="`${baseUrl}/${img.path}`"
             :alt="capitalizeFirstLetter(props.title)"
             class="w-full object-contain max-h-[500px] mx-auto"
           />

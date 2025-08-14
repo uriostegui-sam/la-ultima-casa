@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { capitalizeFirstLetter } from '@/shared/services/Helpers'
+import { capitalizeFirstLetter, normalizeSpaces } from '@/shared/services/Helpers'
 import LanguageToggle from '../LanguageToggle.vue'
 import Logo from '../Logo.vue'
 import { useI18n } from 'vue-i18n'
@@ -123,13 +123,13 @@ const contactKeys = computed(() => [
               </template>
             </ul>
             <h2 class="mb-1 mt-4 uppercase font-bold">{{ capitalizeFirstLetter($t('navigation.comeMeetUs')) }}</h2>
-            <p v-html="formattedAddress"></p>
+            <p v-html="normalizeSpaces(formattedAddress)"></p>
           </div>
 
           <div class="flex flex-col justify-between px-4">
             <div class="md:hidden block">
               <h2 class="mb-1 mt-4 uppercase font-bold">{{ capitalizeFirstLetter($t('navigation.comeMeetUs')) }}</h2>
-              <p class="mb-4" v-html="formattedAddress"></p>       
+              <p class="mb-4" v-html="normalizeSpaces(formattedAddress)"></p>       
             </div>
             <div ref="iframeContainer" v-html="aboutUs.address.map" class="box-content h-full"></div>
           </div>

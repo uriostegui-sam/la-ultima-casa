@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import CourseCard from '@/visitors/components/CourseCard.vue'
 import Title from '@/visitors/components/Title.vue'
-import { capitalizeFirstLetter, choseCurrentLanguage } from '@/shared/services/Helpers'
+import { capitalizeFirstLetter, choseCurrentLanguage, normalizeSpaces } from '@/shared/services/Helpers'
 import { locale } from '@/shared/services/Translation'
 import { useNewsStore } from '@/shared/stores/NewsStore'
 import { computed, onMounted } from 'vue'
@@ -31,7 +31,7 @@ onMounted(async () => {
         v-for="(news, index) in newsTransformed"
         :key="index"
         :title="choseCurrentLanguage(news.title, current)"
-        :description="choseCurrentLanguage(news.content, current)"
+        :description="normalizeSpaces(choseCurrentLanguage(news.content, current))"
         :image="news.image_url"
         :id="`/news/${dashify(choseCurrentLanguage(news.title, current))}/${news.id}`"
       />

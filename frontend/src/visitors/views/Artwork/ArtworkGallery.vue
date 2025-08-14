@@ -4,7 +4,7 @@ import emblaCarouselVue from 'embla-carousel-vue'
 import { nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import ChrevronSolid from '@/visitors/assets/Icons/chevron-solid.svg'
 import XSolid from '@/visitors/assets/Icons/xmark-solid.svg'
-import { capitalizeFirstLetter, choseCurrentLanguage } from '@/shared/services/Helpers';
+import { capitalizeFirstLetter, choseCurrentLanguage, normalizeSpaces } from '@/shared/services/Helpers';
 import { useI18n } from 'vue-i18n'
 import { locale } from '@/shared/services/Translation';
 import InnerCarouselArtwork from './InnerCarouselArtwork.vue'
@@ -105,19 +105,19 @@ onBeforeUnmount(() => {
         <div class="embla__container">
           <template v-for="(artwork, index) in props.artworks" :key="index">
             <div class="embla__slide">
-              <div class="flex flex-col lg:flex-row gap-10">
-                <div class="flex-1">
+              <div class="flex flex-col lg:flex-row gap-10 items-start">
+                <div class="flex-1 min-w-0">
                     <InnerCarouselArtwork
                         :artwork="artwork"
                         :title="capitalizeFirstLetter(artwork.title)"
                         :modal="modalOpen"
                     />
                 </div>
-                <div class="flex-1">
-                  <p class="text-(--color-salmon) md:text-xl text-lg">{{ props.artist }}</p>
-                  <h3 class="font-title md:text-5xl text-2xl py-2">{{ capitalizeFirstLetter(artwork.title) }}</h3>
-                  <p class="pb-6" v-html="choseCurrentLanguage(artwork.description, current)"/>
-                  <a class="font-bold text-(--color-salmon)">{{ capitalizeFirstLetter($t('divers.knowMoreOf')) }} {{ props.artist }}</a>
+                <div class="flex-1 min-w-0">
+                    <p class="text-(--color-salmon) md:text-xl text-lg">{{ props.artist }}</p>
+                    <h3 class="font-title md:text-5xl text-2xl py-2">{{ capitalizeFirstLetter(artwork.title) }}</h3>
+                    <div class="pb-6 break-words whitespace-pre-wrap overflow-hidden" v-html="normalizeSpaces(choseCurrentLanguage(artwork.description, current))"></div>
+                    <a class="font-bold text-(--color-salmon)">{{ capitalizeFirstLetter($t('divers.knowMoreOf')) }} {{ props.artist }}</a>
                 </div>
               </div>
             </div>

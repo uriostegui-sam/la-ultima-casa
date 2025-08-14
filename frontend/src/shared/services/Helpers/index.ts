@@ -43,3 +43,8 @@ current: Languages
   }
   return ''
 }
+
+export function normalizeSpaces(html: string) {
+  if (!html) return ''
+  return html.replace(/&nbsp;/g, ' ');
+}

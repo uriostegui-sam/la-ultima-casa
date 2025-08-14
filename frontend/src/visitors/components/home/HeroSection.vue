@@ -4,10 +4,10 @@ import { useI18n } from 'vue-i18n'
 import ActionButton from '../ActionButton.vue'
 import ArrowRightIcon from '@/visitors/assets/Icons/arrow-right-solid.svg'
 import { computed, onMounted, ref } from 'vue'
-import { capitalizeFirstLetter, choseCurrentLanguage } from '@/shared/services/Helpers'
+import { capitalizeFirstLetter, choseCurrentLanguage, normalizeSpaces } from '@/shared/services/Helpers'
 import { useAdminAboutUsStore } from '@/admin/stores/AboutUsAdminStore'
 import type { AboutUs } from '@/shared/Interfaces/AboutUs'
-import { Languages, locale } from '@/shared/services/Translation'
+import { locale } from '@/shared/services/Translation'
 import LoadingComponent from '@/shared/components/LoadingComponent.vue'
 import { useWorkshopStore } from '@/shared/stores/WorkshopStore'
 import type { WorkshopPhotos } from '@/shared/Interfaces/Workshop'
@@ -156,7 +156,7 @@ onMounted(async () => {
           <img v-if="imageSrc" :src="imageSrc" alt="" class="w-full h-auto object-cover rounded-xl" />
         </div>
 
-        <p class="py-6 text-lg whitespace-pre-line" v-html="description" />
+        <p class="py-6 text-lg whitespace-pre-line" v-html="normalizeSpaces(description)" />
 
         <div class="flex justify-end">
           <ActionButton :color="buttonColor" href="/workshops">
