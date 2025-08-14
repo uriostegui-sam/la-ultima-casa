@@ -161,13 +161,13 @@ const handleSubmit = async () => {
           <label class="block font-semibold mb-1">{{
             `${capitalizeFirstLetter(t('artists.name'))} ${capitalizeFirstLetter(t('navigation.english'))}`
           }}</label>
-          <Editor v-model="currentSkill.name.en" class="w-full" />
+          <InputText v-model="currentSkill.name.en" class="w-full" />
         </div>
         <div>
           <label class="block font-semibold mb-1">{{
             `${capitalizeFirstLetter(t('artists.name'))} ${capitalizeFirstLetter(t('navigation.spanish'))}`
           }}</label>
-          <Editor v-model="currentSkill.name.es" class="w-full" />
+          <InputText v-model="currentSkill.name.es" class="w-full" />
         </div>
       </div>
 
