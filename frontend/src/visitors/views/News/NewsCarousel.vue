@@ -5,7 +5,7 @@ import { ref, onMounted, computed } from 'vue'
 import { useNewsStore } from '@/shared/stores/NewsStore'
 import { useI18n } from 'vue-i18n'
 import { locale } from '@/shared/services/Translation'
-import { capitalizeFirstLetter, choseCurrentLanguage } from '@/shared/services/Helpers'
+import { capitalizeFirstLetter, choseCurrentLanguage, normalizeSpaces } from '@/shared/services/Helpers'
 import NewsCard from './NewsCard.vue'
 import dashify from 'dashify'
 
@@ -100,7 +100,7 @@ onMounted(() => {
           >
             <NewsCard
               :title="choseCurrentLanguage(newsItem.title, current)"
-              :description="choseCurrentLanguage(newsItem.content, current)"
+              :description="normalizeSpaces(choseCurrentLanguage(newsItem.content, current))"
               :image="newsItem.image_url"
               :date="newsItem.created_at"
               :id="`/news/${dashify(choseCurrentLanguage(newsItem.title, current))}/${newsItem.id}`"

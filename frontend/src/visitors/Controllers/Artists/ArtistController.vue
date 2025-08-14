@@ -6,7 +6,7 @@ import { useArtistStore } from '@/shared/stores/ArtistStore'
 import { computed, onMounted } from 'vue'
 import CourseCard from '@/visitors/components/CourseCard.vue'
 import Title from '@/visitors/components/Title.vue'
-import { capitalizeFirstLetter, choseCurrentLanguage } from '@/shared/services/Helpers'
+import { capitalizeFirstLetter, choseCurrentLanguage, normalizeSpaces } from '@/shared/services/Helpers'
 import dashify from 'dashify'
 
 const { t } = useI18n()
@@ -32,7 +32,7 @@ onMounted(async () => {
         v-for="(artist, index) in artistTransformed"
         :key="index"
         :title="artist.name"
-        :description="choseCurrentLanguage(artist.minibio, current)"
+        :description="normalizeSpaces(choseCurrentLanguage(artist.minibio, current))"
         :image="artist.profile_image_url"
         :id="`/artists/${dashify(artist.name)}/${artist.id}`"
       />

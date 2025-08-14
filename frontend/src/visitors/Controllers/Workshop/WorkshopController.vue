@@ -6,7 +6,7 @@ import { locale } from '@/shared/services/Translation'
 import { useWorkshopStore } from '@/shared/stores/WorkshopStore'
 import { onMounted, computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { capitalizeFirstLetter, choseCurrentLanguage } from '@/shared/services/Helpers'
+import { capitalizeFirstLetter, choseCurrentLanguage, normalizeSpaces } from '@/shared/services/Helpers'
 import NewsCarousel from '@/visitors/views/News/NewsCarousel.vue'
 import dashify from 'dashify'
 
@@ -54,7 +54,7 @@ onMounted(async () => {
         v-for="(workshop, index) in workshopTransformed"
         :key="index"
         :title="choseCurrentLanguage(workshop.title, current)"
-        :description="choseCurrentLanguage(workshop.description, current)"
+        :description="normalizeSpaces(choseCurrentLanguage(workshop.description, current))"
         :image="`${baseUrl}/${workshop.cover_image_path}`"
         :type="workshop.type"
         :id="`/workshops/${dashify(choseCurrentLanguage(workshop.title, current))}/${workshop.id}`"
