@@ -2,10 +2,11 @@
 import CourseCard from '@/visitors/components/CourseCard.vue'
 import Title from '@/visitors/components/Title.vue'
 import { capitalizeFirstLetter, choseCurrentLanguage } from '@/shared/services/Helpers'
-import { Languages, locale } from '@/shared/services/Translation'
+import { locale } from '@/shared/services/Translation'
 import { useNewsStore } from '@/shared/stores/NewsStore'
 import { computed, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
+import dashify from 'dashify'
 
 const newsStore = useNewsStore()
 const { t } = useI18n()
@@ -32,7 +33,7 @@ onMounted(async () => {
         :title="choseCurrentLanguage(news.title, current)"
         :description="choseCurrentLanguage(news.content, current)"
         :image="news.image_url"
-        :id="`/news/${news.id}`"
+        :id="`/news/${dashify(choseCurrentLanguage(news.title, current))}/${news.id}`"
       />
     </div>
   </section>

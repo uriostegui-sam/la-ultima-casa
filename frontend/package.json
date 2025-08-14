@@ -24,6 +24,7 @@
     "@tailwindcss/vite": "^4.1.6",
     "axios": "^1.9.0",
     "chart.js": "^4.4.9",
+    "dashify": "^2.0.0",
     "embla-carousel-autoplay": "^8.6.0",
     "embla-carousel-vue": "^8.6.0",
     "pinia": "^3.0.1",

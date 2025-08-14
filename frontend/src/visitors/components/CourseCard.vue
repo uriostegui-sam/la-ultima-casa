@@ -45,9 +45,7 @@ const truncatedDescription = computed(() => {
         <h3 class="text-center font-bold md:text-md/6 md:py-3">
           {{ props.title }}
         </h3>
-        <p class="text-center pb-3 block">
-          {{ truncatedDescription }}
-        </p>
+        <p class="text-center pb-3 block" v-html="truncatedDescription"/>
       </div>
       <ActionButton
         :title="'divers.knowMore'"

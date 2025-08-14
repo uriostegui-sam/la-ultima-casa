@@ -116,7 +116,7 @@ onBeforeUnmount(() => {
                 <div class="flex-1">
                   <p class="text-(--color-salmon) md:text-xl text-lg">{{ props.artist }}</p>
                   <h3 class="font-title md:text-5xl text-2xl py-2">{{ capitalizeFirstLetter(artwork.title) }}</h3>
-                  <p class="pb-6">{{ choseCurrentLanguage(artwork.description, current) }}</p>
+                  <p class="pb-6" v-html="choseCurrentLanguage(artwork.description, current)"/>
                   <a class="font-bold text-(--color-salmon)">{{ capitalizeFirstLetter($t('divers.knowMoreOf')) }} {{ props.artist }}</a>
                 </div>
               </div>
