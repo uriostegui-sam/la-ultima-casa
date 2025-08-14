@@ -42,7 +42,7 @@ const routes = [
         component: ArtistController,
       },
       {
-        path: '/artists/:id',
+        path: '/artists/:name/:id/',
         name: 'ArtistInfo',
         component: ArtistInfo,
       },
@@ -52,7 +52,7 @@ const routes = [
         component: WorkshopController,
       },
       {
-        path: '/workshops/:id',
+        path: '/workshops/:title/:id',
         name: 'WorkshopInfo',
         component: WorkshopInfo,
       },
@@ -63,7 +63,7 @@ const routes = [
         props: true,
       },
       {
-        path: '/news/:id',
+        path: '/news/:title/:id',
         name: 'NewsInfo',
         component: NewsInfo,
         props: true,
