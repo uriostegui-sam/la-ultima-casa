@@ -26,8 +26,11 @@ use Illuminate\Support\Facades\Route;
 // Public routes (no auth needed)
 Route::middleware('api')->group(function () {
     Route::apiResource('artists', ArtistController::class)->only(['index', 'show']);
-    Route::get('skills/published', [SkillController::class, 'getPublishedSkills']);
-    Route::apiResource('skills', SkillController::class)->only(['index', 'show']);
+    Route::get('skills/published', [SkillController::class, 'getPublishedSkills'])
+        ->name('skills.published');
+    Route::apiResource('skills', SkillController::class)
+        ->only(['index', 'show'])
+        ->whereNumber('skill');
     Route::apiResource('artworks', ArtworkController::class)->only(['index', 'show']);
     Route::get('news/published', [NewsController::class, 'getPublishedNews']);
     Route::apiResource('news', NewsController::class)->only(['index', 'show']);
