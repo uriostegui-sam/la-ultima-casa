@@ -7,6 +7,7 @@ import { useI18n } from 'vue-i18n'
 import { locale } from '@/shared/services/Translation'
 import { capitalizeFirstLetter, choseCurrentLanguage } from '@/shared/services/Helpers'
 import NewsCard from './NewsCard.vue'
+import dashify from 'dashify'
 
 const { t } = useI18n()
 const current = locale
@@ -102,6 +103,7 @@ onMounted(() => {
               :description="choseCurrentLanguage(newsItem.content, current)"
               :image="newsItem.image_url"
               :date="newsItem.created_at"
+              :id="`/news/${dashify(choseCurrentLanguage(newsItem.title, current))}/${newsItem.id}`"
             />
           </div>
         </div>

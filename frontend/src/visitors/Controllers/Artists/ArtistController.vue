@@ -7,6 +7,7 @@ import { computed, onMounted } from 'vue'
 import CourseCard from '@/visitors/components/CourseCard.vue'
 import Title from '@/visitors/components/Title.vue'
 import { capitalizeFirstLetter, choseCurrentLanguage } from '@/shared/services/Helpers'
+import dashify from 'dashify'
 
 const { t } = useI18n()
 const current = locale
@@ -33,7 +34,7 @@ onMounted(async () => {
         :title="artist.name"
         :description="choseCurrentLanguage(artist.minibio, current)"
         :image="artist.profile_image_url"
-        :id="`/artists/${artist.id}`"
+        :id="`/artists/${dashify(artist.name)}/${artist.id}`"
       />
     </div>
   </section>
