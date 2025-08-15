@@ -14,6 +14,7 @@ class Artwork extends Model
         'title',
         'description',
         'dimensions',
+        'order',
         'creation_date',
     ];
     

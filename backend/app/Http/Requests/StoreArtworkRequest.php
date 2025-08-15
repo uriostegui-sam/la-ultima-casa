@@ -31,6 +31,7 @@ class StoreArtworkRequest extends FormRequest
             'dimensions.height' => 'nullable|numeric',
             'dimensions.depth' => 'nullable|numeric',
             'creation_date' => 'required|string|max:255',
+            'order' => 'required|array',
         ];
     }
 
