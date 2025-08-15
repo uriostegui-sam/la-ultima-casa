@@ -1,10 +1,11 @@
 <script lang="ts" setup>
 import type { Artwork } from '@/shared/Interfaces/Artwork'
+import type { ArtworkImage } from '@/shared/Interfaces/ArtworkImage'
 import { capitalizeFirstLetter } from '@/shared/services/Helpers'
 import { useI18n } from 'vue-i18n'
 import { showErrorToast, showSuccessToast } from '../Services/Helpers'
 import { useToast } from 'primevue/usetoast'
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import { useAdminArtworkStore } from '../stores/ArtworkAdminStore'
 import type { Artist } from '@/shared/Interfaces/Artist'
 
@@ -20,8 +21,12 @@ const toast = useToast()
 const displayConfirmation = ref(false)
 const artworkToDelete = ref<number | string | null>(null)
 const artworkAdminStore = useAdminArtworkStore()
+const draggedIndex = ref<number | null>(null)
 
-console.log(props.currentArtist)
+const artworks = ref<Artwork[]>(
+  [...(props.currentArtist.artworks || [])].sort((a, b) => (a.order ?? 0) - (b.order ?? 0)),
+)
+
 const getPrimaryImage = (artwork: Artwork) =>
   artwork.images.find((img) => img.is_primary)?.path ?? ''
 
@@ -30,7 +35,7 @@ const openConfirmation = (id: number | string) => {
   displayConfirmation.value = true
 }
 
-function closeConfirmation() {
+const closeConfirmation = () => {
   displayConfirmation.value = false
   artworkToDelete.value = null
 }
@@ -51,6 +56,27 @@ const removeArtwork = async (id: string | number) => {
     showErrorToast(toast, t, err, 'artworks.errorDeletingArtworks')
   }
 }
+
+const startDrag = (evt: DragEvent, index: number) => {
+  if (!evt.dataTransfer) return
+
+  draggedIndex.value = index
+
+  evt.dataTransfer.effectAllowed = 'move'
+}
+
+const onDrop = (dropIndex: number) => {
+  if (draggedIndex.value === null) return
+
+  const [movedArtwork] = artworks.value.splice(draggedIndex.value, 1)
+  artworks.value.splice(dropIndex, 0, movedArtwork)
+
+  artworks.value.forEach((artwork, index) => {
+    artwork.order = index + 1
+  })
+
+  draggedIndex.value = null
+}
 </script>
 
 <template>
@@ -66,9 +92,17 @@ const removeArtwork = async (id: string | number) => {
       />
     </RouterLink>
   </div>
-  <div class="flex flex-wrap gap-3 justify-around">
-    <div v-for="(artwork, index) in props.currentArtist.artworks" :key="index" class="" draggable="true">
-      <p>{{ artwork.title }}</p>
+  <div class="flex flex-wrap gap-3 justify-around drop-zone">
+    <div
+      v-for="(artwork, index) in artworks"
+      :key="index"
+      class="drag-el"
+      draggable="true"
+      @dragstart="startDrag($event, index)"
+      @drop.prevent="onDrop(index)"
+      @dragover.prevent
+    >
+      <p>{{ artwork.title }} {{ artwork.order }}</p>
       <Image
         :src="`${baseUrl}/` + (getPrimaryImage(artwork) || artwork.images[0]?.path)"
         :alt="artwork.title"
@@ -116,3 +150,7 @@ const removeArtwork = async (id: string | number) => {
     </div>
   </div>
 </template>
+
+<style scoped>
+
+</style>
