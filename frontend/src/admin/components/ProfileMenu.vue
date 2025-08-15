@@ -2,7 +2,6 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/shared/stores/AuthStore'
-import OverlayPanel from 'primevue/overlaypanel'
 import { capitalizeFirstLetter } from '@/shared/services/Helpers'
 import { useI18n } from 'vue-i18n'
 
@@ -35,7 +34,7 @@ function goToProfile() {
     <i class="pi pi-user"></i>
     <span>{{ capitalizeFirstLetter(t('authentication.profile')) }}</span>
 
-    <OverlayPanel ref="profileMenu">
+    <Popover ref="profileMenu">
       <ul class="list-none p-2">
         <li class="p-2 hover:bg-gray-100 cursor-pointer" @click="goToProfile">{{ capitalizeFirstLetter(t('artists.profileArtist')) }}</li>
         <router-link to="/admin/user" class="layout-topbar-logo">
@@ -43,6 +42,6 @@ function goToProfile() {
         </router-link>
         <li class="p-2 hover:bg-gray-100 cursor-pointer" @click="logout">{{ capitalizeFirstLetter(t('authentication.logout')) }}</li>
       </ul>
-    </OverlayPanel>
+    </Popover>
   </div>
 </template>
