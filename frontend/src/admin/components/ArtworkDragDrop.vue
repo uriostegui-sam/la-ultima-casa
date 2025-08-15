@@ -77,6 +77,8 @@ const onDrop = (dropIndex: number) => {
 
   draggedIndex.value = null
 }
+
+
 </script>
 
 <template>
@@ -103,54 +105,74 @@ const onDrop = (dropIndex: number) => {
       @dragover.prevent
     >
       <p>{{ artwork.title }} {{ artwork.order }}</p>
-      <Image
-        :src="`${baseUrl}/` + (getPrimaryImage(artwork) || artwork.images[0]?.path)"
-        :alt="artwork.title"
-        width="250"
-      />
-      <div class="flex justify-around pt-2">
-        <Button
-          icon="pi pi-trash"
-          severity="danger"
-          rounded
-          @click="openConfirmation(artwork.id)"
+      <div class="relative artwork-container">
+        <Image
+          :src="`${baseUrl}/` + (getPrimaryImage(artwork) || artwork.images[0]?.path)"
+          :alt="artwork.title"
+          width="250"
+          class="artwork-image"
         />
-        <Dialog
-          :header="capitalizeFirstLetter(t('commun.confirmation'))"
-          v-model:visible="displayConfirmation"
-          :style="{ width: '350px' }"
-          :modal="true"
-        >
-          <div class="flex items-center justify-center">
-            <i class="pi pi-exclamation-triangle mr-4" style="font-size: 2rem" />
-            <span>{{ capitalizeFirstLetter(t('artists.sureDelete')) }}</span>
-          </div>
-          <template #footer>
+        <div class="container-actions absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10">
+          <div class="flex justify-around gap-10">
             <Button
-              :label="capitalizeFirstLetter(t('commun.no'))"
-              icon="pi pi-times"
-              @click="closeConfirmation"
-              text
-              severity="secondary"
-            />
-            <Button
-              :label="capitalizeFirstLetter(t('commun.yes'))"
-              icon="pi pi-check"
-              @click="removeArtwork(artwork.id)"
+              icon="pi pi-trash"
               severity="danger"
-              outlined
-              autofocus
+              rounded
+              @click="openConfirmation(artwork.id)"
             />
-          </template>
-        </Dialog>
-        <RouterLink :to="`/admin/artists/${props.currentArtist.id}/artwork/edit/${artwork.id}`">
-          <Button icon="pi pi-pencil" rounded class="mr-2" />
-        </RouterLink>
+            <Dialog
+              :header="capitalizeFirstLetter(t('commun.confirmation'))"
+              v-model:visible="displayConfirmation"
+              :style="{ width: '350px' }"
+              :modal="true"
+            >
+              <div class="flex items-center justify-center">
+                <i class="pi pi-exclamation-triangle mr-4" style="font-size: 2rem" />
+                <span>{{ capitalizeFirstLetter(t('artists.sureDelete')) }}</span>
+              </div>
+              <template #footer>
+                <Button
+                  :label="capitalizeFirstLetter(t('commun.no'))"
+                  icon="pi pi-times"
+                  @click="closeConfirmation"
+                  text
+                  severity="secondary"
+                />
+                <Button
+                  :label="capitalizeFirstLetter(t('commun.yes'))"
+                  icon="pi pi-check"
+                  @click="removeArtwork(artwork.id)"
+                  severity="danger"
+                  outlined
+                  autofocus
+                />
+              </template>
+            </Dialog>
+            <RouterLink :to="`/admin/artists/${props.currentArtist.id}/artwork/edit/${artwork.id}`">
+              <Button icon="pi pi-pencil" rounded class="mr-2" />
+            </RouterLink>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <style scoped>
+.container-actions {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+
+.artwork-container:hover .container-actions {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.artwork-container:hover .artwork-image {
+  opacity: 50%;
+  transition: opacity 0.2s ease;
+}
 
 </style>
