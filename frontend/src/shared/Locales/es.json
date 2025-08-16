@@ -139,7 +139,8 @@
     "clickToModify": "haz clic para modificar el orden de las obras de arte",
     "saveOrder": "guardar nuevo orden de obras de arte",
     "orderUpdatedSuccessfully": "orden de obras de arte actualizado correctamente.",
-    "errorUpdatingOrder": "hubo un error al actualizar el orden de las obras de arte."
+    "errorUpdatingOrder": "hubo un error al actualizar el orden de las obras de arte.",
+    "positionInGallery": "posición en la galería"
   },
   "workshop": {
     "workshops": "talleres",

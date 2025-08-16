@@ -139,7 +139,8 @@
     "clickToModify": "click to modify order of artworks",
     "saveOrder": "save new order of artworks",
     "orderUpdatedSuccessfully": "order of artworks updated successfully.",
-    "errorUpdatingOrder": "there was an error updating the order of artworks."
+    "errorUpdatingOrder": "there was an error updating the order of artworks.",
+    "positionInGallery": "position in gallery"
   },
   "workshop": {
     "workshops": "workshops",
