@@ -133,7 +133,13 @@
     "errorUpdatingPrimaryImage": "there was an error updating the primary image.",
     "imageDeletedSuccessfully": "image deleted successfully.",
     "errorDeletingImage": "there was an error deleting the image.",
-    "sureDeleteSelectedImages": "are you sure you want to delete the selected images?"
+    "sureDeleteSelectedImages": "are you sure you want to delete the selected images?",
+    "modifyOrder": "modify order",
+    "dragAndDrop": "drag and drop to change order",
+    "clickToModify": "click to modify order of artworks",
+    "saveOrder": "save new order of artworks",
+    "orderUpdatedSuccessfully": "order of artworks updated successfully.",
+    "errorUpdatingOrder": "there was an error updating the order of artworks."
   },
   "workshop": {
     "workshops": "workshops",
