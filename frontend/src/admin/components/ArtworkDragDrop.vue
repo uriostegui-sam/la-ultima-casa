@@ -1,13 +1,13 @@
 <script lang="ts" setup>
 import type { Artwork } from '@/shared/Interfaces/Artwork'
-import type { ArtworkImage } from '@/shared/Interfaces/ArtworkImage'
 import { capitalizeFirstLetter } from '@/shared/services/Helpers'
 import { useI18n } from 'vue-i18n'
 import { showErrorToast, showSuccessToast } from '../Services/Helpers'
 import { useToast } from 'primevue/usetoast'
-import { computed, ref } from 'vue'
+import { ref } from 'vue'
 import { useAdminArtworkStore } from '../stores/ArtworkAdminStore'
 import type { Artist } from '@/shared/Interfaces/Artist'
+import router from '@/Routers'
 
 const props = defineProps<{
   currentArtist: Artist
@@ -22,6 +22,7 @@ const displayConfirmation = ref(false)
 const artworkToDelete = ref<number | string | null>(null)
 const artworkAdminStore = useAdminArtworkStore()
 const draggedIndex = ref<number | null>(null)
+const canModifyOrder = ref(false)
 
 const artworks = ref<Artwork[]>(
   [...(props.currentArtist.artworks || [])].sort((a, b) => (a.order ?? 0) - (b.order ?? 0)),
@@ -58,6 +59,7 @@ const removeArtwork = async (id: string | number) => {
 }
 
 const startDrag = (evt: DragEvent, index: number) => {
+  if (!canModifyOrder.value) return
   if (!evt.dataTransfer) return
 
   draggedIndex.value = index
@@ -78,33 +80,66 @@ const onDrop = (dropIndex: number) => {
   draggedIndex.value = null
 }
 
+const goToArtworkCreate = () => {
+  if (!props.currentArtist) return
+  router.push({
+    name: 'ArtworkCreate',
+    params: { artistId: props.currentArtist.id },
+  })
+}
 
+const items = [
+  {
+    label: capitalizeFirstLetter(t('artworks.modifyOrder')),
+    icon: 'pi pi-sort-numeric-down',
+    command: () => {
+      canModifyOrder.value = !canModifyOrder.value
+    },
+  },
+]
+
+const modifyOrder = () => {
+  if (!props.currentArtist) return
+}
 </script>
 
 <template>
-  <div class="flex justify-between mb-5">
+  <div class="flex justify-between">
     <label class="block font-semibold mb-1">{{
       capitalizeFirstLetter(t('artworks.artworks'))
     }}</label>
-    <RouterLink :to="`/admin/artists/${currentArtist.id}/artwork/create`">
-      <Button
-        icon="pi pi-plus"
-        :label="capitalizeFirstLetter(t('artworks.addArtwork'))"
-        class="w-full md:w-auto"
-      />
-    </RouterLink>
+    <SplitButton
+      :label="capitalizeFirstLetter(t('artworks.addArtwork'))"
+      :model="items"
+      @click="goToArtworkCreate"
+      text
+    ></SplitButton>
   </div>
+  <div v-if="canModifyOrder" class="flex justify-between py-2 items-center">
+    <p class="text-(--color-salmon) text-md font-semibold pb-5">
+      {{ capitalizeFirstLetter(t('artworks.dragAndDrop')) }}
+    </p>
+    <Button
+    icon="pi pi-save"
+    :label="capitalizeFirstLetter(t('artworks.saveOrder'))"
+    size="small"
+    @click="modifyOrder"
+    />
+  </div>
+
   <div class="flex flex-wrap gap-3 justify-around drop-zone">
     <div
       v-for="(artwork, index) in artworks"
       :key="index"
       class="drag-el"
-      draggable="true"
       @dragstart="startDrag($event, index)"
       @drop.prevent="onDrop(index)"
       @dragover.prevent
     >
-      <p>{{ artwork.title }} {{ artwork.order }}</p>
+      <div class="flex justify-between">
+        <p>{{ artwork.title }}</p>
+        <p class="font-semibold">{{ artwork.order }}</p>
+      </div>
       <div class="relative artwork-container">
         <Image
           :src="`${baseUrl}/` + (getPrimaryImage(artwork) || artwork.images[0]?.path)"
@@ -112,7 +147,9 @@ const onDrop = (dropIndex: number) => {
           width="250"
           class="artwork-image"
         />
-        <div class="container-actions absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10">
+        <div
+          class="container-actions absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10"
+        >
           <div class="flex justify-around gap-10">
             <Button
               icon="pi pi-trash"
@@ -174,5 +211,4 @@ const onDrop = (dropIndex: number) => {
   opacity: 50%;
   transition: opacity 0.2s ease;
 }
-
 </style>
