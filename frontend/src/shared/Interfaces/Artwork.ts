@@ -50,3 +50,10 @@ export interface ArtworkUpdatePayload {
   images_to_delete: number[];
   new_images?: File[];
 }
+
+export interface ArtworkOrderPayload {
+  artworks: {
+    id: number;
+    order: number;
+  }[];
+}
