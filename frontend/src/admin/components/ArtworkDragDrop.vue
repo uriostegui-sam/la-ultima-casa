@@ -8,6 +8,7 @@ import { ref } from 'vue'
 import { useAdminArtworkStore } from '../stores/ArtworkAdminStore'
 import type { Artist } from '@/shared/Interfaces/Artist'
 import router from '@/Routers'
+import ArtworkAdminServices from '../Services/DataLayers/ArtworkAdminServices'
 
 const props = defineProps<{
   currentArtist: Artist
@@ -83,12 +84,12 @@ const onDrop = (dropIndex: number) => {
 const goToArtworkCreate = () => {
   if (!props.currentArtist) return
   router.push({
-    name: 'ArtworkCreate',
+    name: 'adminArtistArtworkCreate',
     params: { artistId: props.currentArtist.id },
   })
 }
 
-const items = [
+const optionsSplitButton = [
   {
     label: capitalizeFirstLetter(t('artworks.modifyOrder')),
     icon: 'pi pi-sort-numeric-down',
@@ -98,9 +99,23 @@ const items = [
   },
 ]
 
-const modifyOrder = () => {
+const modifyOrder = async () => {
   if (!props.currentArtist) return
+
+  await ArtworkAdminServices.updateArtworksOrder({
+    artworks: artworks.value.map((artwork) => ({
+      id: artwork.id,
+      order: artwork.order ?? 0,
+    })),
+  })
+    .then(() => {
+      showSuccessToast(toast, t, 'artworks.orderUpdatedSuccessfully', 3000)
+    })
+    .catch((err: unknown) => {
+      showErrorToast(toast, t, err, 'artworks.errorUpdatingOrder')
+    })
 }
+console.log('artworks', artworks.value)
 </script>
 
 <template>
@@ -110,7 +125,7 @@ const modifyOrder = () => {
     }}</label>
     <SplitButton
       :label="capitalizeFirstLetter(t('artworks.addArtwork'))"
-      :model="items"
+      :model="optionsSplitButton"
       @click="goToArtworkCreate"
       text
     ></SplitButton>
@@ -120,10 +135,10 @@ const modifyOrder = () => {
       {{ capitalizeFirstLetter(t('artworks.dragAndDrop')) }}
     </p>
     <Button
-    icon="pi pi-save"
-    :label="capitalizeFirstLetter(t('artworks.saveOrder'))"
-    size="small"
-    @click="modifyOrder"
+      icon="pi pi-save"
+      :label="capitalizeFirstLetter(t('artworks.saveOrder'))"
+      size="small"
+      @click="modifyOrder"
     />
   </div>
 

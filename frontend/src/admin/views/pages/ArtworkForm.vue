@@ -29,17 +29,30 @@ const baseUrl = import.meta.env.VITE_STORAGE_URL
 const { t } = useI18n()
 const route = useRoute()
 const router = useRouter()
-const id = computed(() => Number(route.params.idArtwork))
+const idArtwork = computed(() => Number(route.params.idArtwork))
+const idArtist = computed(() => Number(route.params.id))
 const toast = useToast()
 const artistAdminStore = useAdminArtistStore()
 const artworkAdminStore = useAdminArtworkStore()
-const isEditMode = computed(() => !Number.isNaN(id.value))
+const isEditMode = computed(() => !Number.isNaN(idArtwork.value))
 const currentArtwork = ref<Artwork | null>(null)
 const artists = computed(() => artistAdminStore.artists)
+const currentArtist = computed(() => artistAdminStore.selectedArtist)
 const imageToDelete = ref<number | string | null>(null)
 const displayConfirmation = ref(false)
 const artwork = ref<Artwork | null>(null)
 const uploader = ref<ExtendedFileUpload | null>(null)
+
+const totalOfArtistsArtworks = computed(() => {
+  return currentArtist?.value?.artworks?.length || 0
+})
+
+const orderList = computed(() => {
+  return Array.from({ length: totalOfArtistsArtworks.value + 1 }, (_, i) => ({
+    id: i,
+    name: i + 1,
+  }))
+})
 
 const newImages = ref<File[]>([])
 const imagesToDelete = ref<number[]>([])
@@ -131,16 +144,17 @@ const confirmDeleteImage = async () => {
 
 onMounted(async () => {
   await artistAdminStore.getArtists()
+  await artistAdminStore.getArtist(idArtist.value)
 
-  if (id.value) {
-    await artworkAdminStore.getArtwork(id.value)
+  if (idArtwork.value) {
+    await artworkAdminStore.getArtwork(idArtwork.value)
 
     artwork.value = artworkAdminStore.selectedArtwork
     currentArtwork.value = JSON.parse(JSON.stringify(artwork.value))
   } else {
     currentArtwork.value = {
       id: 0,
-      artist_id: route.params.id ? Number(route.params.id) : 0,
+      artist_id: idArtist.value ? Number(idArtist.value) : 0,
       title: '',
       artist: null,
       description: {
@@ -149,6 +163,7 @@ onMounted(async () => {
       },
       dimensions: { width: 0, height: 0, depth: 0 },
       creation_date: new Date(),
+      order: totalOfArtistsArtworks.value,
       images: [],
       primary_image: undefined,
     }
@@ -165,6 +180,7 @@ const handleSubmit = async () => {
       title: currentArtwork.value.title,
       description: currentArtwork.value.description,
       dimensions: currentArtwork.value.dimensions,
+      order: currentArtwork.value.order,
       creation_date: currentArtwork.value.creation_date,
     }
 
@@ -172,11 +188,11 @@ const handleSubmit = async () => {
     if (isEditMode.value) {
       const updatePayload: ArtworkUpdatePayload = {
         ...basePayload,
-        id: id.value,
+        id: idArtwork.value,
         images_to_delete: imagesToDelete.value,
         new_images: newImages.value,
       }
-      result = await artworkAdminStore.updateArtwork(id.value, updatePayload)
+      result = await artworkAdminStore.updateArtwork(idArtwork.value, updatePayload)
 
       artwork.value = result
       currentArtwork.value = JSON.parse(JSON.stringify(result))
@@ -189,10 +205,13 @@ const handleSubmit = async () => {
       result = await artworkAdminStore.createArtwork(createPayload)
 
       if (result?.id) {
-        router.push({ name: 'adminArtistArtworkEdit', params: { idArtwork: result.id, id: result.artist_id } })
+        router.push({
+          name: 'adminArtistArtworkEdit',
+          params: { idArtwork: result.id, id: result.artist_id },
+        })
       }
     }
-    
+
     uploader.value?.clear()
     newImages.value = []
     imagesToDelete.value = []
@@ -206,21 +225,25 @@ const handleSubmit = async () => {
 </script>
 
 <template>
-  <TitleForm title="artworks.artwork" :isCreateMode="!isEditMode" :goBack="true"/>
+  <TitleForm title="artworks.artwork" :isCreateMode="!isEditMode" :goBack="true" />
   <div v-if="currentArtwork" class="card">
     <form @submit.prevent="handleSubmit" class="space-y-6">
       <!-- Basic Info -->
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <!-- Title -->
         <div>
-          <label class="block mb-2 font-medium">{{ capitalizeFirstLetter(t('commun.title')) }}</label>
+          <label class="block mb-2 font-medium">{{
+            capitalizeFirstLetter(t('commun.title'))
+          }}</label>
           <InputText v-model="currentArtwork.title" required class="w-full" />
         </div>
 
         <!-- Artist Selection -->
         <div>
-          <label class="block mb-2 font-medium">{{ capitalizeFirstLetter(t('artists.artist')) }}</label>
-          <Dropdown
+          <label class="block mb-2 font-medium">{{
+            capitalizeFirstLetter(t('artists.artist'))
+          }}</label>
+          <Select
             v-model="currentArtwork.artist_id"
             :options="artists"
             optionLabel="name"
@@ -250,33 +273,57 @@ const handleSubmit = async () => {
       <!-- Dimensions -->
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div>
-          <label class="block mb-2 font-medium">{{ capitalizeFirstLetter(t('artworks.width')) }}</label>
+          <label class="block mb-2 font-medium">{{
+            capitalizeFirstLetter(t('artworks.width'))
+          }}</label>
           <InputNumber v-model="currentArtwork.dimensions.width" class="w-full" />
         </div>
         <div>
-          <label class="block mb-2 font-medium">{{ capitalizeFirstLetter(t('artworks.height')) }}</label>
+          <label class="block mb-2 font-medium">{{
+            capitalizeFirstLetter(t('artworks.height'))
+          }}</label>
           <InputNumber v-model="currentArtwork.dimensions.height" class="w-full" />
         </div>
         <div>
-          <label class="block mb-2 font-medium">{{ capitalizeFirstLetter(t('artworks.depth')) }}</label>
+          <label class="block mb-2 font-medium">{{
+            capitalizeFirstLetter(t('artworks.depth'))
+          }}</label>
           <InputNumber v-model="currentArtwork.dimensions.depth" class="w-full" />
         </div>
       </div>
 
       <!-- Creation Date -->
-      <div>
-        <label class="block mb-2 font-medium">{{ capitalizeFirstLetter(t('artworks.creationDate')) }}</label>
-        <Calendar
-          v-model="currentArtwork.creation_date"
-          dateFormat="yy-mm-dd"
-          class="w-full"
-          :showIcon="true"
-        />
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <label class="block mb-2 font-medium">{{
+            capitalizeFirstLetter(t('artworks.creationDate'))
+          }}</label>
+          <DatePicker
+            v-model="currentArtwork.creation_date"
+            dateFormat="yy-mm-dd"
+            class="w-full"
+            :showIcon="true"
+          />
+        </div>
+        <div>
+          <label class="block mb-2 font-medium">{{
+            capitalizeFirstLetter(t('artworks.positionInGallery'))
+          }}</label>
+          <Select
+            v-model="currentArtwork.order"
+            :options="orderList"
+            optionLabel="name"
+            optionValue="id"
+            class="w-full"
+          />
+        </div>
       </div>
 
       <!-- Image Upload -->
       <div>
-        <label class="block mb-2 font-medium">{{ capitalizeFirstLetter(t('artworks.images')) }}</label>
+        <label class="block mb-2 font-medium">{{
+          capitalizeFirstLetter(t('artworks.images'))
+        }}</label>
         <FileUpload
           name="images[]"
           multiple
