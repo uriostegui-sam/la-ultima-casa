@@ -7,9 +7,6 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\SkillController;
 use App\Http\Controllers\WorkshopController;
-use App\Models\AboutUs;
-use App\Models\Skill;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -32,10 +29,16 @@ Route::middleware('api')->group(function () {
         ->only(['index', 'show'])
         ->whereNumber('skill');
     Route::apiResource('artworks', ArtworkController::class)->only(['index', 'show']);
-    Route::get('news/published', [NewsController::class, 'getPublishedNews']);
-    Route::apiResource('news', NewsController::class)->only(['index', 'show']);
-    Route::get('workshops/featured', [WorkshopController::class, 'getFeaturedWorkshops']);
-    Route::apiResource('workshops', WorkshopController::class)->only(['index', 'show']);
+    Route::get('news/published', [NewsController::class, 'getPublishedNews'])
+        ->name('news.published');
+    Route::apiResource('news', NewsController::class
+        )->only(['index', 'show'])
+        ->whereNumber('news');
+    Route::get('workshops/featured', [WorkshopController::class, 'getFeaturedWorkshops'])
+        ->name('workshops.featured');
+    Route::apiResource('workshops', WorkshopController::class)
+        ->only(['index', 'show'])
+        ->whereNumber('workshop');
     Route::apiResource('aboutUs', AboutUsController::class)
         ->only(['index', 'show'])
         ->parameters(['aboutUs' => 'aboutUs']);
@@ -70,11 +73,13 @@ Route::prefix('auth')->middleware('throttle:api')->group(function () {
 
 // Authenticated user routes (both artists and admins)
 Route::middleware(['auth:sanctum', 'throttle:api'])->group(function () {
+    Route::put('artworks/reorder-artwork', [ArtworkController::class, 'reorderArtwork']);
     Route::delete('/artworks/{artwork}/images/{image}', [ArtworkController::class, 'destroyImage']);
-    Route::apiResource('artworks', ArtworkController::class)->except(['index', 'show']);
     Route::patch('artworks/{artwork}/images/{image}/set-primary', [ArtworkController::class, 'setPrimaryImage']);
     Route::patch('artworks/{artwork}/reorder-images', [ArtworkController::class, 'reorderImages']);
     Route::delete('artworks/{artwork}/images/{image}', [ArtworkController::class, 'deleteImage']);
+    Route::apiResource('artworks', ArtworkController::class)->except(['index', 'show'])
+        ->whereNumber('artwork');
     Route::apiResource('artists', ArtistController::class)->except(['index', 'show']);
     Route::apiResource('workshops', WorkshopController::class)->except(['index', 'show']);
 

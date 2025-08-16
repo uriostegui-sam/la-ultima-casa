@@ -8,6 +8,7 @@ use App\Http\Resources\ArtworkResource;
 use App\Models\Artwork;
 use App\Models\ArtworkImage;
 use App\Services\ArtworkService;
+use Illuminate\Http\Request;
 
 /**
  * @OA\Tag(
@@ -222,7 +223,7 @@ class ArtworkController extends Controller
     public function update(UpdateArtworkRequest $request, Artwork $artwork)
     {
         $this->authorize('update', $artwork);
-        
+
         // Update the artwork fields (except images)
         $artwork->update($request->except(['images', 'images_to_delete']));
 
@@ -230,7 +231,7 @@ class ArtworkController extends Controller
             $imageIds = json_decode($request->input('images_to_delete'), true);
             ArtworkImage::whereIn('id', $imageIds)->delete();
         }
-    
+
         // Handle new images if provided
         if ($request->hasFile('images')) {
             $lastImageNumber = $artwork->images->max('order') + 1;
@@ -282,20 +283,18 @@ class ArtworkController extends Controller
         return new ArtworkResource($artwork->load('images', 'artist.user'));
     }
 
-    public function reorderImages(Artwork $artwork, UpdateArtworkRequest $request)
+    public function reorderArtwork(Request $request)
     {
-        $this->authorize('update', $artwork);
+        $artworks = $request->get('artworks', []);
 
-        $request->validate([
-            'image_ids' => 'required|array',
-            'image_ids.*' => 'exists:artwork_images,id,artwork_id,' . $artwork->id
-        ]);
-
-        foreach ($request->image_ids as $order => $id) {
-            ArtworkImage::where('id', $id)->update(['order' => $order]);
+        foreach ($artworks as $artwork) {
+            Artwork::where('id', $artwork['id'])
+                ->update(['order' => $artwork['order']]);
         }
 
-        return new ArtworkResource($artwork->load('images', 'artist.user'));
+        return response()->json([
+            'message' => 'orderUpdatedSuccessfully',
+        ]);
     }
 
     public function deleteImage(Artwork $artwork, ArtworkImage $image)
