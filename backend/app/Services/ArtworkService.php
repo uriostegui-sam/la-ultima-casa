@@ -18,7 +18,8 @@ class ArtworkService
             'description' => $data['description'] ?? null,
             'image_path' => $this->storeImage($image, $data['title']),
             'dimensions' => $data['dimensions'] ?? null,
-            'creation_date' => $data['creation_date'] ?? now()
+            'creation_date' => $data['creation_date'] ?? now(),
+            'order' => $data['order'] ?? null,
         ]);
     }
 

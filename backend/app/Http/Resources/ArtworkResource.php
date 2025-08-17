@@ -27,6 +27,7 @@ class ArtworkResource extends JsonResource
                 'depth' => $this->dimensions['depth'] ?? '',
             ],
             'creation_date' => $this->creation_date,
+            'order' => $this->order,
             'artist_id' => $this->artist_id,
             'artist' => new ArtistResource($this->whenLoaded('artist')),
             'images' => ArtworkImageResource::collection($this->images),

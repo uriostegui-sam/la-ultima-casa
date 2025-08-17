@@ -313,18 +313,18 @@ const handleSubmit = async () => {
           <label class="block font-semibold mb-1">{{
             `${capitalizeFirstLetter(t('workshop.startDate'))}`
           }}</label>
-          <Calendar
+          <DatePicker
             v-model="currentWorkshop.start_date"
             dateFormat="yy-mm-dd"
             class="w-full"
             :showIcon="true"
           />
         </div>
-        <div>
+        <div v-if="currentWorkshop.type === 'temporary'">
           <label class="block font-semibold mb-1">{{
             `${capitalizeFirstLetter(t('workshop.endDate'))}`
           }}</label>
-          <Calendar
+          <DatePicker
             v-model="currentWorkshop.end_date"
             dateFormat="yy-mm-dd"
             class="w-full"

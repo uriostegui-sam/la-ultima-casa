@@ -133,7 +133,14 @@
     "errorUpdatingPrimaryImage": "hubo un error al actualizar la imagen primaria.",
     "imageDeletedSuccessfully": "imagen eliminada correctamente.",
     "errorDeletingImage": "hubo un error al eliminar la imagen.",
-    "sureDeleteSelectedImages": "¿Estás seguro que quieres eliminar las imágenes seleccionadas?"
+    "sureDeleteSelectedImages": "¿Estás seguro que quieres eliminar las imágenes seleccionadas?",
+    "modifyOrder": "modificar orden",
+    "dragAndDrop": "arrastrar y soltar para cambiar el orden",
+    "clickToModify": "haz clic para modificar el orden de las obras de arte",
+    "saveOrder": "guardar nuevo orden de obras de arte",
+    "orderUpdatedSuccessfully": "orden de obras de arte actualizado correctamente.",
+    "errorUpdatingOrder": "hubo un error al actualizar el orden de las obras de arte.",
+    "positionInGallery": "posición en la galería"
   },
   "workshop": {
     "workshops": "talleres",

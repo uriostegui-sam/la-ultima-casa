@@ -1,29 +1,26 @@
 <script setup lang="ts">
-import { ref, computed, watchEffect, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useAdminArtistStore } from '@/admin/stores/ArtistAdminStore'
 import { useAdminSkillStore } from '@/admin/stores/SkillAdminStore'
 import type { Artist, ArtistCreatePayload, ArtistUpdatePayload } from '@/shared/Interfaces/Artist'
-import { Languages, locale } from '@/shared/services/Translation'
+import { locale } from '@/shared/services/Translation'
 import { useI18n } from 'vue-i18n'
 import { capitalizeFirstLetter, choseCurrentLanguage } from '@/shared/services/Helpers'
 import { useRoute, useRouter } from 'vue-router'
 import { useToast } from 'primevue/usetoast'
-import { useAdminArtworkStore } from '@/admin/stores/ArtworkAdminStore'
 import { showErrorToast, showSuccessToast } from '@/admin/Services/Helpers'
-import type { Artwork } from '@/shared/Interfaces/Artwork'
 import TitleForm from '@/admin/components/TitleForm.vue'
 import LoadingComponent from '@/shared/components/LoadingComponent.vue'
 import { useAuthStore } from '@/shared/stores/AuthStore'
 import AuthService from '@/shared/services/DataLayers/AuthService'
 import type { PasswordReset } from '@/shared/Interfaces/User'
+import ArtworkDragDrop from '@/admin/components/ArtworkDragDrop.vue'
 
 const emit = defineEmits<{
   (e: 'success', artist: Artist): void
   (e: 'success', passwordReset: PasswordReset): void
 }>()
 
-
-const baseUrl = import.meta.env.VITE_STORAGE_URL
 const profileImageFile = ref<File | null>(null)
 const profileImagePreview = ref<string | null>(null)
 const toast = useToast()
@@ -36,14 +33,11 @@ const isAdmin = computed(() => authStore.isAdmin)
 const id = computed(() => Number(route.params.id))
 const currentLang = locale
 const artistAdminStore = useAdminArtistStore()
-const artworkAdminStore = useAdminArtworkStore()
 const skillAdminStore = useAdminSkillStore()
 const isEditMode = computed(() => !Number.isNaN(id.value))
 const currentArtist = ref<Artist | null>(null)
 const currentArtistSkills = ref<number[]>([])
 const artist = ref<Artist | null>(null)
-const displayConfirmation = ref(false)
-const artworkToDelete = ref<number | string | null>(null)
 const isOwnersProfile = computed(() => id.value === artistId)
 const token = ref<string | null>(null)
 const skillOptions = computed(() =>
@@ -52,16 +46,6 @@ const skillOptions = computed(() =>
     value: skill.id,
   })),
 )
-
-const openConfirmation = (id: number | string) => {
-  artworkToDelete.value = id
-  displayConfirmation.value = true
-}
-
-function closeConfirmation() {
-  displayConfirmation.value = false
-  artworkToDelete.value = null
-}
 
 const onProfileImageSelect = (event: any) => {
   const file = event.files?.[0]
@@ -74,22 +58,6 @@ const onProfileImageSelect = (event: any) => {
 const removeProfileImage = () => {
   profileImageFile.value = null
   profileImagePreview.value = null
-}
-
-const removeArtwork = (id: string | number) => {
-  if (!currentArtist.value) return
-
-  displayConfirmation.value = false
-  try {
-    artworkAdminStore.deleteArtwork(id)
-
-    currentArtist.value.artworks =
-      currentArtist.value.artworks?.filter((art) => art.id !== id) || []
-
-    showSuccessToast(toast, t, 'artists.artistSavedSuccessfully', 3000)
-  } catch (err: unknown) {
-    showErrorToast(toast, t, err, 'artists.errorSavingArtist')
-  }
 }
 
 const generateResetToken = async () => {
@@ -116,9 +84,6 @@ const generateResetToken = async () => {
     showErrorToast(toast, t, err, 'authentication.resetPasswordError')
   }
 }
-
-const getPrimaryImage = (artwork: Artwork) =>
-  artwork.images.find((img) => img.is_primary)?.path ?? ''
 
 onMounted(async () => {
   await skillAdminStore.getSkills()
@@ -374,61 +339,10 @@ const handleSubmit = async () => {
     </form>
 
     <div v-if="isEditMode" class="pt-5 mt-10">
-      <div class="flex justify-between mb-5">
-        <label class="block font-semibold mb-1">{{ capitalizeFirstLetter(t('artworks.artworks')) }}</label>
-        <RouterLink :to="`/admin/artists/${currentArtist.id}/artwork/create`">
-          <Button icon="pi pi-plus" :label="capitalizeFirstLetter(t('artworks.addArtwork'))" class="w-full md:w-auto" />
-        </RouterLink>
-      </div>
-      <div class="flex flex-wrap gap-3 justify-around">
-        <div v-for="(artwork, index) in currentArtist.artworks" :key="index" class="">
-          <p>{{ artwork.title }}</p>
-          <Image
-            :src="`${baseUrl}/` + (getPrimaryImage(artwork) || artwork.images[0]?.path)"
-            :alt="artwork.title"
-            width="250"
-          />
-          <div class="flex justify-around pt-2">
-            <Button
-              icon="pi pi-trash"
-              severity="danger"
-              rounded
-              @click="openConfirmation(artwork.id)"
-            />
-            <Dialog
-              :header="capitalizeFirstLetter(t('commun.confirmation'))"
-              v-model:visible="displayConfirmation"
-              :style="{ width: '350px' }"
-              :modal="true"
-            >
-              <div class="flex items-center justify-center">
-                <i class="pi pi-exclamation-triangle mr-4" style="font-size: 2rem" />
-                <span>{{ capitalizeFirstLetter(t('artists.sureDelete')) }}</span>
-              </div>
-              <template #footer>
-                <Button
-                  :label="capitalizeFirstLetter(t('commun.no'))"
-                  icon="pi pi-times"
-                  @click="closeConfirmation"
-                  text
-                  severity="secondary"
-                />
-                <Button
-                  :label="capitalizeFirstLetter(t('commun.yes'))"
-                  icon="pi pi-check"
-                  @click="removeArtwork(artwork.id)"
-                  severity="danger"
-                  outlined
-                  autofocus
-                />
-              </template>
-            </Dialog>
-            <RouterLink :to="`/admin/artists/${currentArtist.id}/artwork/edit/${artwork.id}`">
-              <Button icon="pi pi-pencil" rounded class="mr-2" />
-            </RouterLink>
-          </div>
-        </div>
-      </div>
+      <ArtworkDragDrop
+        :currentArtist="currentArtist"
+        @success="handleSubmit"
+      />
     </div>
   </div>
   <div v-else><LoadingComponent /></div>
