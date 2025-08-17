@@ -115,7 +115,6 @@ const modifyOrder = async () => {
       showErrorToast(toast, t, err, 'artworks.errorUpdatingOrder')
     })
 }
-console.log('artworks', artworks.value)
 </script>
 
 <template>
@@ -142,11 +141,12 @@ console.log('artworks', artworks.value)
     />
   </div>
 
-  <div class="flex flex-wrap gap-3 justify-around drop-zone">
+  <div class="pt-10 grid grid-cols-3 gap-1 grid-flow-dense">
     <div
       v-for="(artwork, index) in artworks"
       :key="index"
-      class="drag-el"
+      class="drag-el relative artwork-container"
+      :class="index === 4 ? 'col-span-2 row-span-2' : ''"
       @dragstart="startDrag($event, index)"
       @drop.prevent="onDrop(index)"
       @dragover.prevent
@@ -155,55 +155,54 @@ console.log('artworks', artworks.value)
         <p>{{ artwork.title }}</p>
         <p class="font-semibold">{{ artwork.order }}</p>
       </div>
-      <div class="relative artwork-container">
-        <Image
-          :src="`${baseUrl}/` + (getPrimaryImage(artwork) || artwork.images[0]?.path)"
-          :alt="artwork.title"
-          width="250"
-          class="artwork-image"
-        />
-        <div
-          class="container-actions absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10"
-        >
-          <div class="flex justify-around gap-10">
-            <Button
-              icon="pi pi-trash"
-              severity="danger"
-              rounded
-              @click="openConfirmation(artwork.id)"
-            />
-            <Dialog
-              :header="capitalizeFirstLetter(t('commun.confirmation'))"
-              v-model:visible="displayConfirmation"
-              :style="{ width: '350px' }"
-              :modal="true"
-            >
-              <div class="flex items-center justify-center">
-                <i class="pi pi-exclamation-triangle mr-4" style="font-size: 2rem" />
-                <span>{{ capitalizeFirstLetter(t('artists.sureDelete')) }}</span>
-              </div>
-              <template #footer>
-                <Button
-                  :label="capitalizeFirstLetter(t('commun.no'))"
-                  icon="pi pi-times"
-                  @click="closeConfirmation"
-                  text
-                  severity="secondary"
-                />
-                <Button
-                  :label="capitalizeFirstLetter(t('commun.yes'))"
-                  icon="pi pi-check"
-                  @click="removeArtwork(artwork.id)"
-                  severity="danger"
-                  outlined
-                  autofocus
-                />
-              </template>
-            </Dialog>
-            <RouterLink :to="`/admin/artists/${props.currentArtist.id}/artwork/edit/${artwork.id}`">
-              <Button icon="pi pi-pencil" rounded class="mr-2" />
-            </RouterLink>
-          </div>
+
+      <Image
+        :src="`${baseUrl}/` + (getPrimaryImage(artwork) || artwork.images[0]?.path)"
+        :alt="artwork.title"
+        width="w-full h-full object-cover"
+        class="artwork-image"
+      />
+      <div
+        class="container-actions absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10"
+      >
+        <div class="flex justify-around gap-10">
+          <Button
+            icon="pi pi-trash"
+            severity="danger"
+            rounded
+            @click="openConfirmation(artwork.id)"
+          />
+          <Dialog
+            :header="capitalizeFirstLetter(t('commun.confirmation'))"
+            v-model:visible="displayConfirmation"
+            :style="{ width: '350px' }"
+            :modal="true"
+          >
+            <div class="flex items-center justify-center">
+              <i class="pi pi-exclamation-triangle mr-4" style="font-size: 2rem" />
+              <span>{{ capitalizeFirstLetter(t('artists.sureDelete')) }}</span>
+            </div>
+            <template #footer>
+              <Button
+                :label="capitalizeFirstLetter(t('commun.no'))"
+                icon="pi pi-times"
+                @click="closeConfirmation"
+                text
+                severity="secondary"
+              />
+              <Button
+                :label="capitalizeFirstLetter(t('commun.yes'))"
+                icon="pi pi-check"
+                @click="removeArtwork(artwork.id)"
+                severity="danger"
+                outlined
+                autofocus
+              />
+            </template>
+          </Dialog>
+          <RouterLink :to="`/admin/artists/${props.currentArtist.id}/artwork/edit/${artwork.id}`">
+            <Button icon="pi pi-pencil" rounded class="mr-2" />
+          </RouterLink>
         </div>
       </div>
     </div>
