@@ -16,6 +16,10 @@ const props = defineProps<{
   artworks?: Artwork[]
 }>()
 
+const artworksInOrder = ref<Artwork[]>(
+  [...(props.artworks || [])].sort((a, b) => (a.order ?? 0) - (b.order ?? 0)),
+)
+
 const current = locale
 const modalOpen = ref(false)
 const selectedIndex = ref(0)
@@ -74,7 +78,7 @@ onBeforeUnmount(() => {
 <template>
   <section class="px-10 mx-auto max-w-7xl pb-10">
     <div class="relative pt-10 grid grid-cols-3 gap-1 grid-flow-dense">
-      <template v-for="(artwork, index) in props.artworks" :key="index">
+      <template v-for="(artwork, index) in artworksInOrder" :key="index">
         <div
           class="relative group overflow-hidden"
           :class="index === 4 ? 'col-span-2 row-span-2' : ''"
@@ -105,7 +109,7 @@ onBeforeUnmount(() => {
         <div class="embla__container">
           <template v-for="(artwork, index) in props.artworks" :key="index">
             <div class="embla__slide">
-              <div class="flex flex-col lg:flex-row gap-10 items-start">
+              <div class="flex flex-col align-middle lg:flex-row gap-10 items-start">
                 <div class="flex-1 min-w-0">
                     <InnerCarouselArtwork
                         :artwork="artwork"
