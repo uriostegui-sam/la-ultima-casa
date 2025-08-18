@@ -84,8 +84,10 @@ export const useAdminArtworkStore = defineStore('adminArtwork', {
         if (this.selectedArtwork?.id === id) {
           this.selectedArtwork = null
         }
+        return { success: true }
       } catch (err: any) {
         this.error = err.message || 'Failed to delete artwork'
+        return { success: false }
       } finally {
         this.loading = false
       }

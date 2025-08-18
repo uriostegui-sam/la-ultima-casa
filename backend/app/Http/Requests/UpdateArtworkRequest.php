@@ -32,6 +32,8 @@ class UpdateArtworkRequest extends FormRequest
             'images' => 'sometimes|array',
             'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
             'images_to_delete' => 'sometimes|json',
+            'order' => 'sometimes|numeric|min:0',
+
         ];
     }
 

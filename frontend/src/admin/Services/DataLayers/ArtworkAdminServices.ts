@@ -1,8 +1,9 @@
-import type { Artwork, ArtworkCreatePayload, ArtworkUpdatePayload } from '@/shared/Interfaces/Artwork'
+import type { Artwork, ArtworkCreatePayload, ArtworkOrderPayload, ArtworkUpdatePayload } from '@/shared/Interfaces/Artwork'
 import type { ApiResponse } from '@/shared/Interfaces/ApiResponse'
 import { BaseService } from "@/shared/services/DataLayers/BaseService"
 import axiosInstance from '@/shared/services/DataLayers/AxiosInstance'
 import { buildArtworkFormData } from '../Helpers/formArtworkHelper'
+import { buildArtworkOrderFormData } from '../Helpers/formArtworkOrderHelper'
 
 class ArtworkAdminService extends BaseService {
   constructor() {
@@ -30,6 +31,17 @@ class ArtworkAdminService extends BaseService {
   async setPrimaryImage(artworkId: number, imageId: number): Promise<Artwork> {
     const response = await axiosInstance.patch<Artwork>(
       `${this.baseUrl}/${artworkId}/images/${imageId}/set-primary`
+    )
+    return response.data
+  }
+
+  async updateArtworksOrder(payload: ArtworkOrderPayload): Promise<Artwork[]> {
+    const formData = buildArtworkOrderFormData(payload)
+    console.log(formData)
+
+    const response = await axiosInstance.post<Artwork[]>(
+      `${this.baseUrl}/reorder-artwork`,
+      formData
     )
     return response.data
   }

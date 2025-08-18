@@ -31,6 +31,10 @@ export function buildArtworkFormData(
     formData.append('creation_date', formatDateToYMD(payload.creation_date))
   }
 
+  if (payload.order) {
+    formData.append('order', payload.order.toString())
+  }
+  
   // Handle new images
   if ('new_images' in payload && payload.new_images) {
     payload.new_images.forEach((file) => {
