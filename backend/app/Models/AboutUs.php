@@ -9,11 +9,12 @@ class AboutUs extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['cover_image', 'number', 'mail', 'address', 'description'];
+    protected $fillable = ['cover_image', 'number', 'mail', 'address', 'description', 'logo'];
 
     protected $casts = [
         'cover_image' => 'string',
         'address' => 'array',
         'description' => 'array',
+        'logo' => 'string',
     ];
 }
