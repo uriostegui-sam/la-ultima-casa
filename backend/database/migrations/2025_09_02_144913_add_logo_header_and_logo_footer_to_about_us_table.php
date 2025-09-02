@@ -12,7 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('about_us', function (Blueprint $table) {
-            $table->string('logo')->nullable()->after('cover_image');
+            $table->string('logo_header')->nullable()->after('cover_image');
+            $table->string('logo_footer')->nullable()->after('logo_header');
         });
     }
 
@@ -22,7 +23,8 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('about_us', function (Blueprint $table) {
-            $table->dropColumn('logo');
+            $table->dropColumn('logo_header');
+            $table->dropColumn('logo_footer');
         });
     }
 };
