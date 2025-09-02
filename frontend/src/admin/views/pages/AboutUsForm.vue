@@ -24,8 +24,10 @@ const existingId = computed(() => {
 const baseUrl = import.meta.env.VITE_STORAGE_URL
 const profileImageFile = ref<File | null>(null)
 const profileImagePreview = ref<string | null>(null)
-const logoFile = ref<File | null>(null)
-const logoPreview = ref<string | null>(null)
+const logoHeaderFile = ref<File | null>(null)
+const logoHeaderPreview = ref<string | null>(null)
+const logoFootFile = ref<File | null>(null)
+const logoFooterPreview = ref<string | null>(null)
 const toast = useToast()
 const { t } = useI18n()
 const aboutUsAdminStore = useAdminAboutUsStore()
@@ -46,17 +48,30 @@ const removeProfileImage = () => {
   profileImagePreview.value = null
 }
 
-const onLogoSelect = (event: any) => {
+const onLogoHeaderSelect = (event: any) => {
   const file = event.files?.[0]
   if (file) {
-    logoFile.value = file
-    logoPreview.value = URL.createObjectURL(file)
+    logoHeaderFile.value = file
+    logoHeaderPreview.value = URL.createObjectURL(file)
   }
 }
 
-const removeLogo = () => {
-  logoFile.value = null
-  logoPreview.value = null
+const removeHeaderLogo = () => {
+  logoHeaderFile.value = null
+  logoHeaderPreview.value = null
+}
+
+const onLogoFooterSelect = (event: any) => {
+  const file = event.files?.[0]
+  if (file) {
+    logoFootFile.value = file
+    logoFooterPreview.value = URL.createObjectURL(file)
+  }
+}
+
+const removeLogoFooter = () => {
+  logoFootFile.value = null
+  logoFooterPreview.value = null
 }
 
 onMounted(async () => {
@@ -71,8 +86,12 @@ onMounted(async () => {
       ? `${baseUrl}/${aboutUs.value?.cover_image}`
       : null
 
-    logoPreview.value = aboutUs.value?.logo
-      ? `${baseUrl}/${aboutUs.value?.logo}`
+    logoHeaderPreview.value = aboutUs.value?.logo_header
+      ? `${baseUrl}/${aboutUs.value?.logo_header}`
+      : null
+
+    logoFooterPreview.value = aboutUs.value?.logo_footer
+      ? `${baseUrl}/${aboutUs.value?.logo_footer}`
       : null
 
     currentAboutUs.value = JSON.parse(JSON.stringify(aboutUs.value))
@@ -82,7 +101,8 @@ onMounted(async () => {
       address: { text: '', map: '' },
       description: { es: '', en: '' },
       cover_image: '',
-      logo: '',
+      logo_header: '',
+      logo_footer: '',
       mail: '',
       number: '',
     }
@@ -97,7 +117,8 @@ const handleSubmit = async () => {
       address: currentAboutUs.value.address,
       description: currentAboutUs.value.description,
       cover_image: profileImageFile.value ?? undefined,
-      logo: logoFile.value ?? undefined,
+      logo_header: logoHeaderFile.value ?? undefined,
+      logo_footer: logoFootFile.value ?? undefined,
       mail: currentAboutUs.value.mail,
       number: currentAboutUs.value.number,
     }
@@ -125,29 +146,22 @@ const handleSubmit = async () => {
   <TitleForm title="navigation.aboutUs" :isCreateMode="!existingId" />
   <div v-if="currentAboutUs" class="card">
     <form @submit.prevent="handleSubmit" class="space-y-6">
-      
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <!-- Logo Upload -->
+        <!-- Logo Header Upload -->
         <div class="flex flex-wrap justify-center flex-col">
           <label class="block font-semibold mb-1 text-center">{{
-            capitalizeFirstLetter(t('commun.logo'))
+            capitalizeFirstLetter(t('commun.logoHeader'))
           }}</label>
-          <div v-if="profileImagePreview" class="my-4 mb-10 relative w-32 h-32 m-auto">
-            <img :src="`${logoPreview}`" class="w-full h-full object-cover rounded-full" />
-            <Button
-              icon="pi pi-trash"
-              outlined
-              severity="danger"
-              rounded
-              @click="removeLogo"
-            />
+          <div v-if="logoHeaderPreview" class="my-4 mb-10 relative w-32 h-32 m-auto">
+            <img :src="`${logoHeaderPreview}`" class="w-full h-full object-cover rounded-full" />
+            <Button icon="pi pi-trash" outlined severity="danger" rounded @click="removeHeaderLogo" />
           </div>
-          <div v-if="!logoPreview" class="">
+          <div v-if="!logoHeaderPreview" class="">
             <FileUpload
-              name="logo"
+              name="logoHeader"
               accept="image/*"
               :maxFileSize="5000000"
-              @uploader="onLogoSelect"
+              @uploader="onLogoHeaderSelect"
               mode="advanced"
               :auto="false"
               customUpload
@@ -162,27 +176,21 @@ const handleSubmit = async () => {
           </div>
         </div>
 
-        <!-- Profile Image Upload -->
+        <!-- Logo Footer Upload -->
         <div class="flex flex-wrap justify-center flex-col">
           <label class="block font-semibold mb-1 text-center">{{
-            capitalizeFirstLetter(t('commun.coverImage'))
+            capitalizeFirstLetter(t('commun.logoFooter'))
           }}</label>
-          <div v-if="profileImagePreview" class="my-4 mb-10 relative w-32 h-32 m-auto">
-            <img :src="`${profileImagePreview}`" class="w-full h-full object-cover rounded-full" />
-            <Button
-              icon="pi pi-trash"
-              outlined
-              severity="danger"
-              rounded
-              @click="removeProfileImage"
-            />
+          <div v-if="logoFooterPreview" class="my-4 mb-10 relative w-32 h-32 m-auto">
+            <img :src="`${logoFooterPreview}`" class="w-full h-full object-cover rounded-full" />
+            <Button icon="pi pi-trash" outlined severity="danger" rounded @click="removeLogoFooter" />
           </div>
-          <div v-if="!profileImagePreview" class="">
+          <div v-if="!logoFooterPreview" class="">
             <FileUpload
-              name="profile"
+              name="logoFooter"
               accept="image/*"
               :maxFileSize="5000000"
-              @uploader="onProfileImageSelect"
+              @uploader="onLogoFooterSelect"
               mode="advanced"
               :auto="false"
               customUpload
@@ -197,10 +205,47 @@ const handleSubmit = async () => {
           </div>
         </div>
       </div>
+      
+      <!-- Profile Image Upload -->
+      <div class="flex flex-wrap justify-center flex-col">
+        <label class="block font-semibold mb-1 text-center">{{
+          capitalizeFirstLetter(t('commun.coverImage'))
+        }}</label>
+        <div v-if="profileImagePreview" class="my-4 mb-10 relative w-32 h-32 m-auto">
+          <img :src="`${profileImagePreview}`" class="w-full h-full object-cover rounded-full" />
+          <Button
+            icon="pi pi-trash"
+            outlined
+            severity="danger"
+            rounded
+            @click="removeProfileImage"
+          />
+        </div>
+        <div v-if="!profileImagePreview" class="">
+          <FileUpload
+            name="profile"
+            accept="image/*"
+            :maxFileSize="5000000"
+            @uploader="onProfileImageSelect"
+            mode="advanced"
+            :auto="false"
+            customUpload
+            :chooseLabel="capitalizeFirstLetter(t('commun.selectImages'))"
+            :uploadLabel="capitalizeFirstLetter(t('commun.upload'))"
+            :cancelLabel="capitalizeFirstLetter(t('commun.cancel'))"
+          >
+            <template #empty>
+              <p>{{ capitalizeFirstLetter(t('artworks.dragDrop')) }}</p>
+            </template>
+          </FileUpload>
+        </div>
+      </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
-          <label class="block font-semibold mb-1">{{capitalizeFirstLetter(t('authentication.email'))}}</label>
+          <label class="block font-semibold mb-1">{{
+            capitalizeFirstLetter(t('authentication.email'))
+          }}</label>
           <InputText
             v-model="currentAboutUs.mail"
             :placeholder="capitalizeFirstLetter(t('authentication.email'))"

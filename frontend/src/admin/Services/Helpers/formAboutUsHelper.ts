@@ -18,7 +18,7 @@ export function buildAboutUsFormData(
   if (payload.address?.map) {
     formData.append('address[map]', payload.address.map)
   }
-   if (payload.description?.en) {
+  if (payload.description?.en) {
     formData.append('description[en]', payload.description.en)
   }
   if (payload.description?.es) {
@@ -29,8 +29,11 @@ export function buildAboutUsFormData(
   if ('cover_image' in payload && payload.cover_image) {
     formData.append('cover_image', payload.cover_image)
   }
-  if ('logo' in payload && payload.logo) {
-    formData.append('logo', payload.logo)
+  if ('logo_header' in payload && payload.logo_header) {
+    formData.append('logo_header', payload.logo_header)
+  }
+  if ('logo_footer' in payload && payload.logo_footer) {
+    formData.append('logo_footer', payload.logo_footer)
   }
 
   if (!isCreate) {
