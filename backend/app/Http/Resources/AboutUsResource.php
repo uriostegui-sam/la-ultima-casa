@@ -27,6 +27,7 @@ class AboutUsResource extends JsonResource
                 'es' => $this->description['es'] ?? '',
                 'en' => $this->description['en'] ?? '',
             ],
+            'logo' => $this->logo ?? null,
         ];
     }
 }

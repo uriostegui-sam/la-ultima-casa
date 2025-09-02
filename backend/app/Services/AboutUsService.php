@@ -39,6 +39,11 @@ class AboutUsService
             $data['cover_image'] = $this->storeCoverImage($data['cover_image'], $aboutUs);
         }
 
+        if (isset($data['logo'])) {
+            $this->deleteOldImage($aboutUs->logo);
+            $data['logo'] = $this->storeLogo($data['logo'], $aboutUs);
+        }
+
         $aboutUs->update($data);
         return $aboutUs;
     }
@@ -63,5 +68,14 @@ class AboutUsService
         $filename = "{$slug}.{$extension}";
 
         return $image->storeAs('aboutUs/cover-image', $filename, 'public');
+    }
+
+    protected function storeLogo(UploadedFile $image): string
+    {
+        $name = 'logo';
+        $extension = $image->getClientOriginalExtension();
+        $filename = "{$name}.{$extension}";
+
+        return $image->storeAs('aboutUs/logo', $filename, 'public');
     }
 }

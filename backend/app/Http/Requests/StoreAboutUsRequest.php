@@ -30,6 +30,7 @@ class StoreAboutUsRequest extends FormRequest
             'address.map' => 'required|string',
             'description.es' => 'required|string',
             'description.en' => 'nullable|string',
+            'logo' => 'required|image|max:2048',
         ];
     }
 
@@ -42,6 +43,7 @@ class StoreAboutUsRequest extends FormRequest
             'address.text.required' => 'divers.addressTextRequired',
             'address.map.required' => 'divers.addressMapRequired',
             'description.es.required' => 'divers.descriptionRequired',
+            'logo.required' => 'divers.logoRequired',
         ];
     }
 }
