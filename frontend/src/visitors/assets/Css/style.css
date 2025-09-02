@@ -31,18 +31,15 @@
 }
 
 :root {
-  --color-black: #080e14;
+  --color-black: #37332D;
   --color-grey: #6f7c81;
   --color-light-brown: #a8a39f;
   --color-cream: #eaddd0;
   --color-white: #fefefe;
-  --color-light-orange: #feb45d;
-  --color-salmon: #fb6e63;
-  --color-light-salmon: #fb6d6348;
-  --color-teal: #70a8b4;
-  --color-creamy: #f9f5f0;
-
-  background-color: var(--color-creamy);
+  --color-light-orange: #CE8839;
+  --color-salmon: #3E4021;
+  --color-light-salmon: #CED6B3;
+  --color-teal: #A44918;
 
   font-family: var(--font-body);
 }
