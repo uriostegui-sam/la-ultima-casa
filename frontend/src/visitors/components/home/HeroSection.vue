@@ -173,7 +173,6 @@ onMounted(async () => {
 
 <style scoped>
 .hero-content h1 {
-  font-family: 'NATS-Regular', sans-serif;
   font-size: 85px;
   font-style: normal;
   line-height: 65px;

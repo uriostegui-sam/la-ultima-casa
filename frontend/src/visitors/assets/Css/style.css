@@ -4,7 +4,7 @@
 @theme {
   --font-logo: 'Aoboshi One', sans-serif;
   --font-logo-sub: 'Nanum Pen Script', sans-serif;
-  --font-title: 'Outfit', sans-serif;
+  --font-title: 'Greycliff_CF_Regular', sans-serif;
   --font-title-alt: 'Playwrite US Trad', sans-serif;
   --font-body: 'Montserrat', sans-serif;
 }
@@ -12,6 +12,20 @@
 @font-face {
   font-family: 'NATS-Regular';
   src: url('../Fonts/NATS-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Greycliff_CF_Regular';
+  src: url('../Fonts/Greycliff_CF_Regular.otf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Marydale-Bold';
+  src: url('../Fonts/Marydale-Bold.otf') format('truetype');
   font-weight: normal;
   font-style: normal;
 }
@@ -31,6 +45,14 @@
   background-color: var(--color-creamy);
 
   font-family: var(--font-body);
+}
+
+h1 {
+  font-family: 'Greycliff_CF_Regular', sans-serif;
+}
+
+h2, h3 {
+  font-family: 'Marydale-Bold', sans-serif;
 }
 
 .img-hover {
