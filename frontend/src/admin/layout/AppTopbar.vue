@@ -15,10 +15,7 @@ const { toggleMenu, toggleDarkMode, isDarkTheme } = useLayout();
                 <i class="pi pi-bars"></i>
             </button>
             <router-link to="/admin" class="layout-topbar-logo">
-                <svg viewBox="0 0 54 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <Logo class="w-8 h-8" />
-                </svg>
-
+                <Logo class="w-13" />
                 <span>LA ÚLTIMA CASA</span>
             </router-link>
         </div>
