@@ -2,7 +2,7 @@
 import { useAdminAboutUsStore } from '@/admin/stores/AboutUsAdminStore';
 import type { AboutUs } from '@/shared/Interfaces/AboutUs';
 import { onMounted, ref } from 'vue';
-defineProps<{
+const props = defineProps<{
   header?: boolean
   hero?: boolean
 }>()
@@ -15,7 +15,6 @@ onMounted(async () => {
     await aboutUsAdminStore.getAboutUsById(1);
 
     aboutUs.value = aboutUsAdminStore.selectedAboutUs;
-    console.log(`${baseUrl}/${aboutUs.value?.logo}`)
 })
 </script>
 
@@ -32,7 +31,7 @@ onMounted(async () => {
           header ? 'w-20 md:w-25' : hero ? 'w-40 lg:w-55' : 'w-25 md:w-35',
           hero ? 'opacity-50' : '',
         ]"
-        :src="`${baseUrl}/${aboutUs.logo}`"
+        :src="`${baseUrl}/${header ? `${aboutUs.logo_header}` : hero ? `aboutUs/logo/logo-hero.png` : `${aboutUs.logo_footer}`}`"
         alt="logo de la última casa"
       >
 
