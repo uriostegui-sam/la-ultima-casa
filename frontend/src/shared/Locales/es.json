@@ -221,7 +221,8 @@
     "errorNotFoundArtist": "oops... el artista que estás buscando no existe",
     "errorNotFoundWorkshop": "oops... el taller que estás buscando no existe",
     "errorNotFoundNews": "oops... la noticia que estás buscando no existe",
-    "logo": "logo"
+    "logoHeader": "logo en el encabezado",
+    "logoFooter": "logo en el pie de página"
   },
   "courses": {
     "courses": "talleres",
