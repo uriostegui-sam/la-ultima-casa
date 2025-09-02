@@ -220,7 +220,8 @@
     "errorNotFoundGeneral": "oops... la página que estás buscando no existe",
     "errorNotFoundArtist": "oops... el artista que estás buscando no existe",
     "errorNotFoundWorkshop": "oops... el taller que estás buscando no existe",
-    "errorNotFoundNews": "oops... la noticia que estás buscando no existe"
+    "errorNotFoundNews": "oops... la noticia que estás buscando no existe",
+    "logo": "logo"
   },
   "courses": {
     "courses": "talleres",
@@ -270,7 +271,8 @@
     "profileImageMaxSize": "la imagen de perfil no debe exceder los 2MB",
     "artist_idRequired": "el artista es obligatorio",
     "typeRequired": "el tipo es obligatorio",
-    "priceRequired": "el precio es obligatorio"
+    "priceRequired": "el precio es obligatorio",
+    "logoRequired": "el logo es obligatorio"
   },
   "temporary": "temporales",
   "permanent": "permanentes",
