@@ -24,6 +24,8 @@ const existingId = computed(() => {
 const baseUrl = import.meta.env.VITE_STORAGE_URL
 const profileImageFile = ref<File | null>(null)
 const profileImagePreview = ref<string | null>(null)
+const logoFile = ref<File | null>(null)
+const logoPreview = ref<string | null>(null)
 const toast = useToast()
 const { t } = useI18n()
 const aboutUsAdminStore = useAdminAboutUsStore()
@@ -44,6 +46,19 @@ const removeProfileImage = () => {
   profileImagePreview.value = null
 }
 
+const onLogoSelect = (event: any) => {
+  const file = event.files?.[0]
+  if (file) {
+    logoFile.value = file
+    logoPreview.value = URL.createObjectURL(file)
+  }
+}
+
+const removeLogo = () => {
+  logoFile.value = null
+  logoPreview.value = null
+}
+
 onMounted(async () => {
   await aboutUsAdminStore.getAboutUs()
 
@@ -51,9 +66,15 @@ onMounted(async () => {
     await aboutUsAdminStore.getAboutUsById(existingId.value)
 
     aboutUs.value = aboutUsAdminStore.selectedAboutUs
+
     profileImagePreview.value = aboutUs.value?.cover_image
       ? `${baseUrl}/${aboutUs.value?.cover_image}`
       : null
+
+    logoPreview.value = aboutUs.value?.logo
+      ? `${baseUrl}/${aboutUs.value?.logo}`
+      : null
+
     currentAboutUs.value = JSON.parse(JSON.stringify(aboutUs.value))
   } else {
     currentAboutUs.value = {
@@ -61,6 +82,7 @@ onMounted(async () => {
       address: { text: '', map: '' },
       description: { es: '', en: '' },
       cover_image: '',
+      logo: '',
       mail: '',
       number: '',
     }
@@ -75,6 +97,7 @@ const handleSubmit = async () => {
       address: currentAboutUs.value.address,
       description: currentAboutUs.value.description,
       cover_image: profileImageFile.value ?? undefined,
+      logo: logoFile.value ?? undefined,
       mail: currentAboutUs.value.mail,
       number: currentAboutUs.value.number,
     }
@@ -102,38 +125,76 @@ const handleSubmit = async () => {
   <TitleForm title="navigation.aboutUs" :isCreateMode="!existingId" />
   <div v-if="currentAboutUs" class="card">
     <form @submit.prevent="handleSubmit" class="space-y-6">
-      <!-- Profile Image Upload -->
-      <div class="flex flex-wrap justify-center flex-col">
-        <label class="block font-semibold mb-1 text-center">{{
-          capitalizeFirstLetter(t('commun.coverImage'))
-        }}</label>
-        <div v-if="profileImagePreview" class="my-4 mb-10 relative w-32 h-32 m-auto">
-          <img :src="`${profileImagePreview}`" class="w-full h-full object-cover rounded-full" />
-          <Button
-            icon="pi pi-trash"
-            outlined
-            severity="danger"
-            rounded
-            @click="removeProfileImage"
-          />
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <!-- Logo Upload -->
+        <div class="flex flex-wrap justify-center flex-col">
+          <label class="block font-semibold mb-1 text-center">{{
+            capitalizeFirstLetter(t('commun.logo'))
+          }}</label>
+          <div v-if="profileImagePreview" class="my-4 mb-10 relative w-32 h-32 m-auto">
+            <img :src="`${logoPreview}`" class="w-full h-full object-cover rounded-full" />
+            <Button
+              icon="pi pi-trash"
+              outlined
+              severity="danger"
+              rounded
+              @click="removeLogo"
+            />
+          </div>
+          <div v-if="!logoPreview" class="">
+            <FileUpload
+              name="logo"
+              accept="image/*"
+              :maxFileSize="5000000"
+              @uploader="onLogoSelect"
+              mode="advanced"
+              :auto="false"
+              customUpload
+              :chooseLabel="capitalizeFirstLetter(t('commun.selectImages'))"
+              :uploadLabel="capitalizeFirstLetter(t('commun.upload'))"
+              :cancelLabel="capitalizeFirstLetter(t('commun.cancel'))"
+            >
+              <template #empty>
+                <p>{{ capitalizeFirstLetter(t('artworks.dragDrop')) }}</p>
+              </template>
+            </FileUpload>
+          </div>
         </div>
-        <div v-if="!profileImagePreview" class="">
-          <FileUpload
-            name="profile"
-            accept="image/*"
-            :maxFileSize="5000000"
-            @uploader="onProfileImageSelect"
-            mode="advanced"
-            :auto="false"
-            customUpload
-            :chooseLabel="capitalizeFirstLetter(t('commun.selectImages'))"
-            :uploadLabel="capitalizeFirstLetter(t('commun.upload'))"
-            :cancelLabel="capitalizeFirstLetter(t('commun.cancel'))"
-          >
-            <template #empty>
-              <p>{{ capitalizeFirstLetter(t('artworks.dragDrop')) }}</p>
-            </template>
-          </FileUpload>
+
+        <!-- Profile Image Upload -->
+        <div class="flex flex-wrap justify-center flex-col">
+          <label class="block font-semibold mb-1 text-center">{{
+            capitalizeFirstLetter(t('commun.coverImage'))
+          }}</label>
+          <div v-if="profileImagePreview" class="my-4 mb-10 relative w-32 h-32 m-auto">
+            <img :src="`${profileImagePreview}`" class="w-full h-full object-cover rounded-full" />
+            <Button
+              icon="pi pi-trash"
+              outlined
+              severity="danger"
+              rounded
+              @click="removeProfileImage"
+            />
+          </div>
+          <div v-if="!profileImagePreview" class="">
+            <FileUpload
+              name="profile"
+              accept="image/*"
+              :maxFileSize="5000000"
+              @uploader="onProfileImageSelect"
+              mode="advanced"
+              :auto="false"
+              customUpload
+              :chooseLabel="capitalizeFirstLetter(t('commun.selectImages'))"
+              :uploadLabel="capitalizeFirstLetter(t('commun.upload'))"
+              :cancelLabel="capitalizeFirstLetter(t('commun.cancel'))"
+            >
+              <template #empty>
+                <p>{{ capitalizeFirstLetter(t('artworks.dragDrop')) }}</p>
+              </template>
+            </FileUpload>
+          </div>
         </div>
       </div>
 

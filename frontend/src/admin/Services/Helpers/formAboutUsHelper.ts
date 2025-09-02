@@ -29,6 +29,9 @@ export function buildAboutUsFormData(
   if ('cover_image' in payload && payload.cover_image) {
     formData.append('cover_image', payload.cover_image)
   }
+  if ('logo' in payload && payload.logo) {
+    formData.append('logo', payload.logo)
+  }
 
   if (!isCreate) {
     formData.append('_method', 'PUT')
