@@ -30,7 +30,8 @@ class StoreAboutUsRequest extends FormRequest
             'address.map' => 'required|string',
             'description.es' => 'required|string',
             'description.en' => 'nullable|string',
-            'logo' => 'required|image|max:2048',
+            'logo_header' => 'required|image|max:2048',
+            'logo_footer' => 'required|image|max:2048',
         ];
     }
 
@@ -43,7 +44,8 @@ class StoreAboutUsRequest extends FormRequest
             'address.text.required' => 'divers.addressTextRequired',
             'address.map.required' => 'divers.addressMapRequired',
             'description.es.required' => 'divers.descriptionRequired',
-            'logo.required' => 'divers.logoRequired',
+            'logo_header.required' => 'divers.logoRequired',
+            'logo_footer.required' => 'divers.logoRequired',
         ];
     }
 }
