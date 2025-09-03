@@ -27,6 +27,10 @@ class AboutUsResource extends JsonResource
                 'es' => $this->description['es'] ?? '',
                 'en' => $this->description['en'] ?? '',
             ],
+            'logo_header' => $this->logo_header ?? null,
+            'logo_footer' => $this->logo_footer ?? null,
+            'logo_hero' => $this->logo_hero ?? null,
+            'logo_favicon' => $this->logo_favicon ?? null,
         ];
     }
 }

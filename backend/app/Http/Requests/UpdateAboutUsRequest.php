@@ -29,6 +29,10 @@ class UpdateAboutUsRequest extends FormRequest
             'address.map' => 'required|string',
             'description.es' => 'required|string',
             'description.en' => 'sometimes|string',
+            'logo_header' => 'sometimes|image|max:2048',
+            'logo_footer' => 'sometimes|image|max:2048',
+            'logo_hero' => 'sometimes|image|max:2048',
+            'logo_favicon' => 'sometimes|image|max:2048',
         ];
     }
 
@@ -41,6 +45,10 @@ class UpdateAboutUsRequest extends FormRequest
             'address.text.required' => 'divers.addressTextRequired',
             'address.map.required' => 'divers.addressMapRequired',
             'description.es.required' => 'divers.descriptionRequired',
+            'logo_header.required' => 'divers.logoRequired',
+            'logo_footer.required' => 'divers.logoRequired',
+            'logo_hero.required' => 'divers.logoRequired',
+            'logo_favicon.required' => 'divers.logoRequired',
         ];
     }
 }

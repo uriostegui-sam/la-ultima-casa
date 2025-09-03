@@ -2,6 +2,10 @@ export interface AboutUs {
   id: number
   number: string
   cover_image: string
+  logo_header: string
+  logo_footer: string
+  logo_hero: string
+  logo_favicon: string
   mail: string
   address: {
     text: string
@@ -19,6 +23,10 @@ export interface AboutUsCreatePayload {
   address: Record<string, string>
   description: Record<string, string>
   cover_image?: File
+  logo_header?: File
+  logo_footer?: File
+  logo_hero?: File
+  logo_favicon?: File
 }
 
 export interface AboutUsUpdatePayload extends Partial<AboutUsCreatePayload> {

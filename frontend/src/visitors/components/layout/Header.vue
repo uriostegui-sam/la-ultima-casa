@@ -54,7 +54,7 @@ const mobileMenuOpen = ref(false)
               {{ capitalizeFirstLetter(t(item.key)) }}
             </NavLink>
           </router-link>
-          <span v-if="index < menuKeys.length - 1" class="text-(--color-salmon)">|</span>
+          <span v-if="index < menuKeys.length - 1" class="text-(--color-teal)">|</span>
         </template>
       </div>
     </nav>
@@ -99,10 +99,7 @@ const mobileMenuOpen = ref(false)
 </template>
 
 <style scoped>
-@import url('https://fonts.googleapis.com/css2?family=Aoboshi+One&family=Nanum+Pen+Script&display=swap');
-
 h1 {
-  font-family: 'NATS-Regular', sans-serif;
   font-size: 48px;
   font-style: normal;
   line-height: 40px;
