@@ -9,7 +9,7 @@ class AboutUs extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['cover_image', 'number', 'mail', 'address', 'description', 'logo_header', 'logo_footer'];
+    protected $fillable = ['cover_image', 'number', 'mail', 'address', 'description', 'logo_header', 'logo_footer', 'logo_hero', 'logo_favicon'];
 
     protected $casts = [
         'cover_image' => 'string',
@@ -17,5 +17,7 @@ class AboutUs extends Model
         'description' => 'array',
         'logo_header' => 'string',
         'logo_footer' => 'string',
+        'logo_hero' => 'string',
+        'logo_favicon' => 'string',
     ];
 }
