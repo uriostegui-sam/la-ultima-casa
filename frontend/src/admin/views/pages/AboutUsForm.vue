@@ -28,6 +28,10 @@ const logoHeaderFile = ref<File | null>(null)
 const logoHeaderPreview = ref<string | null>(null)
 const logoFootFile = ref<File | null>(null)
 const logoFooterPreview = ref<string | null>(null)
+const logoHeroFile = ref<File | null>(null)
+const logoHeroPreview = ref<string | null>(null)
+const logoFaviconFile = ref<File | null>(null)
+const logoFaviconPreview = ref<string | null>(null)
 const toast = useToast()
 const { t } = useI18n()
 const aboutUsAdminStore = useAdminAboutUsStore()
@@ -74,6 +78,32 @@ const removeLogoFooter = () => {
   logoFooterPreview.value = null
 }
 
+const onLogoHeroSelect = (event: any) => {
+  const file = event.files?.[0]
+  if (file) {
+    logoHeroFile.value = file
+    logoHeroPreview.value = URL.createObjectURL(file)
+  }
+}
+
+const removeLogoHero = () => {
+  logoHeroFile.value = null
+  logoHeroPreview.value = null
+}
+
+const onLogoFaviconSelect = (event: any) => {
+  const file = event.files?.[0]
+  if (file) {
+    logoFaviconFile.value = file
+    logoFaviconPreview.value = URL.createObjectURL(file)
+  }
+}
+
+const removeLogoFavicon = () => {
+  logoFaviconFile.value = null
+  logoFaviconPreview.value = null
+}
+
 onMounted(async () => {
   await aboutUsAdminStore.getAboutUs()
 
@@ -94,6 +124,14 @@ onMounted(async () => {
       ? `${baseUrl}/${aboutUs.value?.logo_footer}`
       : null
 
+    logoHeroPreview.value = aboutUs.value?.logo_hero
+      ? `${baseUrl}/${aboutUs.value?.logo_hero}`
+      : null
+
+    logoFaviconPreview.value = aboutUs.value?.logo_favicon
+      ? `${baseUrl}/${aboutUs.value?.logo_favicon}`
+      : null
+
     currentAboutUs.value = JSON.parse(JSON.stringify(aboutUs.value))
   } else {
     currentAboutUs.value = {
@@ -103,6 +141,8 @@ onMounted(async () => {
       cover_image: '',
       logo_header: '',
       logo_footer: '',
+      logo_hero: '',
+      logo_favicon: '',
       mail: '',
       number: '',
     }
@@ -119,6 +159,8 @@ const handleSubmit = async () => {
       cover_image: profileImageFile.value ?? undefined,
       logo_header: logoHeaderFile.value ?? undefined,
       logo_footer: logoFootFile.value ?? undefined,
+      logo_hero: logoHeroFile.value ?? undefined,
+      logo_favicon: logoFaviconFile.value ?? undefined,
       mail: currentAboutUs.value.mail,
       number: currentAboutUs.value.number,
     }
@@ -191,6 +233,66 @@ const handleSubmit = async () => {
               accept="image/*"
               :maxFileSize="5000000"
               @uploader="onLogoFooterSelect"
+              mode="advanced"
+              :auto="false"
+              customUpload
+              :chooseLabel="capitalizeFirstLetter(t('commun.selectImages'))"
+              :uploadLabel="capitalizeFirstLetter(t('commun.upload'))"
+              :cancelLabel="capitalizeFirstLetter(t('commun.cancel'))"
+            >
+              <template #empty>
+                <p>{{ capitalizeFirstLetter(t('artworks.dragDrop')) }}</p>
+              </template>
+            </FileUpload>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <!-- Logo Hero Upload -->
+        <div class="flex flex-wrap justify-center flex-col">
+          <label class="block font-semibold mb-1 text-center">{{
+            capitalizeFirstLetter(t('commun.logoHero'))
+          }}</label>
+          <div v-if="logoHeroPreview" class="my-4 mb-10 relative w-32 h-32 m-auto">
+            <img :src="`${logoHeroPreview}`" class="w-full h-full object-cover rounded-full" />
+            <Button icon="pi pi-trash" outlined severity="danger" rounded @click="removeLogoHero" />
+          </div>
+          <div v-if="!logoHeroPreview" class="">
+            <FileUpload
+              name="logoHero"
+              accept="image/*"
+              :maxFileSize="5000000"
+              @uploader="onLogoHeroSelect"
+              mode="advanced"
+              :auto="false"
+              customUpload
+              :chooseLabel="capitalizeFirstLetter(t('commun.selectImages'))"
+              :uploadLabel="capitalizeFirstLetter(t('commun.upload'))"
+              :cancelLabel="capitalizeFirstLetter(t('commun.cancel'))"
+            >
+              <template #empty>
+                <p>{{ capitalizeFirstLetter(t('artworks.dragDrop')) }}</p>
+              </template>
+            </FileUpload>
+          </div>
+        </div>
+
+        <!-- Logo Favicon Upload -->
+        <div class="flex flex-wrap justify-center flex-col">
+          <label class="block font-semibold mb-1 text-center">{{
+            capitalizeFirstLetter(t('commun.logoFavicon'))
+          }}</label>
+          <div v-if="logoFaviconPreview" class="my-4 mb-10 relative w-32 h-32 m-auto">
+            <img :src="`${logoFaviconPreview}`" class="w-full h-full object-cover rounded-full" />
+            <Button icon="pi pi-trash" outlined severity="danger" rounded @click="removeLogoFavicon" />
+          </div>
+          <div v-if="!logoFaviconPreview" class="">
+            <FileUpload
+              name="logoFavicon"
+              accept="image/*"
+              :maxFileSize="5000000"
+              @uploader="onLogoFaviconSelect"
               mode="advanced"
               :auto="false"
               customUpload

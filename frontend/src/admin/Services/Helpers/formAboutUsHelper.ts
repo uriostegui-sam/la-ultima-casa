@@ -36,6 +36,13 @@ export function buildAboutUsFormData(
     formData.append('logo_footer', payload.logo_footer)
   }
 
+  if ('logo_hero' in payload && payload.logo_hero) {
+    formData.append('logo_hero', payload.logo_hero)
+  }
+  if ('logo_favicon' in payload && payload.logo_favicon) {
+    formData.append('logo_favicon', payload.logo_favicon)
+  }
+
   if (!isCreate) {
     formData.append('_method', 'PUT')
   }
