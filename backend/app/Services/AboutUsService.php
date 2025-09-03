@@ -4,12 +4,13 @@ namespace App\Services;
 
 use App\Models\AboutUs;
 use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class AboutUsService
-{
+{    
+    private $logoFields = ['logo_header', 'logo_footer', 'logo_hero', 'logo_favicon'];
+
     public function getAllAboutUs()
     {
         return AboutUs::all();
@@ -21,18 +22,18 @@ class AboutUsService
             $data['cover_image'] = $this->storeCoverImage($data['cover_image'], $data);
         }
 
-        if (array_key_exists('logo_header', $data) && $data['logo_header'] instanceof UploadedFile) {
-            $data['logo_header'] = $this->storeCoverImage($data['logo_header'], $data);
-        }
-
-        if (array_key_exists('logo_footer', $data) && $data['logo_footer'] instanceof UploadedFile) {
-            $data['logo_footer'] = $this->storeCoverImage($data['logo_footer'], $data);
+        foreach ($this->logoFields as $logo) {
+            if (array_key_exists($logo, $data) && $data[$logo] instanceof UploadedFile) {
+                $data[$logo] = $this->storeLogo($data[$logo], $logo);
+            }
         }
 
         $aboutUs = AboutUs::create([
             'cover_image' => $data['cover_image'] ?? null,
             'logo_header' => $data['logo_header'] ?? null,
             'logo_footer' => $data['logo_footer'] ?? null,
+            'logo_hero' => $data['logo_hero'] ?? null,
+            'logo_favicon' => $data['logo_favicon'] ?? null,
             'address' => $data['address'],
             'number' => $data['number'],
             'mail' => $data['mail'],
@@ -49,14 +50,11 @@ class AboutUsService
             $data['cover_image'] = $this->storeCoverImage($data['cover_image'], $aboutUs);
         }
 
-        if (isset($data['logo_header'])) {
-            $this->deleteOldImage($aboutUs->logo_header);
-            $data['logo_header'] = $this->storeLogoHeader($data['logo_header'], $aboutUs);
-        }
-
-        if (isset($data['logo_footer'])) {
-            $this->deleteOldImage($aboutUs->logo_footer);
-            $data['logo_footer'] = $this->storeLogoFooter($data['logo_footer'], $aboutUs);
+        foreach ($this->logoFields as $logo) {
+            if (isset($data[$logo])) {
+                $this->deleteOldImage($aboutUs->{$logo});
+                $data[$logo] = $this->storeLogo($data[$logo], $logo);
+            }
         }
 
         $aboutUs->update($data);
@@ -85,18 +83,9 @@ class AboutUsService
         return $image->storeAs('aboutUs/cover-image', $filename, 'public');
     }
 
-    protected function storeLogoHeader(UploadedFile $image): string
+    protected function storeLogo(UploadedFile $image, string $typeOfLogo): string
     {
-        $name = 'logo_header';
-        $extension = $image->getClientOriginalExtension();
-        $filename = "{$name}.{$extension}";
-
-        return $image->storeAs('aboutUs/logo', $filename, 'public');
-    }
-
-    protected function storeLogoFooter(UploadedFile $image): string
-    {
-        $name = 'logo_footer';
+        $name = $typeOfLogo;
         $extension = $image->getClientOriginalExtension();
         $filename = "{$name}.{$extension}";
 
