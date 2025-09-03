@@ -30,7 +30,7 @@ onMounted(async () => {
         :class="[
           header ? 'w-10 md:w-20' : hero ? '' : 'w-25 md:w-35',
         ]"
-        :src="`${baseUrl}/${header ? `${aboutUs.logo_header}` : hero ? `aboutUs/logo/logo-hero.png` : `${aboutUs.logo_footer}`}`"
+        :src="`${baseUrl}/${header ? `${aboutUs.logo_header}` : hero ? `${aboutUs.logo_hero}` : `${aboutUs.logo_footer}`}`"
         alt="logo de la última casa"
       >
 
