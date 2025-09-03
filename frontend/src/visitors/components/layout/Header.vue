@@ -54,7 +54,7 @@ const mobileMenuOpen = ref(false)
               {{ capitalizeFirstLetter(t(item.key)) }}
             </NavLink>
           </router-link>
-          <span v-if="index < menuKeys.length - 1" class="text-(--color-salmon)">|</span>
+          <span v-if="index < menuKeys.length - 1" class="text-(--color-teal)">|</span>
         </template>
       </div>
     </nav>
