@@ -131,7 +131,6 @@ onMounted(() => {
 <style scoped>
 
 h1 {
-  font-family: 'NATS-Regular', sans-serif;
   font-size: 35px;
   font-style: normal;
   width: 50%;

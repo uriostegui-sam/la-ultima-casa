@@ -136,10 +136,7 @@ onMounted(async () => {
       <!-- Content -->
       <div class="flex-1 hero-content">
         <div v-if="props.first" class="flex justify-between w-full items-center">
-          <h1 class="flex-1 text-(--color-teal)">LA ÚLTIMA CASA</h1>
-          <div class="flex-1 flex justify-end">
             <Logo :header="false" :hero="true" />
-          </div>
         </div>
 
         <!-- Main heading for non-first -->
@@ -173,7 +170,6 @@ onMounted(async () => {
 
 <style scoped>
 .hero-content h1 {
-  font-family: 'NATS-Regular', sans-serif;
   font-size: 85px;
   font-style: normal;
   line-height: 65px;

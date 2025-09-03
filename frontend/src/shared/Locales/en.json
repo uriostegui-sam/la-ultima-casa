@@ -220,7 +220,11 @@
     "errorNotFoundGeneral": "oops... the page you are looking for does not exist",
     "errorNotFoundArtist": "oops... the artist you are looking for does not exist",
     "errorNotFoundWorkshop": "oops... the workshop you are looking for does not exist",
-    "errorNotFoundNews": "oops... the news you are looking for does not exist"
+    "errorNotFoundNews": "oops... the news you are looking for does not exist",
+    "logoHeader": "logo in the header",
+    "logoFooter": "logo in the footer",
+    "logoHero": "logo in the landing page",
+    "logoFavicon": "favicon"
   },
   "courses": {
     "courses": "courses",
@@ -270,7 +274,8 @@
     "profileImageMaxSize": "the profile image must not be greater than 2MB.",
     "artist_idRequired": "the artist id is required",
     "typeRequired": "the type is required",
-    "priceRequired": "the price is required"
+    "priceRequired": "the price is required",
+    "logoRequired": "the logo is required"
   },
   "temporary": "temporary",
   "permanent": "permanent",

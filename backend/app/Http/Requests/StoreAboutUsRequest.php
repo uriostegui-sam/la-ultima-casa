@@ -30,6 +30,10 @@ class StoreAboutUsRequest extends FormRequest
             'address.map' => 'required|string',
             'description.es' => 'required|string',
             'description.en' => 'nullable|string',
+            'logo_header' => 'required|image|max:2048',
+            'logo_footer' => 'required|image|max:2048',
+            'logo_hero' => 'required|image|max:2048',
+            'logo_favicon' => 'required|image|max:2048',
         ];
     }
 
@@ -42,6 +46,10 @@ class StoreAboutUsRequest extends FormRequest
             'address.text.required' => 'divers.addressTextRequired',
             'address.map.required' => 'divers.addressMapRequired',
             'description.es.required' => 'divers.descriptionRequired',
+            'logo_header.required' => 'divers.logoRequired',
+            'logo_footer.required' => 'divers.logoRequired',
+            'logo_hero.required' => 'divers.logoRequired',
+            'logo_favicon.required' => 'divers.logoRequired',
         ];
     }
 }

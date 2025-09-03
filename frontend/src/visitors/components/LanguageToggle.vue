@@ -16,7 +16,7 @@ defineProps<{
     >
       ESP
     </button>
-    <span :class="header ? 'text-(--color-salmon)' : 'text-white'">|</span>
+    <span :class="header ? 'text-(--color-teal)' : 'text-white'">|</span>
     <button
       class="hover:underline"
       :class="{ 'font-bold': current === Languages.English }"
