@@ -222,7 +222,9 @@
     "errorNotFoundWorkshop": "oops... the workshop you are looking for does not exist",
     "errorNotFoundNews": "oops... the news you are looking for does not exist",
     "logoHeader": "logo in the header",
-    "logoFooter": "logo in the footer"
+    "logoFooter": "logo in the footer",
+    "logoHero": "logo in the landing page",
+    "logoFavicon": "favicon"
   },
   "courses": {
     "courses": "courses",
